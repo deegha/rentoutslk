@@ -10,7 +10,8 @@
     "lint:fix": "next lint --fix",
     "lint:strict": "next lint '*/**/*.{js,jsx,ts,tsx}'",
     "prettier": "prettier --write */**/*.{js,jsx,json,ts,tsx,scss,css,md}",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "build:scss": "sass styles/scss -o styles/css"
   },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^7.12.0",
@@ -20,7 +21,8 @@
     "lint-staged": "^15.2.5",
     "next": "14.2.3",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "scss": "^0.2.4"
   },
   "devDependencies": {
     "@types/node": "^20",
