@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './header.module.scss';
 import Favorite from '@/icons/carbon_favorite.svg';
+import { Button } from '../button';
 
 export const Header = () => {
   return (
@@ -13,9 +14,14 @@ export const Header = () => {
             <Favorite />
           </a>
           <a className={styles.logIn}>Log in</a>
-          <a className={styles.signUpBtn}>
-            <p>Sign up</p>
-          </a>
+          <Button
+            text="SIGN UP"
+            link="/"
+            bgColor="#000"
+            textColor="#fff"
+            padding="10px"
+            borderRadius="4px"
+          />
         </div>
       </nav>
     </header>
