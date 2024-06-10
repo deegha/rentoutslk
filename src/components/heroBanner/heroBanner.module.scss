@@ -1,0 +1,33 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: $secondary-bg-color;
+  @include desktopAndBeyondView () {
+    height: 600px;
+  }
+}
+
+.heroBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  align-items: center;
+}
+
+.heroBlock h1 {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 58.09px;
+}
+
+.linkBlock {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}

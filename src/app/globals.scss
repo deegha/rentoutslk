@@ -1,0 +1,15 @@
+@import '@/styles/_colors.scss';
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  // max-width: 110em;
+  overflow-x: hidden;
+  background-color: $primary-bg-color;
+  margin: auto;
+  scroll-behavior: smooth;
+}

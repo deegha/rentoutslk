@@ -23,14 +23,17 @@
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
+    "sass": "^1.77.4",
     "scss": "^0.2.4"
   },
   "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.3",
+    "file-loader": "^6.2.0",
     "husky": "^9.0.11",
     "prettier": "^3.3.1",
     "typescript": "^5"
