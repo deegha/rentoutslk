@@ -15,6 +15,7 @@ export default function Home() {
         <HeroBanner />
         <CreateListingBanner />
         <LookingFor />
+        <a href="/profile">Profile</a>
       </main>
     </>
   );
