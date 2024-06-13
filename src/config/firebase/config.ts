@@ -1,23 +1,26 @@
-// import { initializeApp } from 'firebase/app';
+// firebaseConfig.js
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
-// import { getAnalytics } from 'firebase/analytics';
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+  databaseURL: process.env.NEXT_PUBLIC_DATA_BASE_URL,
 
-// const firebaseConfig = {
-//   apiKey: 'AIzaSyA1TJpCoxgqV0yobHvlQlKGuB2W0B-_LmU',
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
 
-//   authDomain: 'rentalservice-a0edc.firebaseapp.com',
+  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
 
-//   projectId: 'rentalservice-a0edc',
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
 
-//   storageBucket: 'rentalservice-a0edc.appspot.com',
+  appId: process.env.NEXT_PUBLIC_APP_ID,
 
-//   messagingSenderId: '528392291408',
+  measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
+};
 
-//   appId: '1:528392291408:web:04f6f7dd5b11e026577d55',
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-//   measurementId: 'G-Y4JBE4TJJN',
-// };
-
-// const app = initializeApp(firebaseConfig);
-
-// // const analytics = getAnalytics(app);
+export { auth, db, app };

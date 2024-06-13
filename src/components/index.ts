@@ -25,3 +25,4 @@ export * from './apartmentsCard';
 export * from './apartmentsList';
 export * from './tagsList';
 export * from './shareTooltip';
+export * from './auth';
