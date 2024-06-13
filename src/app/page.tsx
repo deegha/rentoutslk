@@ -8,6 +8,7 @@ export default function Home() {
 
       <main>
         <HeroBanner />
+        <a href="/profile">Profile</a>
       </main>
     </>
   );

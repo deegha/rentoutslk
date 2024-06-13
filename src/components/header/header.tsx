@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './header.module.scss';
 import Favorite from '@/icons/carbon_favorite.svg';
+import Link from 'next/link';
 
 export const Header = () => {
   return (
@@ -12,10 +13,12 @@ export const Header = () => {
           <a className={styles.favorite}>
             <Favorite />
           </a>
-          <a className={styles.logIn}>Log in</a>
-          <a className={styles.signUpBtn}>
+          <Link href={'/signIn'} className={styles.logIn}>
+            Log in
+          </Link>
+          <Link href={'/signUp'} className={styles.signUpBtn}>
             <p>Sign up</p>
-          </a>
+          </Link>
         </div>
       </nav>
     </header>
