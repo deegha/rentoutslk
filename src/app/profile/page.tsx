@@ -1,12 +1,14 @@
 import React from 'react';
+import { getServerSession } from 'next-auth/next';
+import { options } from '../api/auth/[...nextauth]/options';
 import { redirect } from 'next/navigation';
-import { auth } from '@/auth';
 
 const Profile: React.FC = async () => {
-  const session = await auth();
+  const session = await getServerSession(options);
   if (!session) {
     redirect('/');
   }
+  console.log(session);
   const user = session.user;
   return (
     <div>
