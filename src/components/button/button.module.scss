@@ -9,7 +9,7 @@
   border: none;
   outline: none;
   transition: background-color 0.3s;
-  
+
   font-size: 16px;
   font-weight: 400;
   line-height: 19.36px;
@@ -19,4 +19,5 @@
   border-radius: var(--border-radius, 4px);
   padding: var(--padding, 20px 20px);
   border: var(--border, none);
+  font-weight: var(--font-weight, 400);
 }

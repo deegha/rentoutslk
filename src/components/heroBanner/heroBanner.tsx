@@ -17,13 +17,14 @@ export const HeroBanner = () => {
           <Button
             text="SEARCH"
             link="/"
-            bgColor="#e0e0e0"
-            textColor="#000000"
+            bgColor="#DE225C"
+            textColor="#FFFFFF"
             padding="20px"
+            fontWeight="600"
           />
         </div>
         <a className={styles.linkBlock}>
-          <p>See All Options</p>
+          <p>See all rentals</p>
           <ArrowRight />
         </a>
       </div>

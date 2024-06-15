@@ -1,0 +1,51 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  @include desktopAndBeyondView() {
+    padding: 0px 80px;
+  }
+}
+
+.bannerBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: $secondary-bg-color;
+  border-radius: 8px;
+  @include desktopAndBeyondView() {
+    height: 360px;
+    padding: 80px 0px;
+  }
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.title {
+  color: $font-color-one;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 48.41px;
+}
+
+.description {
+    width: 60%;
+    text-align: center;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 21.78px;
+}
+

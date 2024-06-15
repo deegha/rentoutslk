@@ -1,4 +1,9 @@
-import { Header, HeroBanner } from '@/components';
+import {
+  Header,
+  HeroBanner,
+  CreateListingBanner,
+  LookingFor,
+} from '@/components';
 
 export default function Home() {
   return (
@@ -8,6 +13,8 @@ export default function Home() {
 
       <main>
         <HeroBanner />
+        <CreateListingBanner />
+        <LookingFor />
       </main>
     </>
   );

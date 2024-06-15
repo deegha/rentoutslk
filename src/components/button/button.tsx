@@ -10,6 +10,7 @@ interface ButtonProps {
   borderRadius?: string;
   borderColor?: string;
   padding?: string;
+  fontWeight?: string;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -21,6 +22,7 @@ export const Button: React.FC<ButtonProps> = ({
   borderRadius,
   borderColor,
   padding,
+  fontWeight,
 }) => {
   const buttonStyle = {
     '--bg-color': bgColor,
@@ -28,6 +30,7 @@ export const Button: React.FC<ButtonProps> = ({
     '--border-radius': borderRadius,
     '--border': borderColor ? `1px solid ${borderColor}` : 'none',
     '--padding': padding,
+    '--font-weight': fontWeight,
   } as React.CSSProperties;
 
   return link ? (
