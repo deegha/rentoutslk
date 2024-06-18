@@ -6,8 +6,14 @@ import { Button } from '../button';
 
 import Favorite from '@/icons/carbon_favorite.svg';
 import Menu from '@/icons/burger_menu.svg';
+import Logo from '@/icons/logo.svg';
+import { auth } from '@/auth';
+import AuthButtonServer from '../auth/signIn/signInButton.server';
 
-export const Header = () => {
+export const Header = async () => {
+  const session = await auth();
+  console.log(session);
+
   return (
     <header className={styles.header}>
       <nav className={styles.navBar}>
