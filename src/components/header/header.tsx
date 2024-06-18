@@ -1,14 +1,11 @@
 import React from 'react';
 import Image from 'next/image';
 import styles from './header.module.scss';
-
-import { Button } from '../button';
-
 import Favorite from '@/icons/carbon_favorite.svg';
-import Menu from '@/icons/burger_menu.svg';
+import { Button } from '../button';
 import Logo from '@/icons/logo.svg';
 import { auth } from '@/auth';
-import { AuthButton } from '@/components/auth';
+import AuthButtonServer from '../auth/signIn/signInButton.server';
 
 export const Header = async () => {
   const session = await auth();
@@ -29,16 +26,24 @@ export const Header = async () => {
           <a className={styles.favorite}>
             <Favorite />
           </a>
-          <a className={styles.logIn}>Log in</a>
-          <Button
-            text="Sign up"
-            link="/"
-            bgColor="#000"
-            textColor="#fff"
-            padding="10px"
-            borderRadius="4px"
-            fontWeight="600"
-          />
+          <pre>{JSON.stringify(session, null, 2)}</pre>
+
+          <AuthButtonServer className={styles.logIn} />
+          {!session ? (
+            <>
+              <Button
+                text="SIGN UP"
+                link="/"
+                bgColor="#000"
+                textColor="#fff"
+                padding="10px"
+                borderRadius="4px"
+                fontWeight="600"
+              />
+            </>
+          ) : (
+            <></>
+          )}
         </div>
         <div className={styles.signBlockMobile}>
           <a className={styles.favorite}>
