@@ -1,14 +1,16 @@
 import React from 'react';
 import styles from '../signAuth.module.scss';
 import Google from 'icons/auth/google.svg';
-import Facebook from 'icons/auth/facebook.svg';
 
-export const SignIn = () => {
+export const SignIn = async () => {
+  // const csrfToken = await getCsrfToken();
+
   return (
     <section className={styles.form__block}>
       <div className={styles.container}>
         <h1 className={styles.title}>Log in</h1>
-        <form>
+        <form action={'/api/auth/signin/email'} method="post">
+          {/* <input name="csrfToken" type="hidden" defaultValue={csrfToken} /> */}
           <div className={styles.form}>
             <div className={styles.input__form__container}>
               <label htmlFor="" className={styles.label}>
@@ -19,6 +21,7 @@ export const SignIn = () => {
                   type="text"
                   placeholder="Email"
                   className={styles.input}
+                  name="email"
                 />
               </div>
             </div>
@@ -31,9 +34,10 @@ export const SignIn = () => {
               </div>
               <div className={styles.input__container}>
                 <input
-                  type="text"
+                  type="password"
                   placeholder="Password"
                   className={styles.input}
+                  name="password"
                 />
               </div>
             </div>
@@ -51,7 +55,7 @@ export const SignIn = () => {
               </div>
               <div className={styles.button__container__icon}>
                 <div className={styles.icon__container}>
-                  <Facebook />
+                  {/* <Facebook /> */}
                 </div>
                 <button className={styles.button__facebook}>
                   Log in with Facebook
