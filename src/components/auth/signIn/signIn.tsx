@@ -1,10 +1,9 @@
 import React from 'react';
 import styles from '../signAuth.module.scss';
 import Google from 'icons/auth/google.svg';
+import Facebook from 'icons/auth/facebook.svg';
 
-export const SignIn = async () => {
-  // const csrfToken = await getCsrfToken();
-
+export const SignIn = () => {
   return (
     <section className={styles.form__block}>
       <div className={styles.container}>
@@ -55,7 +54,7 @@ export const SignIn = async () => {
               </div>
               <div className={styles.button__container__icon}>
                 <div className={styles.icon__container}>
-                  {/* <Facebook /> */}
+                  <Facebook />
                 </div>
                 <button className={styles.button__facebook}>
                   Log in with Facebook
