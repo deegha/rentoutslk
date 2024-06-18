@@ -4,7 +4,9 @@ import Google from 'icons/auth/google.svg';
 import Facebook from 'icons/auth/facebook.svg';
 import { signIn } from '@/auth';
 
-export const SignIn = () => {
+export const SignIn = async () => {
+  // const csrfToken = await getCsrfToken();
+
   return (
     <section className={styles.form__block}>
       <div className={styles.container}>
