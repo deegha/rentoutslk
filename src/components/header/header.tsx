@@ -3,8 +3,13 @@ import styles from './header.module.scss';
 import Favorite from '@/icons/carbon_favorite.svg';
 import { Button } from '../button';
 import Logo from '@/icons/logo.svg';
+import { auth } from '@/auth';
+import AuthButtonServer from '../auth/signIn/signInButton.server';
 
-export const Header = () => {
+export const Header = async () => {
+  const session = await auth();
+  console.log(session);
+
   return (
     <header className={styles.header}>
       <nav className={styles.navBar}>
@@ -14,16 +19,24 @@ export const Header = () => {
           <a className={styles.favorite}>
             <Favorite />
           </a>
-          <a className={styles.logIn}>Log in</a>
-          <Button
-            text="SIGN UP"
-            link="/"
-            bgColor="#000"
-            textColor="#fff"
-            padding="10px"
-            borderRadius="4px"
-            fontWeight="600"
-          />
+          <pre>{JSON.stringify(session, null, 2)}</pre>
+
+          <AuthButtonServer className={styles.logIn} />
+          {!session ? (
+            <>
+              <Button
+                text="SIGN UP"
+                link="/"
+                bgColor="#000"
+                textColor="#fff"
+                padding="10px"
+                borderRadius="4px"
+                fontWeight="600"
+              />
+            </>
+          ) : (
+            <></>
+          )}
         </div>
       </nav>
     </header>
