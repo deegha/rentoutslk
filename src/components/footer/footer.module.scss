@@ -3,9 +3,11 @@
 
 .footer {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   background-color: #222222;
   height: 260px;
+
+  align-items: center;
 }
 
 .container {
@@ -64,4 +66,22 @@
   flex-direction: row;
   gap: 16px;
   padding: 0px 8px;
+}
+
+.allRights {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  margin-top: auto;
+  margin-bottom: 28px;
+  align-items: center;
+}
+
+.allRights p {
+  color: $font-color-two;
+
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 15.73px;
+  text-align: left;
 }

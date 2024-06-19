@@ -5,6 +5,7 @@ import Logo from '@/icons/logo_footer.svg';
 import Instagram from '@/icons/ig.svg';
 import Facebook from '@/icons/fb.svg';
 import X from '@/icons/x.svg';
+import Heart from '@/icons/heart.svg';
 
 export const Footer = () => {
   return (
@@ -52,6 +53,9 @@ export const Footer = () => {
             </a>
           </div>
         </div>
+      </div>
+      <div className={styles.allRights}>
+        <p>Powered by Codewave Labs. All rights reserved. © 2024</p> <Heart />
       </div>
     </footer>
   );
