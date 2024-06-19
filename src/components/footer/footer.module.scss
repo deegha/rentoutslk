@@ -1,0 +1,67 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  background-color: #222222;
+  height: 260px;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  padding: 48px 80px 28px 80px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.navContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.navBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 200px;
+}
+
+.navTitle {
+  color: $font-color-two;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16.94px;
+  text-align: left;
+}
+
+.navLinkBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.navLink {
+  color: $font-color-two;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19.6px;
+  text-align: left;
+}
+
+.linksContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-right: 80px;
+}
+
+.linksBlock {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  padding: 0px 8px;
+}

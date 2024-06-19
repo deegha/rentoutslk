@@ -3,6 +3,7 @@ import {
   HeroBanner,
   CreateListingBanner,
   LookingFor,
+  Footer,
 } from '@/components';
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
         <CreateListingBanner />
         <LookingFor />
       </main>
+      <Footer />
     </>
   );
 }
