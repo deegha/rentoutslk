@@ -4,6 +4,7 @@ import {
   CreateListingBanner,
   LookingFor,
   Footer,
+  ApartmentsHome,
 } from '@/components';
 
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
 
       <main>
         <HeroBanner />
+        <ApartmentsHome />
         <CreateListingBanner />
         <LookingFor />
       </main>
