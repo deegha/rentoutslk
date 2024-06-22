@@ -1,0 +1,23 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.button {
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  transition: background-color 0.3s;
+
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19.36px;
+
+  background-color: var(--bg-color, #000000);
+  color: var(--text-color, #ffffff);
+  border-radius: var(--border-radius, 4px);
+  padding: var(--padding, 20px 20px);
+  border: var(--border, none);
+  font-weight: var(--font-weight, 400);
+}

@@ -1,0 +1,49 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.header {
+  display: flex;
+  height: 100px;
+  align-items: center;
+  justify-content: center;
+
+  @include tabletAndBeyondView() {
+  }
+
+  @include desktopAndBeyondView() {
+    padding: 0px 80px;
+  }
+}
+
+.navBar {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: auto;
+}
+
+.list {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19.36px;
+}
+
+.signBlock {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  align-items: center;
+}
+
+.favorite {
+    cursor: pointer;
+}
+
+.logIn {
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 400;
+  line-height: 19.36px;
+}
