@@ -1,0 +1,38 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 36px 24px 56px 24px;
+  @include desktopAndBeyondView() {
+    gap: 60px;
+    padding: 80px 80px 60px 80px;
+  }
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.title {
+  color: $font-color-one;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 33.89px;
+  text-align: left;
+}
+
+.subtitle {
+  color: #5e5e5e;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 21.78px;
+  text-align: left;
+}
+
+.btnBlock {
+  margin: 0 auto;
+}
