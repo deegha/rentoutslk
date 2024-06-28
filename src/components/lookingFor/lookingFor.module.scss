@@ -6,6 +6,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 56px 25px;
   @include desktopAndBeyondView() {
     padding: 80px 80px;
   }
@@ -14,7 +15,11 @@
 .title {
   color: $font-color-one;
   width: 100%;
-  
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 33.89px;
+  text-align: center;
+
   @include desktopAndBeyondView() {
     width: 32%;
     font-size: 40px;
@@ -26,27 +31,42 @@
 
 .cardBlock {
   display: flex;
-  flex-direction: row;
-  gap: 70px;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 72px 0px 56px 0px;
+  gap: 36px;
+  margin: 48px 0px 56px 0px;
+
+  @include desktopAndBeyondView() {
+    flex-direction: row;
+    gap: 70px;
+    margin: 72px 0px 56px 0px;
+  }
 }
 
 .cardItem {
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 24px;
   align-items: center;
   justify-content: center;
+  max-width: 305px;
+
+  @include desktopAndBeyondView() {
+    max-width: max-content;
+    gap: 36px;
+  }
 }
 
 .cardText {
   display: flex;
   flex-direction: column;
   text-align: center;
-  width: 70%;
+  width: 100%;
   gap: 24px;
+  @include desktopAndBeyondView() {
+    width: 70%;
+  }
 }
 
 .cardTitle {
