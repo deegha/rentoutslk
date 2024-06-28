@@ -13,11 +13,15 @@
 
 .title {
   color: $font-color-one;
-  width: 32%;
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 48.41px;
-  text-align: center;
+  width: 100%;
+  
+  @include desktopAndBeyondView() {
+    width: 32%;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 48.41px;
+    text-align: center;
+  }
 }
 
 .cardBlock {

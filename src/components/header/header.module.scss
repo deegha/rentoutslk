@@ -28,6 +28,10 @@
   font-size: 16px;
   font-weight: 400;
   line-height: 19.36px;
+  display: none;
+  @include desktopAndBeyondView() {
+    display: block;
+  }
 }
 
 .signBlock {

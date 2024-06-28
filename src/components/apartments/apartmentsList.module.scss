@@ -4,6 +4,13 @@
 .list {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
+  gap: 24px;
+
+  @include tabletAndBeyondView() {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
   @include desktopAndBeyondView() {
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
