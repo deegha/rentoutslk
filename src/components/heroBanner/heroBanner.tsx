@@ -12,7 +12,7 @@ export const HeroBanner = () => {
           <input
             className={styles.searchInput}
             type="text"
-            placeholder="City, Neighbourhood, Address"
+            placeholder="City, Neighbourhood"
           />
           <Button
             text="SEARCH"
