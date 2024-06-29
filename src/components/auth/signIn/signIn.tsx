@@ -2,17 +2,17 @@ import React from 'react';
 import styles from '../signAuth.module.scss';
 import Google from 'icons/auth/google.svg';
 import Facebook from 'icons/auth/facebook.svg';
+import { signIn } from '@/auth';
 
 export const SignIn = () => {
   return (
     <section className={styles.form__block}>
       <div className={styles.container}>
         <h1 className={styles.title}>Log in</h1>
-        <form action={'/api/auth/signin/email'} method="post">
-          {/* <input name="csrfToken" type="hidden" defaultValue={csrfToken} /> */}
+        <form method="post">
           <div className={styles.form}>
             <div className={styles.input__form__container}>
-              <label htmlFor="" className={styles.label}>
+              <label htmlFor="email" className={styles.label}>
                 Email
               </label>
               <div className={styles.input__container}>
@@ -26,7 +26,7 @@ export const SignIn = () => {
             </div>
             <div className={styles.input__form__container}>
               <div className={styles.password__label}>
-                <label htmlFor="" className={styles.label}>
+                <label htmlFor="password" className={styles.label}>
                   Password
                 </label>
                 <p className={styles.reset__password}>Forgot your password?</p>
@@ -40,15 +40,23 @@ export const SignIn = () => {
                 />
               </div>
             </div>
+
             <div className={styles.buttons__container}>
-              <button className={styles.button__sign} type="submit">
-                Log In
-              </button>
+              <form
+                action={async () => {
+                  'use server';
+                  await signIn('google');
+                }}
+              >
+                <button className={styles.button__sign} type="submit">
+                  Log In
+                </button>
+              </form>
               <div className={styles.button__container__icon}>
                 <div className={styles.icon__container}>
                   <Google />
                 </div>
-                <button className={styles.button__google}>
+                <button className={styles.button__google} type="button">
                   Log In with Google
                 </button>
               </div>
@@ -56,7 +64,7 @@ export const SignIn = () => {
                 <div className={styles.icon__container}>
                   <Facebook />
                 </div>
-                <button className={styles.button__facebook}>
+                <button className={styles.button__facebook} type="button">
                   Log in with Facebook
                 </button>
               </div>
