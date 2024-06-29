@@ -5,30 +5,57 @@
   display: flex;
   flex-direction: column;
   background-color: #222222;
-  height: 260px;
 
   align-items: center;
 }
 
 .container {
   display: flex;
-  flex-direction: row;
-  padding: 48px 80px 28px 80px;
+  flex-direction: column;
+  padding: 56px 116px;
   justify-content: space-between;
   width: 100%;
+  max-width: 1920px;
+
+  @include tabletAndBeyondView() {
+    flex-direction: row;
+  }
+
+  @include desktopAndBeyondView() {
+    padding: 48px 80px 28px 80px;
+    flex-direction: row;
+  }
 }
 
 .navContainer {
   display: flex;
-  flex-direction: row;
-  gap: 20px;
+  flex-direction: column;
+  gap: 36px;
+
+  @include tabletAndBeyondView() {
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  @include desktopAndBeyondView() {
+    flex-direction: row;
+    gap: 20px;
+  }
 }
 
 .navBlock {
   display: flex;
   flex-direction: column;
   gap: 28px;
-  width: 200px;
+  width: auto;
+
+  @include tabletAndBeyondView() {
+    width: 150px;
+  }
+
+  @include desktopAndBeyondView() {
+    width: 200px;
+  }
 }
 
 .navTitle {
@@ -36,7 +63,15 @@
   font-size: 14px;
   font-weight: 600;
   line-height: 16.94px;
-  text-align: left;
+  text-align: center;
+
+  @include tabletAndBeyondView() {
+    text-align: left;
+  }
+
+  @include desktopAndBeyondView() {
+    text-align: left;
+  }
 }
 
 .navLinkBlock {
@@ -51,14 +86,35 @@
   font-size: 14px;
   font-weight: 400;
   line-height: 19.6px;
-  text-align: left;
+  text-align: center;
+
+  @include tabletAndBeyondView() {
+    text-align: left;
+  }
+
+  @include desktopAndBeyondView() {
+    text-align: left;
+  }
 }
 
 .linksContainer {
   display: flex;
   flex-direction: column;
   gap: 28px;
-  padding-right: 80px;
+  margin: 0 auto;
+  align-items: center;
+  padding-top: 36px;
+
+  @include tabletAndBeyondView() {
+    margin: 0 0;
+    padding-top: 0;
+  }
+
+  @include desktopAndBeyondView() {
+    margin: 0 0;
+    padding-top: 0px;
+    padding-right: 80px;
+  }
 }
 
 .linksBlock {
@@ -79,8 +135,14 @@
 
 .allRights p {
   color: $font-color-two;
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 15.73px;
-  text-align: left;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 12.1px;
+
+  @include desktopAndBeyondView() {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 15.73px;
+    text-align: left;
+  }
 }

@@ -6,6 +6,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   @include desktopAndBeyondView() {
     padding: 0px 80px;
   }
@@ -20,6 +21,7 @@
   width: 100%;
   background-color: $secondary-bg-color;
   border-radius: 8px;
+  padding: 56px 25px;
   @include desktopAndBeyondView() {
     height: 360px;
     padding: 80px 0px;
@@ -31,21 +33,32 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
   gap: 20px;
 }
 
 .title {
   color: $font-color-one;
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 48.41px;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 33.89px;
+  text-align: center;
+  @include desktopAndBeyondView() {
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 48.41px;
+  }
 }
 
 .description {
-    width: 60%;
-    text-align: center;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 21.78px;
-}
+  color: $font-color-three;
+  text-align: center;
+  width: 80%;
 
+  @include desktopAndBeyondView() {
+    width: 60%;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 21.78px;
+  }
+}

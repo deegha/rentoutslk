@@ -9,6 +9,12 @@
   background-image: url('/images/home/hero_img.png');
   background-size: cover;
   background-position: center;
+  height: 480px;
+
+  @include tabletAndBeyondView() {
+    height: 300px;
+  }
+
   @include desktopAndBeyondView() {
     height: 600px;
   }
@@ -23,9 +29,22 @@
 
 .heroBlock h1 {
   color: $font-color-two;
-  font-size: 48px;
-  font-weight: 700;
-  line-height: 58.09px;
+  width: 312px;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 33.89px;
+  text-align: center;
+
+  @include tabletAndBeyondView() {
+    width: 312px;
+  }
+
+  @include desktopAndBeyondView() {
+    width: 100%;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 58.09px;
+  }
 }
 
 .searchBlock {
@@ -34,8 +53,12 @@
   background-color: $primary-bg-color;
   border-radius: 8px;
   padding: 8px;
-  width: 60%;
+  width: 95%;
   justify-content: space-between;
+
+  @include desktopAndBeyondView() {
+    width: 60%;
+  }
 }
 
 .searchInput {
