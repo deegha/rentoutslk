@@ -4,7 +4,7 @@ import Favorite from '@/icons/carbon_favorite.svg';
 import { Button } from '../button';
 import Logo from '@/icons/logo.svg';
 import { auth } from '@/auth';
-import AuthButtonServer from '../auth/signIn/signInButton.server';
+import { AuthButton } from '@/components/auth';
 
 export const Header = async () => {
   const session = await auth();
@@ -21,7 +21,7 @@ export const Header = async () => {
           </a>
           <pre>{JSON.stringify(session, null, 2)}</pre>
 
-          <AuthButtonServer className={styles.logIn} />
+          <AuthButton className={styles.logIn} />
           {!session ? (
             <>
               <Button
