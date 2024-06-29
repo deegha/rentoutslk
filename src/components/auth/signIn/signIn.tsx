@@ -62,7 +62,7 @@ export const SignIn = () => {
               </div>
               <div className={styles.button__container__icon}>
                 <div className={styles.icon__container}>
-                  {/* <Facebook /> */}
+                  <Facebook />
                 </div>
                 <button className={styles.button__facebook} type="button">
                   Log in with Facebook

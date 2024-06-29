@@ -1,14 +1,12 @@
 import React from 'react';
-import { getServerSession } from 'next-auth/next';
-import { options } from '../api/auth/[...nextauth]/options';
 import { redirect } from 'next/navigation';
+import { auth } from '@/auth';
 
 const Profile: React.FC = async () => {
-  const session = await getServerSession(options);
+  const session = await auth();
   if (!session) {
     redirect('/api/auth/signin?callbackUrl=/profile');
   }
-  console.log(session);
   const user = session.user;
   return (
     <div>
