@@ -8,7 +8,7 @@ import Favorite from '@/icons/carbon_favorite.svg';
 import Menu from '@/icons/burger_menu.svg';
 import Logo from '@/icons/logo.svg';
 import { auth } from '@/auth';
-import AuthButtonServer from '../auth/signIn/signInButton.server';
+import { AuthButton } from '@/components/auth';
 
 export const Header = async () => {
   const session = await auth();
