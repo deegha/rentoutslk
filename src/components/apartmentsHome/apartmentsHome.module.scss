@@ -4,6 +4,8 @@
 .container {
   display: flex;
   flex-direction: column;
+  margin: 0 auto;
+  max-width: 1920px;
   padding: 36px 24px 56px 24px;
   gap: 24px;
   @include desktopAndBeyondView() {

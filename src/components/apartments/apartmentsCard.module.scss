@@ -2,18 +2,20 @@
 @import '@/styles/_colors.scss';
 
 .cardBlock {
-  width: 327px;
-
+  width: 100%;
+  max-width: 327px;
   background-color: $primary-bg-color;
   border-radius: 4px;
   box-shadow: 0px 4px 18px 0px #0000002b;
 
   @include tabletAndBeyondView() {
-    width: 314px;
+    width: 100%;
+    max-width: 314px;
   }
 
   @include desktopAndBeyondView() {
-    width: 412px;
+    width: 100%;
+    max-width: 412px;
   }
 }
 
@@ -94,7 +96,7 @@
 .showAll {
   display: flex;
   width: 100%;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .showAll a {
