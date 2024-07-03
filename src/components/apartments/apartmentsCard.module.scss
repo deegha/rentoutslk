@@ -37,7 +37,7 @@
     }
 
     .swiper-pagination-bullet-active {
-      background: #BDBDBD !important;
+      background: #bdbdbd !important;
     }
   }
 
@@ -66,7 +66,37 @@
 }
 
 .bestOffer {
-  
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  background-color: $primary-bg-color;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.bestOffer p {
+  color: $font-color-one;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 14.52px;
+  text-align: left;
+}
+
+.fav {
+  display: flex;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+  background-color: #f4f4f4;
+  height: 24px;
+  width: 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  box-shadow: 0px 6px 16px 0px #0000001f;
+  cursor: pointer;
 }
 
 .cardDetailsBlock {
@@ -86,6 +116,7 @@
 }
 
 .cardPrice {
+  color: $font-color-one;
   font-size: 20px;
   font-weight: 600;
   line-height: 24.2px;
@@ -93,6 +124,7 @@
 }
 
 .cardTitle {
+  color: $font-color-one;
   font-size: 16px;
   font-weight: 600;
   line-height: 19.36px;

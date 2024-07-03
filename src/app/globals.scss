@@ -1,6 +1,5 @@
 @import '@/styles/_colors.scss';
 
-
 * {
   box-sizing: border-box;
   padding: 0;
@@ -9,9 +8,64 @@
 
 html,
 body {
-  // max-width: 110em;
   overflow-x: hidden;
   background-color: $primary-bg-color;
   margin: auto;
   scroll-behavior: smooth;
+}
+
+a {
+  text-decoration: none;
+}
+
+.pagination {
+  cursor: pointer;
+  text-align: center;
+  background-color: #ffffff;
+  width: 8px;
+  height: 8px;
+  border-radius: 100%;
+  opacity: 0.8;
+  z-index: 10;
+  transition: all 0.8s ease;
+}
+
+.pagination.active {
+  opacity: 0.8;
+  background-color: #bdbdbd;
+}
+
+.indicators {
+  display: flex;
+  position: absolute;
+  bottom: 12px;
+  gap: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.prevArrowBlock {
+  display: flex;
+  border-radius: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-left: 16px;
+  background-color: $primary-bg-color;
+  width: 24px;
+  height: 24px;
+}
+
+.nextArrowBlock {
+  display: flex;
+  border-radius: 100%;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+  background-color: $primary-bg-color;
+  width: 24px;
+  height: 24px;
+}
+
+.prevArrow {
+  transform: rotate(180deg);
 }

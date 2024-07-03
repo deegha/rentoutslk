@@ -7,6 +7,7 @@
   align-items: center;
   justify-content: center;
   padding: 0 13px;
+  border-bottom: 1px solid var(--Color-Neutrals-Neutral-4, #d3d3d3);
 
   @include tabletAndBeyondView() {
     padding: 0 72px;
@@ -44,7 +45,7 @@
 
 .list {
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 19.36px;
   display: none;
   @include desktopAndBeyondView() {

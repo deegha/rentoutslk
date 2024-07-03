@@ -42,7 +42,7 @@
   @include desktopAndBeyondView() {
     width: 100%;
     flex-direction: row;
-    gap: 70px;
+    gap: 78px;
     margin: 72px 0px 56px 0px;
   }
 }
@@ -69,7 +69,7 @@
   width: 100%;
   gap: 24px;
   @include desktopAndBeyondView() {
-    width: 70%;
+    max-width: 305px;
   }
 }
 
