@@ -1,4 +1,4 @@
-import { Header, YouCanRent, Footer } from '@/components';
+import { Header, YouCanRent, Footer, RentalParameters } from '@/components';
 
 export default function Home() {
   return (
@@ -7,6 +7,7 @@ export default function Home() {
       <Header />
 
       <main>
+        <RentalParameters />
         <YouCanRent />
       </main>
 

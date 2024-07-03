@@ -2,5 +2,19 @@
 @import '@/styles/_colors.scss';
 
 .container {
-    
+  display: flex;
+  flex-direction: column;
+  @include desktopAndBeyondView() {
+    flex-direction: row;
+    padding: 0 80px;
+  }
+}
+
+.parametersBlock {
+  display: flex;
+  flex-direction: column;
+  @include desktopAndBeyondView() {
+    flex-direction: row;
+    gap: 16px;
+  }
 }
