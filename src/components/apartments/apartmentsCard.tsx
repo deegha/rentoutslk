@@ -25,7 +25,7 @@ export const ApartmentsCard = () => {
     </div>
   );
 
-  const customIndicators = <span className="pagination"></span>;
+  const customIndicators = () => <span className="pagination"></span>;
 
   return (
     <div className={styles.cardBlock}>
