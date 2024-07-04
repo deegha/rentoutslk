@@ -8,6 +8,7 @@ export * from './footer';
 
 //All rentals
 export * from './rentalParameters';
+export * from './rentalCategories';
 export * from './youCanRent';
 
 //General Components

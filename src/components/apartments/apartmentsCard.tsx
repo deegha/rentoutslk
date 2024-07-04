@@ -12,7 +12,13 @@ import Type from '@/icons/type.svg';
 import Fav from '@/icons/heart_gray.svg';
 import Arrow from '@/icons/arrow_next.svg';
 
-export const ApartmentsCard = () => {
+interface ApartmentsCardProps {
+  showBestOffer: boolean;
+}
+
+export const ApartmentsCard: React.FC<ApartmentsCardProps> = ({
+  showBestOffer,
+}) => {
   const PrevArrow = (
     <div className="prevArrowBlock">
       <Arrow className="prevArrow" />
@@ -30,9 +36,11 @@ export const ApartmentsCard = () => {
   return (
     <div className={styles.cardBlock}>
       <div className={styles.cardImageBlock}>
-        <div className={styles.bestOffer}>
-          <p>Best offer</p>
-        </div>
+        {showBestOffer && (
+          <div className={styles.bestOffer}>
+            <p>Best offer</p>
+          </div>
+        )}
         <div className={styles.fav}>
           <Fav />
         </div>
