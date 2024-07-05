@@ -9,8 +9,11 @@ export * from './footer';
 //All rentals
 export * from './rentalParameters';
 export * from './rentalCategories';
+export * from './apartmentsRental';
 export * from './youCanRent';
 
 //General Components
 export * from './button';
-export * from './apartments';
+export * from './apartmentsCard';
+export * from './apartmentsList';
+export * from './tagsList';

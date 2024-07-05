@@ -4,6 +4,7 @@ import {
   Footer,
   RentalParameters,
   RentalCategories,
+  ApartmentsRental,
 } from '@/components';
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
       <main>
         <RentalParameters />
         <RentalCategories />
+        <ApartmentsRental />
         <YouCanRent />
       </main>
 

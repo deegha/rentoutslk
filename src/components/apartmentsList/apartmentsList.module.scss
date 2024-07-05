@@ -1,6 +1,12 @@
 @import '@/styles/_mixins.scss';
 @import '@/styles/_colors.scss';
 
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
 .list {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
@@ -23,4 +29,8 @@
     gap: 16px;
     width: 100%;
   }
+}
+
+.btnBlock {
+  margin: 0 auto;
 }

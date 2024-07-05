@@ -1,0 +1,9 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.tagsList {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  padding-bottom: 16px;
+}
