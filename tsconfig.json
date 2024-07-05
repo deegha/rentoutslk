@@ -20,7 +20,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "config/*": ["./src/config/*"],
-      "icons/*": ["./src/icons/*"]
+      "icons/*": ["./src/icons/*"],
+      "firebase/*":["./src/firebase/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

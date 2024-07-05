@@ -1,14 +1,11 @@
-import { signIn } from '@/auth';
+'use client';
 
-export const SignIn = () => {
+import { signIn } from 'next-auth/react';
+
+export const SignInButton = ({ className }: { className: string }) => {
   return (
-    <form
-      action={async () => {
-        'use server';
-        await signIn();
-      }}
-    >
-      <button type="submit">Sign in</button>
-    </form>
+    <button onClick={() => signIn()} className={`${className}`} type="submit">
+      Sign in
+    </button>
   );
 };

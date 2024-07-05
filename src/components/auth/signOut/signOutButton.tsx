@@ -1,8 +1,6 @@
-'use client';
 import { signOut } from '@/auth';
-import React from 'react';
 
-export const SignOutButton = () => {
+export function SignOut() {
   return (
     <form
       action={async () => {
@@ -10,7 +8,7 @@ export const SignOutButton = () => {
         await signOut();
       }}
     >
-      <button>Log Out</button>
+      <button type="submit">Sign Out</button>
     </form>
   );
-};
+}
