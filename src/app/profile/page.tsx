@@ -5,7 +5,7 @@ import { auth } from '@/auth';
 const Profile: React.FC = async () => {
   const session = await auth();
   if (!session) {
-    redirect('/api/auth/signin?callbackUrl=/profile');
+    redirect('/');
   }
   const user = session.user;
   return (

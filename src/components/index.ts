@@ -7,3 +7,4 @@ export * from './footer';
 export * from './button';
 export * from './apartments';
 export * from './auth';
+export * from './formComponents';
