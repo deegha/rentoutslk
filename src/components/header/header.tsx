@@ -2,17 +2,25 @@ import React from 'react';
 import Image from 'next/image';
 import styles from './header.module.scss';
 import Favorite from '@/icons/carbon_favorite.svg';
-import { Button } from '../button';
 import Logo from '@/icons/logo.svg';
+import { SignModal } from '@/components/auth';
 import { auth } from '@/auth';
-import { AuthButton } from '@/components/auth';
+import { Session as AuthSession, User as AuthUser } from '@auth/core/types';
+
+interface User extends AuthUser {
+  id: string;
+  email: string;
+}
+
+interface CustomSession extends AuthSession {
+  user: User;
+}
 
 export const Header = async () => {
-  const session = await auth();
-  console.log(session);
+  const session = (await auth()) as CustomSession | null;
 
   return (
-    <header className={styles.header}>
+    <header className={styles.header} id="modal-root">
       <nav className={styles.navBar}>
         <Image
           src="/images/logo.png"
@@ -26,14 +34,14 @@ export const Header = async () => {
           <a className={styles.favorite}>
             <Favorite />
           </a>
-          <pre>{JSON.stringify(session, null, 2)}</pre>
+          {/* <pre>{JSON.stringify(session, null, 2)}</pre> */}
 
-          <AuthButton className={styles.logIn} />
-          {!session ? (
+          {/* <AuthButton className={styles.logIn} /> */}
+          {/* {!session ? (
             <>
               <Button
                 text="SIGN UP"
-                link="/"
+
                 bgColor="#000"
                 textColor="#fff"
                 padding="10px"
@@ -42,8 +50,10 @@ export const Header = async () => {
               />
             </>
           ) : (
-            <></>
-          )}
+             
+          )} */}
+
+          <SignModal session={session} />
         </div>
       </nav>
     </header>

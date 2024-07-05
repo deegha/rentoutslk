@@ -1,0 +1,58 @@
+.input__container {
+  display: flex;
+  flex-direction: column;
+  margin: 4px 0;
+  width: 100%;
+}
+.input__label{
+
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 17px;
+
+}
+.input{
+ border-radius: 4px;
+  padding: 8px 8px;
+  border: 1px solid #b0aeae;
+  margin-top: 8px;
+    outline: none;
+}
+.input:focus{
+  border: 2px solid #222222;
+  outline: none;
+}
+
+.input__password__container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.reset__password {
+  cursor: pointer;
+  color: #b0aeae;
+  font-weight: 600;
+  font-size: 14px;
+}
+// /* Frame 229 */
+
+// /* Auto layout */
+// display: flex;
+// flex-direction: row;
+// align-items: center;
+// padding: 0px 16px;
+// gap: 8px;
+
+// width: 283px;
+// max-width: 600px;
+// height: 48px;
+
+// background: #FFFFFF;
+
+// border-radius: 4px;
+
+// /* Inside auto layout */
+// flex: none;
+// order: 0;
+// align-self: stretch;
+// flex-grow: 0;
