@@ -1,0 +1,33 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  background-color: #058c84;
+  width: 100%;
+  height: 204px;
+
+  @include tabletAndBeyondView() {
+    flex-direction: row;
+    gap: 36px;
+    height: 180px;
+  }
+
+  @include desktopAndBeyondView() {
+    flex-direction: row;
+    gap: 36px;
+    height: 180px;
+  }
+}
+
+.text {
+  color: $font-color-two;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 29.05px;
+  text-align: center;
+}

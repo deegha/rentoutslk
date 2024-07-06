@@ -7,7 +7,7 @@ import {
   ApartmentsRental,
 } from '@/components';
 
-export default function Home() {
+export default function Rentals() {
   return (
     <>
       {/* HEADER section - NAV Bar */}

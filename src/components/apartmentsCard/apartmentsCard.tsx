@@ -116,7 +116,9 @@ export const ApartmentsCard: React.FC<ApartmentsCardProps> = ({
           </div>
         </div>
         <div className={styles.showAll}>
-          <a href="">Show all rentals</a>
+          <a href="/rentals" target="_blank">
+            Show all rentals
+          </a>
         </div>
       </div>
     </div>

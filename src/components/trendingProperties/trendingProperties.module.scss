@@ -1,0 +1,17 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: 55px 80px 64px 80px;
+  background-color: $secondary-bg-color;
+}
+
+.title {
+  color: $font-color-one;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 29.05px;
+}

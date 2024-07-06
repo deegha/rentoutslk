@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 
-import styles from './lookingFor.module.scss';
+import styles from './lookingForHome.module.scss';
 import { Button } from '../button';
 
 export const LookingFor = () => {
