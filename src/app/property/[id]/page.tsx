@@ -3,6 +3,8 @@ import {
   Footer,
   LookingForProperty,
   TrendingProperties,
+  AboutProperty,
+  PropertyDetails,
 } from '@/components';
 
 export default function Property() {
@@ -12,6 +14,8 @@ export default function Property() {
       <Header />
 
       <main>
+        <PropertyDetails />
+        <AboutProperty />
         <TrendingProperties />
         <LookingForProperty />
       </main>

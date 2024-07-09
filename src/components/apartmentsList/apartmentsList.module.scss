@@ -24,7 +24,7 @@
     width: 100%;
   }
 
-  @media (min-width: 1920px) {
+  @include largeDesktopAndBeyondView() {
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
     width: 100%;

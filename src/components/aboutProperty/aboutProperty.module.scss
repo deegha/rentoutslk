@@ -1,0 +1,87 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: $secondary-bg-color;
+  padding: 24px 24px 0px 24px;
+
+  @include desktopAndBeyondView() {
+    padding: 48px 80px 0px 80px;
+  }
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 24px;
+  border-radius: 10px;
+  gap: 28px;
+  background-color: $primary-bg-color;
+}
+
+.title {
+  color: $font-color-one;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 29.05px;
+}
+
+.itemsBlock {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 16px;
+  width: 100%;
+
+  @include tabletAndBeyondView() {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  @include desktopAndBeyondView() {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+  }
+
+  @include largeDesktopAndBeyondView() {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 28px;
+  }
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $secondary-bg-color;
+  border: 1px #d3d3d3 solid;
+  border-radius: 4px;
+  padding: 14px 16px;
+  width: 100%;
+  min-width: 270px;
+
+  @include tabletAndBeyondView() {
+    max-width: 280px;
+  }
+}
+
+.itemName {
+  color: $font-color-three;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16.94px;
+}
+
+.itemValue {
+  color: $font-color-three;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19.6px;
+}

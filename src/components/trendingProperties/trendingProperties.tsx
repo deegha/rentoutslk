@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styles from './trendingProperties.module.scss';
-import { ApartmentsList } from '../apartmentsList';
+import { ApartmentsList } from '@/components';
 
 export const TrendingProperties = () => {
   return (

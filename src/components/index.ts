@@ -13,6 +13,8 @@ export * from './apartmentsRental';
 export * from './youCanRent';
 
 //Property page
+export * from './propertyDetails';
+export * from './aboutProperty';
 export * from './trendingProperties';
 export * from './lookingForProperty';
 
