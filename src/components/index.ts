@@ -17,6 +17,7 @@ export * from './propertyDetails';
 export * from './aboutProperty';
 export * from './trendingProperties';
 export * from './lookingForProperty';
+export * from './propertyFixedBlock';
 
 //General Components
 export * from './button';

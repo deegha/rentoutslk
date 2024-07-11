@@ -1,17 +1,30 @@
 import React from 'react';
-
 import styles from './rentalCategories.module.scss';
-
 import Arrow from '@/icons/arrow_right_gray.svg';
 
-export const RentalCategories = () => {
+interface RentalCategoriesProps {
+  categories: string[];
+}
+
+export const RentalCategories: React.FC<RentalCategoriesProps> = ({
+  categories,
+}) => {
   return (
     <section className={styles.container}>
-      <p className={styles.category}>Rentouts</p>
-      <Arrow />
-      <p className={styles.category}>Rentals</p>
-      <Arrow />
-      <p className={styles.categoryActive}>Colombo</p>
+      {categories.map((category, index) => (
+        <React.Fragment key={index}>
+          <p
+            className={
+              index === categories.length - 1
+                ? styles.categoryActive
+                : styles.category
+            }
+          >
+            {category}
+          </p>
+          {index < categories.length - 1 && <Arrow />}
+        </React.Fragment>
+      ))}
     </section>
   );
 };

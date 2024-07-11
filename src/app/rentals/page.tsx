@@ -15,7 +15,7 @@ export default function Rentals() {
 
       <main>
         <RentalParameters />
-        <RentalCategories />
+        <RentalCategories categories={['Rentouts', 'Rentals', 'Colombo']} />
         <ApartmentsRental />
         <YouCanRent />
       </main>
