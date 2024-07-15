@@ -1,5 +1,5 @@
 import {
-  // Header,
+  Header,
   HeroBanner,
   CreateListingBanner,
   LookingFor,
@@ -11,9 +11,9 @@ export default function Home() {
   return (
     <>
       {/* HEADER section - NAV Bar */}
-      {/* <Header /> */}
+      <Header />
 
-      <main id="main">
+      <main>
         <HeroBanner />
         <ApartmentsHome />
         <CreateListingBanner />
