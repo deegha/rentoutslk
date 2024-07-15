@@ -14,9 +14,9 @@
     "build:scss": "sass styles/scss -o styles/css"
   },
   "dependencies": {
-    "@nextui-org/tooltip": "^2.0.36",
     "@auth/firebase-adapter": "^2.4.1",
     "@hookform/resolvers": "^3.7.0",
+    "@nextui-org/tooltip": "^2.0.36",
     "@typescript-eslint/eslint-plugin": "^7.12.0",
     "@typescript-eslint/parser": "^7.12.0",
     "bcryptjs": "^2.4.3",
@@ -30,10 +30,11 @@
     "next-auth": "^5.0.0-beta.19",
     "react": "^18",
     "react-dom": "^18",
-    "react-slideshow-image": "^4.3.1",
     "react-hook-form": "^7.52.1",
     "react-modal": "^3.16.1",
     "react-select": "^5.8.0",
+    "react-slideshow-image": "^4.3.1",
+    "react-tooltip": "^5.27.1",
     "sass": "^1.77.4",
     "scss": "^0.2.4",
     "zod": "^3.23.8"

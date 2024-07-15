@@ -13,7 +13,7 @@ export default function Home() {
       {/* HEADER section - NAV Bar */}
       {/* <Header /> */}
 
-      <main id="main">
+      <main>
         <HeroBanner />
         <ApartmentsHome />
         <CreateListingBanner />

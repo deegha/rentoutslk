@@ -1,10 +1,9 @@
 'use client';
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
 import { DescriptionItem } from './descriptionItem';
-import { ShareTooltip } from '@/components';
 
 import styles from './propertyDetails.module.scss';
 
@@ -12,12 +11,9 @@ import Arrow from '@/icons/arrow_next.svg';
 import Heart from '@/icons/heart_gray_property.svg';
 import Share from '@/icons/share.svg';
 import Verified from '@/icons/verified.svg';
+import { Tooltip } from 'react-tooltip';
 
 export const PropertyDetails = () => {
-  const [tooltip, setTooltip] = useState<string | null>(null);
-  const [showShareTooltip, setShowShareTooltip] = useState(false);
-  const shareButtonRef = useRef<HTMLDivElement>(null);
-
   const PrevArrow = (
     <div className="prevArrowBlock">
       <Arrow className="prevArrow" />
@@ -90,28 +86,63 @@ export const PropertyDetails = () => {
               </p>
             </div>
             <div className={styles.btnBlock}>
-              <div
-                className={styles.btn}
-                onMouseEnter={() => setTooltip('Save')}
-                onMouseLeave={() => setTooltip(null)}
-              >
+              <div className={styles.btn} data-tooltip-id={`tooltip-save`}>
                 <Heart />
-                {tooltip === 'Save' && (
-                  <div className={styles.tooltip}>Save</div>
-                )}
               </div>
+              <Tooltip
+                id={`tooltip-save`}
+                style={{
+                  background: '#5E5E5E',
+                  color: '#fff',
+                  opacity: `1`,
+
+                  borderRadius: '12px',
+                  padding: '12px 12px',
+                  boxShadow: `0px 4px 18px 0px rgba(0, 0, 0, 0.17)`,
+                }}
+              >
+                <div>Save</div>
+              </Tooltip>
               <div
                 className={styles.btn}
-                ref={shareButtonRef}
-                onMouseEnter={() => setTooltip('Share')}
-                onMouseLeave={() => setTooltip(null)}
-                onClick={() => setShowShareTooltip(true)}
+                data-tooltip-id={`tooltip-share`}
+                id="clickable"
               >
                 <Share />
-                {tooltip === 'Share' && (
-                  <div className={styles.tooltip}>Share this property</div>
-                )}
               </div>
+              <Tooltip
+                id={`tooltip-share`}
+                anchorSelect="#clickable"
+                clickable
+                style={{
+                  background: '#5E5E5E',
+                  color: '#fff',
+                  opacity: `1`,
+
+                  borderRadius: '12px',
+                  padding: '12px 12px',
+                  boxShadow: `0px 4px 18px 0px rgba(0, 0, 0, 0.17)`,
+                }}
+              >
+                <div id="clickable-link" data-tooltip-id={`tooltip-share-link`}>
+                  Share this property
+                </div>
+              </Tooltip>
+              <Tooltip
+                anchorSelect="#clickable-link"
+                id={`tooltip-share-link`}
+                style={{
+                  background: '#5E5E5E',
+                  color: '#fff',
+                  opacity: `1`,
+
+                  borderRadius: '12px',
+                  padding: '12px 12px',
+                  boxShadow: `0px 4px 18px 0px rgba(0, 0, 0, 0.17)`,
+                }}
+              >
+                <div>Copy Link</div>
+              </Tooltip>
             </div>
             <ul className={styles.descList}>
               <DescriptionItem name="Price:" value="54 244 Re/mo" />
@@ -140,9 +171,6 @@ export const PropertyDetails = () => {
           ></iframe>
         </div>
       </div>
-      {showShareTooltip && (
-        <ShareTooltip onClose={() => setShowShareTooltip(false)} />
-      )}
     </section>
   );
 };
