@@ -24,3 +24,4 @@ export * from './button';
 export * from './apartmentsCard';
 export * from './apartmentsList';
 export * from './tagsList';
+export * from './shareTooltip';

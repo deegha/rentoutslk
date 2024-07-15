@@ -1,9 +1,10 @@
 'use client';
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
 import { DescriptionItem } from './descriptionItem';
+import { ShareTooltip } from '@/components';
 
 import styles from './propertyDetails.module.scss';
 
@@ -13,6 +14,10 @@ import Share from '@/icons/share.svg';
 import Verified from '@/icons/verified.svg';
 
 export const PropertyDetails = () => {
+  const [tooltip, setTooltip] = useState<string | null>(null);
+  const [showShareTooltip, setShowShareTooltip] = useState(false);
+  const shareButtonRef = useRef<HTMLDivElement>(null);
+
   const PrevArrow = (
     <div className="prevArrowBlock">
       <Arrow className="prevArrow" />
@@ -85,16 +90,32 @@ export const PropertyDetails = () => {
               </p>
             </div>
             <div className={styles.btnBlock}>
-              <a href="" className={styles.btn}>
+              <div
+                className={styles.btn}
+                onMouseEnter={() => setTooltip('Save')}
+                onMouseLeave={() => setTooltip(null)}
+              >
                 <Heart />
-              </a>
-              <a href="" className={styles.btn}>
+                {tooltip === 'Save' && (
+                  <div className={styles.tooltip}>Save</div>
+                )}
+              </div>
+              <div
+                className={styles.btn}
+                ref={shareButtonRef}
+                onMouseEnter={() => setTooltip('Share')}
+                onMouseLeave={() => setTooltip(null)}
+                onClick={() => setShowShareTooltip(true)}
+              >
                 <Share />
-              </a>
+                {tooltip === 'Share' && (
+                  <div className={styles.tooltip}>Share this property</div>
+                )}
+              </div>
             </div>
             <ul className={styles.descList}>
               <DescriptionItem name="Price:" value="54 244 Re/mo" />
-              <DescriptionItem name="Size:" value="65 m2" />
+              <DescriptionItem name="Floor area:" value="65 m2" />
               <DescriptionItem name="Available from:" value="Now" />
               <DescriptionItem name="Property type:" value="Apartment" />
               <DescriptionItem name="Bedrooms:" value="3  bedrooms" />
@@ -119,6 +140,9 @@ export const PropertyDetails = () => {
           ></iframe>
         </div>
       </div>
+      {showShareTooltip && (
+        <ShareTooltip onClose={() => setShowShareTooltip(false)} />
+      )}
     </section>
   );
 };

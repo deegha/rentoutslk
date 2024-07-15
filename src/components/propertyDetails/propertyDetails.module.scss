@@ -124,6 +124,7 @@
 
 .btnBlock {
   display: flex;
+  position: relative;
   flex-direction: row;
   gap: 12px;
   padding: 16px 0 24px 0;
@@ -136,6 +137,32 @@
   justify-content: center;
   width: 32px;
   height: 32px;
+  position: relative;
+  cursor: pointer;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #5E5E5E;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 14px;
+  text-align: center;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+
+.btn:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
 }
 
 .descList {
