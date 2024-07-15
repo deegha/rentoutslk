@@ -1,11 +1,17 @@
 @mixin tabletAndBeyondView() {
-  @media (min-width: 52em) {
+  @media (min-width: 812px) {
     @content;
   }
 }
 
 @mixin desktopAndBeyondView() {
-  @media (min-width: 75em) {
+  @media (min-width: 1440px) {
     @content;
+  }
+}
+
+@mixin largeDesktopAndBeyondView() {
+  @media (min-width: 1920px) {
+    @content
   }
 }

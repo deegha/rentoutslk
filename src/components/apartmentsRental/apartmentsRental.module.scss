@@ -1,0 +1,32 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: $secondary-bg-color;
+  padding: 20px 25px 56px 25px;
+  @include desktopAndBeyondView() {
+    padding: 16px 80px 60px 80px;
+  }
+}
+
+.availableRents {
+  padding-bottom: 24px;
+}
+
+.availableRents p {
+  color: $font-color-one;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19.36px;
+}
+
+.availableCount {
+  padding-right: 8px;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24.2px;
+}

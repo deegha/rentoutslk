@@ -18,7 +18,7 @@ export const Header = () => {
           height={60}
           alt="Logo"
         />
-        <div className={styles.list}>LIST YOUR PROPERTY</div>
+        <div className={styles.list}>List your property</div>
         <div className={styles.signBlock}>
           <a className={styles.favorite}>
             <Favorite />
