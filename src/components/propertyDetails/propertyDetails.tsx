@@ -1,83 +1,176 @@
 'use client';
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
-import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
 import { DescriptionItem } from './descriptionItem';
-import { ShareTooltip } from '@/components';
-
+import Copy from 'icons/Copy.svg';
 import styles from './propertyDetails.module.scss';
-
-import Arrow from '@/icons/arrow_next.svg';
 import Heart from '@/icons/heart_gray_property.svg';
 import Share from '@/icons/share.svg';
 import Verified from '@/icons/verified.svg';
+import { Tooltip } from 'react-tooltip';
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
+import 'swiper/css/pagination';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { FreeMode, Navigation, Pagination, Thumbs } from 'swiper/modules';
+import { Swiper as SwiperType } from 'swiper';
 
 export const PropertyDetails = () => {
-  const [tooltip, setTooltip] = useState<string | null>(null);
-  const [showShareTooltip, setShowShareTooltip] = useState(false);
-  const shareButtonRef = useRef<HTMLDivElement>(null);
+  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
 
-  const PrevArrow = (
-    <div className="prevArrowBlock">
-      <Arrow className="prevArrow" />
-    </div>
-  );
-
-  const NextArrow = (
-    <div className="nextArrowBlock">
-      <Arrow />
-    </div>
-  );
-
-  const customIndicators = () => <span className="pagination"></span>;
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(window.location.toString());
+  };
 
   return (
     <section className={styles.container}>
       <div className={styles.propertyBlock}>
         <div className={styles.detailsBlock}>
           <div className={styles.imgBlock}>
-            <Slide
-              transitionDuration={500}
-              canSwipe={true}
-              autoplay={false}
-              defaultIndex={0}
-              pauseOnHover={false}
-              indicators={customIndicators}
-              prevArrow={PrevArrow}
-              nextArrow={NextArrow}
+            <Swiper
+              style={{
+                marginBottom: '8px',
+              }}
+              loop={true}
+              pagination={{
+                clickable: true,
+              }}
+              navigation={true}
+              thumbs={{ swiper: thumbsSwiper }}
+              modules={[FreeMode, Navigation, Thumbs, Pagination]}
+              className="mySwiper2"
             >
-              <Image
-                src="/images/propertyPage/propertyImg.png"
-                width={800}
-                height={500}
-                alt="Apartments"
-              />
-              <Image
-                src="/images/propertyPage/propertyImg.png"
-                width={800}
-                height={500}
-                alt="Apartments"
-              />
-              <Image
-                src="/images/propertyPage/propertyImg.png"
-                width={800}
-                height={500}
-                alt="Apartments"
-              />
-              <Image
-                src="/images/propertyPage/propertyImg.png"
-                width={800}
-                height={500}
-                alt="Apartments"
-              />
-              <Image
-                src="/images/propertyPage/propertyImg.png"
-                width={800}
-                height={500}
-                alt="Apartments"
-              />
-            </Slide>
+              <SwiperSlide>
+                <Image
+                  src="/images/propertyPage/propertyImg.png"
+                  width={800}
+                  height={500}
+                  alt="Apartments"
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                <Image
+                  src="/images/propertyPage/propertyImg.png"
+                  width={800}
+                  height={500}
+                  alt="Apartments"
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                <Image
+                  src="/images/propertyPage/propertyImg.png"
+                  width={800}
+                  height={500}
+                  alt="Apartments"
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                <Image
+                  src="/images/apartments_card.png"
+                  width={800}
+                  height={500}
+                  alt="Apartments"
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                <Image
+                  src="/images/propertyPage/propertyImg.png"
+                  width={800}
+                  height={500}
+                  alt="Apartments"
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                <Image
+                  src="/images/propertyPage/propertyImg.png"
+                  width={800}
+                  height={500}
+                  alt="Apartments"
+                />
+              </SwiperSlide>
+            </Swiper>
+            <Swiper
+              onSwiper={setThumbsSwiper}
+              loop={true}
+              slidesPerView={2}
+              spaceBetween={10}
+              freeMode={true}
+              watchSlidesProgress={true}
+              modules={[FreeMode, Navigation, Thumbs]}
+              className="mySwiper"
+              breakpoints={{
+                400: {
+                  slidesPerView: 2,
+                  spaceBetween: 20,
+                },
+                768: {
+                  slidesPerView: 3,
+                  spaceBetween: 10,
+                },
+                1024: {
+                  slidesPerView: 5,
+                  spaceBetween: 10,
+                },
+              }}
+            >
+              <SwiperSlide>
+                <Image
+                  src="/images/propertyPage/propertyImg.png"
+                  width={150}
+                  height={100}
+                  alt="Apartments"
+                  className={styles.thumbImage}
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                <Image
+                  src="/images/propertyPage/propertyImg.png"
+                  width={150}
+                  height={100}
+                  alt="Apartments"
+                  className={styles.thumbImage}
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                <Image
+                  src="/images/propertyPage/propertyImg.png"
+                  width={150}
+                  height={100}
+                  alt="Apartments"
+                  className={styles.thumbImage}
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                <Image
+                  src="/images/apartments_card.png"
+                  width={150}
+                  height={100}
+                  alt="Apartments"
+                  className={styles.thumbImage}
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                <Image
+                  src="/images/propertyPage/propertyImg.png"
+                  width={150}
+                  height={100}
+                  alt="Apartments"
+                  className={styles.thumbImage}
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                <Image
+                  src="/images/propertyPage/propertyImg.png"
+                  width={150}
+                  height={100}
+                  alt="Apartments"
+                  className={styles.thumbImage}
+                />
+              </SwiperSlide>
+            </Swiper>
           </div>
           <div className={styles.textBlock}>
             <div className={styles.titleBlock}>
@@ -90,28 +183,74 @@ export const PropertyDetails = () => {
               </p>
             </div>
             <div className={styles.btnBlock}>
-              <div
-                className={styles.btn}
-                onMouseEnter={() => setTooltip('Save')}
-                onMouseLeave={() => setTooltip(null)}
-              >
+              <div className={styles.btn} data-tooltip-id={`tooltip-save`}>
                 <Heart />
-                {tooltip === 'Save' && (
-                  <div className={styles.tooltip}>Save</div>
-                )}
               </div>
+              <Tooltip
+                id={`tooltip-save`}
+                style={{
+                  background: '#5E5E5E',
+                  color: '#fff',
+                  opacity: `1`,
+
+                  borderRadius: '12px',
+                  padding: '12px 12px',
+                  boxShadow: `0px 4px 18px 0px rgba(0, 0, 0, 0.17)`,
+                }}
+                place="bottom"
+              >
+                <div>Save</div>
+              </Tooltip>
               <div
                 className={styles.btn}
-                ref={shareButtonRef}
-                onMouseEnter={() => setTooltip('Share')}
-                onMouseLeave={() => setTooltip(null)}
-                onClick={() => setShowShareTooltip(true)}
+                data-tooltip-id={`tooltip-share`}
+                id="clickable"
+                data-tooltip-delay-hide={400}
               >
                 <Share />
-                {tooltip === 'Share' && (
-                  <div className={styles.tooltip}>Share this property</div>
-                )}
               </div>
+              <Tooltip
+                id={`tooltip-share`}
+                style={{
+                  background: '#fff',
+                  color: '#5E5E5E',
+                  opacity: `1`,
+
+                  borderRadius: '12px',
+                  padding: '12px 12px',
+                  boxShadow: `0px 4px 18px 0px rgba(0, 0, 0,0.25)`,
+                }}
+                place="bottom-start"
+                anchorSelect="#clickable"
+                clickable
+              >
+                <div id="clickable-link" className={styles.copyBtnContainer}>
+                  <h3>Share this property</h3>
+
+                  <a
+                    onClick={() => copyToClipboard()}
+                    className={styles.copyContainer}
+                  >
+                    <Copy />
+                    <span>Copy link</span>
+                  </a>
+                </div>
+              </Tooltip>
+              {/* <Tooltip
+                anchorSelect="#clickable-link"
+                id={`tooltip-share-link`}
+                style={{
+                  background: '#5E5E5E',
+                  color: '#fff',
+                  opacity: `1`,
+
+                  borderRadius: '12px',
+                  padding: '12px 12px',
+                  boxShadow: `0px 4px 18px 0px rgba(0, 0, 0, 0.17)`,
+                }}
+              >
+                <div>Copy Link</div>
+              </Tooltip> */}
             </div>
             <ul className={styles.descList}>
               <DescriptionItem name="Price:" value="54 244 Re/mo" />
@@ -131,7 +270,7 @@ export const PropertyDetails = () => {
         <div className={styles.mapBlock}>
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4716.148121078742!2d80.86475347010926!3d6.291039922933511!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae6ababfdfb95eb%3A0x9a48abdc3be10a2e!2zTWlkZGVuaXlhIFJkLCBFbWJpbGlwaXRpeWEsINCo0YDQuC3Qm9Cw0L3QutCw!5e0!3m2!1sru!2sua!4v1720551106085!5m2!1sru!2sua"
-            width="100%"
+            width="150%"
             height="280px"
             style={{ border: 0 }}
             allowFullScreen
@@ -140,9 +279,6 @@ export const PropertyDetails = () => {
           ></iframe>
         </div>
       </div>
-      {showShareTooltip && (
-        <ShareTooltip onClose={() => setShowShareTooltip(false)} />
-      )}
     </section>
   );
 };
