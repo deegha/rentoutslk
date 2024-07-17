@@ -1,13 +1,13 @@
-import { Footer } from '@/components';
-import { MultiStepFormApparts } from '@/components/formComponents/forms';
+import { Header, MultiStepFormApparts, Footer } from '@/components';
 
-const Page = () => {
+const AddYourApart = () => {
   return (
-    <div>
+    <>
+      <Header />
       <MultiStepFormApparts />
       <Footer />
-    </div>
+    </>
   );
 };
 
-export default Page;
+export default AddYourApart;

@@ -11,6 +11,7 @@ interface ButtonProps {
   borderColor?: string;
   padding?: string;
   fontWeight?: string;
+  type?: 'button' | 'submit' | 'reset';
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -23,6 +24,7 @@ export const Button: React.FC<ButtonProps> = ({
   borderColor,
   padding,
   fontWeight,
+  type = 'button',
 }) => {
   const buttonStyle = {
     '--bg-color': bgColor,
@@ -38,7 +40,12 @@ export const Button: React.FC<ButtonProps> = ({
       {text}
     </a>
   ) : (
-    <button className={styles.button} style={buttonStyle} onClick={onClick}>
+    <button
+      className={styles.button}
+      type={type}
+      style={buttonStyle}
+      onClick={onClick}
+    >
       {text}
     </button>
   );

@@ -1,9 +1,26 @@
 'use client';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import { InputApart } from '../inputApart';
+
 import styles from './property.module.scss';
+
+import { InputApart } from '../inputApart';
 import { SelectInput } from '../select';
+import { DateSelect } from '../datePicker';
+import { AmenitiesItem } from '../amenitiesItem';
+
+import Parking from '@/icons/parking.svg';
+import Pool from '@/icons/pool.svg';
+import HotWater from '@/icons/bath.svg';
+import Tv from '@/icons/tv.svg';
+import Gym from '@/icons/gym.svg';
+import Electric from '@/icons/electric.svg';
+import Playground from '@/icons/playground.svg';
+import Conditioner from '@/icons/conditioner.svg';
+import Microwave from '@/icons/microwave.svg';
+import Washing from '@/icons/washing.svg';
+import Cultery from '@/icons/cultery.svg';
+import Elevator from '@/icons/elevator.svg';
 
 const typeOfAppart = [
   { label: 'Apartment', value: 'Apartment' },
@@ -41,7 +58,7 @@ export const PropertyForm = () => {
   return (
     <section>
       <div className={styles.location}>
-        <h3>Location of the property</h3>
+        <h3 className={styles.categoryTitle}>Location of the property</h3>
         <div className={styles.locationInputs}>
           <InputApart
             {...register('address')}
@@ -52,7 +69,7 @@ export const PropertyForm = () => {
             required
           />
           <InputApart
-            {...register('address')}
+            {...register('apartTitle')}
             placeholder={'e. g. 3 Br Apartment in Havelock city    '}
             label={'Apartment title'}
             name={'apartmenttitle'}
@@ -63,7 +80,7 @@ export const PropertyForm = () => {
         </div>
       </div>
       <div>
-        <h3>General information</h3>
+        <h3 className={styles.categoryTitle}>General information</h3>
         <div className={styles.generalInfoContainer}>
           <SelectInput
             control={control}
@@ -92,10 +109,10 @@ export const PropertyForm = () => {
         </div>
         <div className={styles.generalInfoContainer}>
           <InputApart
-            {...register('monthlyPrice')}
-            placeholder={'54 244 Re'}
-            label={'Monthly rent'}
-            name={'monthlyPrice'}
+            {...register('deposit')}
+            placeholder={'80 000 Re'}
+            label={'Deposit'}
+            name={'deposit'}
             classNameContainer={styles.apartTitleContainer}
             className={styles.apartTitle}
             required
@@ -117,21 +134,22 @@ export const PropertyForm = () => {
         </div>
         <div className={styles.generalInfoContainer}>
           <InputApart
-            {...register('monthlyPrice')}
-            placeholder={'54 244 Re'}
-            label={'Monthly rent'}
-            name={'monthlyPrice'}
+            {...register('floorArea')}
+            placeholder={'Floor area in sq ft'}
+            label={'Floor area'}
+            name={'floorArea'}
             classNameContainer={styles.apartTitleContainer}
             className={styles.apartTitle}
             required
           />
-          <SelectInput
+          <DateSelect />
+          {/* <SelectInput
             control={control}
             option={typeOfAppart}
             errors={errors}
             label={`Property type`}
             name={'typeOfAppart'}
-          />
+          /> */}
           <SelectInput
             control={control}
             option={[
@@ -143,6 +161,23 @@ export const PropertyForm = () => {
             name={`furnishing`}
             isDefaultOption
           />
+        </div>
+      </div>
+      <div className={styles.ameneties}>
+        <h3 className={styles.categoryTitle}>Add ameneties</h3>
+        <div className={styles.amenitiesContainer}>
+          <AmenitiesItem image={<Parking />} title="Parking" />
+          <AmenitiesItem image={<Pool />} title="Pool" />
+          <AmenitiesItem image={<HotWater />} title="Hot water" />
+          <AmenitiesItem image={<Tv />} title="TV" />
+          <AmenitiesItem image={<Gym />} title="Gym" />
+          <AmenitiesItem image={<Electric />} title="Electric charger" />
+          <AmenitiesItem image={<Playground />} title="Playground" />
+          <AmenitiesItem image={<Conditioner />} title="Air conditioner" />
+          <AmenitiesItem image={<Microwave />} title="Microwave" />
+          <AmenitiesItem image={<Washing />} title="Washing machine" />
+          <AmenitiesItem image={<Cultery />} title="Culteries" />
+          <AmenitiesItem image={<Elevator />} title="Elevator" />
         </div>
       </div>
     </section>

@@ -12,12 +12,11 @@
   padding: 32px;
   margin: 0 2.5vw;
 }
-.containerStep{
-    
+.containerStep {
 }
-.containerForm{
-    display: flex;
-    flex-direction: column;
+.containerForm {
+  display: flex;
+  flex-direction: column;
 }
 .desc {
   font-size: 14px;
@@ -38,6 +37,8 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background-color: $secondary-bg-color;
 }
 .input {
@@ -46,21 +47,34 @@
   padding: var(--Numbers-Spacings-1, 0px) var(--Numbers-Spacings-5, 16px);
   align-items: center;
   gap: 8px;
-  align-self: stretch;
   border-radius: var(--Numbers-Corner-radius-Corner-2, 4px);
   border: 1px solid var(--Stroke-1, #d3d3d3);
   margin-top: 8px;
   width: 100%;
+  color: #222;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
+
 .input:focus {
   border: 2px solid var(--Strole-2, #222);
   outline: none;
 }
-.input_label {
+
+.input::placeholder {
+  color: #b0b0b0;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
+
 .label {
   margin-bottom: 24px;
 }
+
 .location {
   margin-top: 32px;
   margin-bottom: 32px;
@@ -89,3 +103,37 @@
   margin-top: 16px;
 }
 
+.btnBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 64px auto;
+}
+
+.amenitiesItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.amenitiesImage {
+  width: 24px;
+  height: 24px;
+}
+
+.amenitiesTitle {
+  color: #5e5e5e;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.amenitiesCheckbox {
+  width: 24px;
+  height: 24px;
+  margin-left: 8px;
+}
