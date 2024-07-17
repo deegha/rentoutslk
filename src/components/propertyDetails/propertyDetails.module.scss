@@ -192,3 +192,20 @@
   font-weight: 600;
   line-height: 19.36px;
 }
+.copyContainer{
+  display:flex;
+  align-items: center;
+  gap:8px;
+  color: $font-color-fourth;
+  cursor:pointer;
+}
+.copyBtnContainer{
+  gap:16px;
+  display:flex;
+  flex-direction: column;
+
+}
+.thumbImage{
+  border-radius:12px;
+  cursor: pointer;
+}
