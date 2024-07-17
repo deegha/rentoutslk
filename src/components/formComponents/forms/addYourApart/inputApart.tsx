@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './addYOurApart.module.scss';
+import styles from './addYourApart.module.scss';
 
 export const InputApart = ({
   placeholder,

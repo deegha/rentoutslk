@@ -127,7 +127,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({
         )}
         rules={{ required }}
       />
-      {errors.propertyType && <span>{errors.propertyType.message}</span>}
+      {errors[name]?.message && <span>{errors[name]?.message as string}</span>}
     </div>
   );
 };
