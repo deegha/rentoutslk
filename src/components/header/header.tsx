@@ -2,10 +2,10 @@ import React from 'react';
 import Image from 'next/image';
 import styles from './header.module.scss';
 import Favorite from '@/icons/carbon_favorite.svg';
-import Logo from '@/icons/logo.svg';
 import { SignModal } from '@/components/auth';
 import { auth } from '@/auth';
 import { Session as AuthSession, User as AuthUser } from '@auth/core/types';
+import Link from 'next/link';
 
 interface User extends AuthUser {
   id: string;
@@ -22,13 +22,15 @@ export const Header = async () => {
   return (
     <header className={styles.header} id="modal-root">
       <nav className={styles.navBar}>
-        <Image
-          src="/images/logo.png"
-          className={styles.logo}
-          width={200}
-          height={60}
-          alt="Logo"
-        />
+        <Link href={'/'}>
+          <Image
+            src="/images/logo.png"
+            className={styles.logo}
+            width={200}
+            height={60}
+            alt="Logo"
+          />
+        </Link>
         <div className={styles.list}>List your property</div>
         <div className={styles.signBlock}>
           <a className={styles.favorite}>

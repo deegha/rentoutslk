@@ -1,0 +1,92 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.datePickerContainer {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  gap: 8px;
+}
+
+.label {
+  color: #222;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.datePicker {
+  padding: 0px 16px;
+  font-size: 14px;
+  border: 1px solid var(--Stroke-1, #d3d3d3);
+  border-radius: 4px;
+  width: 100%;
+  background-color: white;
+  min-height: 48px;
+  box-shadow: none;
+  color: #5e5e5e;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  &::placeholder {
+    color: #5e5e5e;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+}
+
+.datePickerContainer::after {
+  content: url('/path/to/your/calendar_icon.svg');
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.calendarOverlay {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 9999;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 8px;
+}
+
+.react-day-picker {
+  &__header {
+    background-color: #fff !important;
+    border-bottom: none;
+  }
+
+  &__month {
+    margin: 0;
+  }
+
+  &__weekdays {
+    color: #000 !important; // изменено на черный
+  }
+
+  &__day {
+    color: #000 !important; // изменено на черный
+    &--today {
+      color: #000 !important; // изменено на черный
+    }
+    &--selected {
+      background-color: #000 !important; // изменено на черный
+      color: #fff !important;
+    }
+    &:hover {
+      background-color: #000 !important; // изменено на черный
+      color: #fff !important;
+    }
+  }
+}

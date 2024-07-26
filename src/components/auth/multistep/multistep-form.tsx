@@ -28,9 +28,6 @@ import {
   where,
 } from 'firebase/firestore';
 import { signIn } from 'next-auth/react';
-import ReactModal from 'react-modal';
-
-ReactModal.setAppElement('#main');
 
 const MultiStepForm = ({
   isOpen,

@@ -1,0 +1,175 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.container {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 56px;
+  border-radius: 12px;
+  background: $primary-bg-color;
+  padding: 32px;
+  max-width: 1920px;
+}
+
+.containerForm {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.desc {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  margin-top: 16px;
+  color: #5e5e5e;
+}
+.title {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  color: #222;
+}
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: $secondary-bg-color;
+}
+.input {
+  display: flex;
+  height: var(--numbers-width-hight-48, 48px);
+  padding: var(--Numbers-Spacings-1, 0px) var(--Numbers-Spacings-5, 16px);
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--Numbers-Corner-radius-Corner-2, 4px);
+  border: 1px solid var(--Stroke-1, #d3d3d3);
+  margin-top: 8px;
+  width: 100%;
+  color: #222;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.input:focus {
+  border: 2px solid var(--Strole-2, #222);
+  outline: none;
+}
+
+.input::placeholder {
+  color: #b0b0b0;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.selectContainer {
+  width: 100%;
+}
+
+.label {
+  margin-bottom: 24px;
+}
+
+.location {
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+.locationInputs {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 16px;
+}
+.apartTitleContainer {
+  width: 100%;
+}
+.apartTitle {
+  width: 100%;
+}
+.mainContainer {
+  width: 90%;
+}
+.generalInfoContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  margin-top: 16px;
+}
+
+.btnBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 64px auto;
+}
+
+.amenitiesItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.amenitiesImage {
+  width: 24px;
+  height: 24px;
+}
+
+.amenitiesTitle {
+  color: #5e5e5e;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.amenitiesCheckboxContainer {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  margin-left: 8px;
+  cursor: pointer;
+  border: 1px solid #d3d3d3;
+  border-radius: 4px;
+}
+
+.amenitiesCheckbox {
+  width: 24px;
+  height: 24px;
+  opacity: 0;
+  position: absolute;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.customCheckbox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.amenitiesCheckboxContainer.checked .customCheckbox {
+  background-color: #5e5e5e;
+  border: 1px solid #5e5e5e;
+}

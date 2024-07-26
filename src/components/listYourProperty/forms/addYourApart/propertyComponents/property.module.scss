@@ -1,0 +1,258 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 0 auto;
+  background-color: $secondary-bg-color;
+  width: 100%;
+}
+
+.containerWrapper {
+  background-color: $primary-bg-color;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.sectionWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 1920px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.containerStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 36px 24px 28px 24px;
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  @include tabletAndBeyondView() {
+    flex-direction: row;
+    padding: 0px 80px;
+    width: 100%;
+  }
+}
+
+.containerStepText {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  @include tabletAndBeyondView() {
+    width: 50%;
+  }
+}
+
+.step {
+  padding-bottom: 36px;
+  color: #222;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  @include tabletAndBeyondView() {
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+}
+
+.title {
+  color: #222;
+  padding-bottom: 12px;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+
+  @include tabletAndBeyondView() {
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+}
+
+.subtitle {
+  color: #222;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  @include tabletAndBeyondView() {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+}
+
+.containerForm {
+  background-color: $primary-bg-color;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 12px;
+  width: calc(100% - 48px);
+  margin: 0 auto;
+  padding: 24px 12px;
+  @include tabletAndBeyondView() {
+    width: calc(100% - 160px);
+    padding: 36px;
+  }
+}
+
+.formTitle {
+  color: #222;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.formDesc {
+  color: #5e5e5e;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  margin-top: 16px;
+  width: 100%;
+  @include tabletAndBeyondView() {
+    width: 60%;
+  }
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: $secondary-bg-color;
+  padding: 24px 24px 56px 24px;
+
+  @include tabletAndBeyondView() {
+    padding: 0;
+  }
+}
+
+.input {
+  display: flex;
+  height: 48px;
+  padding: 0px 16px;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  border-radius: 4px;
+  border: 1px solid #d3d3d3;
+  margin-top: 8px;
+  width: 100%;
+  color: #222;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.input::placeholder {
+  color: #b0b0b0;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.input:focus {
+  border: 2px solid #222;
+  outline: none;
+}
+.label {
+  margin-bottom: 24px;
+}
+
+.location {
+  margin-top: 56px;
+  margin-bottom: 56px;
+}
+
+.categoryTitle {
+  color: #222;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.locationInputs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+  width: 100%;
+  @include tabletAndBeyondView() {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    width: 80%;
+  }
+}
+
+.apartTitleContainer {
+  width: 100%;
+}
+
+.apartTitle {
+  width: 100%;
+  color: #222;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.mainContainer {
+  width: 90%;
+}
+
+.generalInfoContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+
+  @include tabletAndBeyondView() {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 80%;
+  }
+}
+
+.ameneties {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 56px;
+}
+
+.amenitiesContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  @include tabletAndBeyondView() {
+    display: flex;
+    gap: 40px;
+  }
+}

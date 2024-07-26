@@ -3,11 +3,16 @@ import {
   YouCanRent,
   Footer,
   RentalParameters,
-  RentalCategories,
+  Breadcrumbs,
   ApartmentsRental,
 } from '@/components';
 
 export default function Rentals() {
+  const categories = [
+    { name: 'Rentouts', href: '/' },
+    { name: 'Rentals', href: '/rentals' },
+    { name: 'Colombo', href: '' },
+  ];
   return (
     <>
       {/* HEADER section - NAV Bar */}
@@ -15,7 +20,7 @@ export default function Rentals() {
 
       <main>
         <RentalParameters />
-        <RentalCategories categories={['Rentouts', 'Rentals', 'Colombo']} />
+        <Breadcrumbs categories={categories} />
         <ApartmentsRental />
         <YouCanRent />
       </main>
