@@ -2,7 +2,7 @@ import {
   Header,
   YouCanRent,
   Footer,
-  RentalParameters,
+  RentalFilters,
   Breadcrumbs,
   ApartmentsRental,
 } from '@/components';
@@ -11,7 +11,7 @@ export default function Rentals() {
   const categories = [
     { name: 'Rentouts', href: '/' },
     { name: 'Rentals', href: '/rentals' },
-    { name: 'Colombo', href: '' },
+    { name: 'All rentals', href: '/rentals' },
   ];
   return (
     <>
@@ -19,7 +19,7 @@ export default function Rentals() {
       <Header />
 
       <main>
-        <RentalParameters />
+        <RentalFilters />
         <Breadcrumbs categories={categories} />
         <ApartmentsRental />
         <YouCanRent />

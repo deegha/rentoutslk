@@ -6048,6 +6048,11 @@ react-onclickoutside@^6.13.0:
   resolved "https://registry.npmjs.org/react-onclickoutside/-/react-onclickoutside-6.13.1.tgz"
   integrity sha512-LdrrxK/Yh9zbBQdFbMTXPp3dTSN9B+9YJQucdDu3JNKRrbdU+H+/TVONJoWtOwy4II8Sqf1y/DTI6w/vGPYW0w==
 
+react-range@^1.9.2:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/react-range/-/react-range-1.9.2.tgz#0cef6177a8912bcceff0d28d0274f94752c90e8a"
+  integrity sha512-MS8Pp3YKmn1Kheg7UVHU5ajxnoXnp166M7nmw4cq6ayd7Ee9ENIWkRPjINhHUUfnVme8KpMkJYobDaG9JoinlA==
+
 react-select@^5.8.0:
   version "5.8.0"
   resolved "https://registry.npmjs.org/react-select/-/react-select-5.8.0.tgz"

@@ -7,8 +7,7 @@ export * from './lookingForHome';
 export * from './footer';
 
 //All rentals
-export * from './rentalParameters';
-
+export * from './rentalFilters';
 export * from './apartmentsRental';
 export * from './youCanRent';
 
@@ -28,3 +27,6 @@ export * from './shareTooltip';
 export * from './auth';
 export * from './listYourProperty';
 export * from './breadcrumbs';
+export * from './customSelect';
+export * from './rangeSlider';
+export * from './customInput';

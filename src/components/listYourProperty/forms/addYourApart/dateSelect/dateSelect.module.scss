@@ -13,7 +13,7 @@
   color: #222;
   font-size: 16px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: var(--font-weight);
   line-height: normal;
 }
 
@@ -40,15 +40,6 @@
   }
 }
 
-.datePickerContainer::after {
-  content: url('/path/to/your/calendar_icon.svg');
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
 .calendarOverlay {
   position: absolute;
   top: 100%;
@@ -59,34 +50,4 @@
   border-radius: 8px;
   padding: 16px;
   margin-top: 8px;
-}
-
-.react-day-picker {
-  &__header {
-    background-color: #fff !important;
-    border-bottom: none;
-  }
-
-  &__month {
-    margin: 0;
-  }
-
-  &__weekdays {
-    color: #000 !important; // изменено на черный
-  }
-
-  &__day {
-    color: #000 !important; // изменено на черный
-    &--today {
-      color: #000 !important; // изменено на черный
-    }
-    &--selected {
-      background-color: #000 !important; // изменено на черный
-      color: #fff !important;
-    }
-    &:hover {
-      background-color: #000 !important; // изменено на черный
-      color: #fff !important;
-    }
-  }
 }

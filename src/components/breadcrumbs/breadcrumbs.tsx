@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import Link from 'next/link';
 import styles from './breadcrumbs.module.scss';
@@ -14,11 +15,28 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
 }) => {
   return (
     <section className={styles.container}>
-      {categories.map((category, index) => (
-        <React.Fragment key={index}>
-          {category.href ? (
-            <Link href={category.href} passHref>
+      <div className={styles.wrapper}>
+        {categories.map((category, index) => (
+          <React.Fragment key={index}>
+            {category.href ? (
+              <Link href={category.href} passHref>
+                <p
+                  className={
+                    index === categories.length - 1
+                      ? styles.categoryActive
+                      : styles.category
+                  }
+                >
+                  {category.name}
+                </p>
+              </Link>
+            ) : (
               <p
+                onClick={() =>
+                  onClick &&
+                  category._stepNumber !== undefined &&
+                  onClick(category._stepNumber)
+                }
                 className={
                   index === categories.length - 1
                     ? styles.categoryActive
@@ -27,26 +45,11 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
               >
                 {category.name}
               </p>
-            </Link>
-          ) : (
-            <p
-              onClick={() =>
-                onClick &&
-                category._stepNumber !== undefined &&
-                onClick(category._stepNumber)
-              }
-              className={
-                index === categories.length - 1
-                  ? styles.categoryActive
-                  : styles.category
-              }
-            >
-              {category.name}
-            </p>
-          )}
-          {index < categories.length - 1 && <Arrow />}
-        </React.Fragment>
-      ))}
+            )}
+            {index < categories.length - 1 && <Arrow />}
+          </React.Fragment>
+        ))}
+      </div>
     </section>
   );
 };

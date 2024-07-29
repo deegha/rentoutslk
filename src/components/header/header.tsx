@@ -1,11 +1,13 @@
 import React from 'react';
 import Image from 'next/image';
-import styles from './header.module.scss';
-import Favorite from '@/icons/carbon_favorite.svg';
+import Link from 'next/link';
 import { SignModal } from '@/components/auth';
 import { auth } from '@/auth';
 import { Session as AuthSession, User as AuthUser } from '@auth/core/types';
-import Link from 'next/link';
+
+import styles from './header.module.scss';
+
+import Favorite from '@/icons/carbon_favorite.svg';
 
 interface User extends AuthUser {
   id: string;

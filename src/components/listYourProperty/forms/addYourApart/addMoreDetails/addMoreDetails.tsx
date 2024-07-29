@@ -142,7 +142,7 @@ export const AddMoreDetails = () => {
             className={styles.apartTitle}
             required
           />
-          <DateSelect />
+          <DateSelect label="Available from*" fontWeight="400" />
           <SelectInput
             control={control}
             option={[
