@@ -1,47 +1,91 @@
-import React from 'react';
-import { redirect } from 'next/navigation';
-import { auth } from '@/auth';
+'use client';
 
-const Profile: React.FC = async () => {
-  const session = await auth();
-  if (!session) {
-    redirect('/');
+import React, { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { ProfileCard, InAuthed } from '@/components';
+import BeatLoader from 'react-spinners/BeatLoader';
+
+const fetchUserData = async (userId: string) => {
+  const response = await fetch(`/api/get-user?id=${userId}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch user data');
   }
-  const user = session.user;
+  return await response.json();
+};
+
+const Profile: React.FC = () => {
+  const { data: session } = useSession();
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      if (session?.user?.id) {
+        try {
+          const userId = session.user.id;
+          const data = await fetchUserData(userId);
+          setUserData(data);
+        } catch (error) {
+          console.error('Failed to fetch user data', error);
+        }
+      }
+      setLoading(false);
+    };
+    loadUserData();
+  }, [session]);
+
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        <BeatLoader color="#DE225C" />
+      </div>
+    );
+  }
+
+  if (!session || !session.user || !session.user.id) {
+    return <InAuthed />;
+  }
+
   return (
-    <div>
-      <h1>Profile</h1>
-      <p>User Name: {user?.name}</p>
-      <p>User Email: {user?.email}</p>
-      <div>
-        <label>
-          Name:
-          <input type="text" />
-        </label>
-      </div>
-      <div>
-        <label>
-          Phone Number:
-          {/* <input
-            type="text"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-          /> */}
-        </label>
-      </div>
-      <div>
-        <label>
-          City:
-          {/* <input
-            type="text"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-          /> */}
-        </label>
-      </div>
-      {/* <button onClick={handleUpdateProfile}>Update Profile</button>
-          <button onClick={handleLogout}>Logout</button> */}
-    </div>
+    <section
+      style={{
+        backgroundColor: '#F7F7F7',
+        width: '100%',
+        minHeight: '68vh',
+        zIndex: 20,
+      }}
+    >
+      {userData ? (
+        <ProfileCard user={userData} userId={session.user.id} />
+      ) : (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100vh',
+            }}
+          >
+            <BeatLoader color="#DE225C" />
+          </div>
+        </div>
+      )}
+    </section>
   );
 };
 

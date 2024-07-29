@@ -11,6 +11,7 @@ export default function Home() {
   return (
     <>
       {/* HEADER section - NAV Bar */}
+
       <Header />
 
       <main>
@@ -18,7 +19,6 @@ export default function Home() {
         <ApartmentsHome />
         <CreateListingBanner />
         <LookingFor />
-        <a href="/profile">Profile</a>
       </main>
 
       <Footer />

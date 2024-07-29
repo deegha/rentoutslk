@@ -1,0 +1,51 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.inActive:first-child{
+    color:#222;
+
+    
+}
+.inActive:first-child{
+    color:#222;
+
+    
+}
+.active{
+    color:#222;
+    font-weight: 600;
+   
+}
+
+.container{
+    background-color:#fff;
+    padding:32px 72px;
+    box-shadow: 0px 10px 12px 0px rgba(0, 0, 0, 0.04);
+    z-index: 30;
+    position: relative;
+}
+.linkContainer{
+    display:flex;
+    width:100%;
+    flex-direction:column;
+    align-items: center;
+    gap:64px;
+    padding:32px 0;
+    position: fixed;
+    background-color: #fff;
+    height:90vh;
+    left:0;
+    transform:translateY(0px);
+    transition: transform 0.8s ease;
+    @include largeDesktopAndBeyondView(){
+     gap:64px;
+     padding:0 36px;
+     position: relative;
+     height: auto;
+     flex-direction:row;
+     transform:translateY(0px);
+    }
+}
+.linkContainer .active{
+transform:translateY(-110vh);
+}

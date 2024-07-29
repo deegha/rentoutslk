@@ -3,12 +3,7 @@ import React, { useState } from 'react';
 import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Modal from 'react-modal';
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-} from 'firebase/auth';
-import { authFirebase, db } from '@/firebase/config';
-
+import { signIn } from 'next-auth/react';
 import {
   EmailFormValues,
   PasswordExistFormValues,
@@ -19,15 +14,8 @@ import {
 } from './types';
 import EmailStep from './EmailStep';
 import PasswordStep from './PasswordStep';
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-} from 'firebase/firestore';
-import { signIn } from 'next-auth/react';
+
+Modal.setAppElement('#main');
 
 const MultiStepForm = ({
   isOpen,
@@ -38,10 +26,12 @@ const MultiStepForm = ({
 }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [emailExists, setEmailExists] = useState(false);
+
   const closeModal = () => {
     onRequestClose();
     setCurrentStep(1);
   };
+
   const emailMethods = useForm<EmailFormValues>({
     resolver: zodResolver(emailSchema),
   });
@@ -64,12 +54,23 @@ const MultiStepForm = ({
     const { email } = data;
 
     try {
-      const q = query(collection(db, 'users'), where('email', '==', email));
-      const querySnapshot = await getDocs(q);
-      setEmailExists(!querySnapshot.empty);
+      const response = await fetch('/api/check-user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const result = await response.json();
+
+      if (result.exists) {
+        setEmailExists(true);
+      } else {
+        setEmailExists(false);
+      }
+
       handleNextStep();
     } catch (error) {
-      console.error('Error checking email: ', error);
+      console.error('Error checking email:', error);
     }
   };
 
@@ -78,32 +79,27 @@ const MultiStepForm = ({
   const onSubmitPassword: SubmitHandler<
     PasswordExistFormValues | NewUserFormValues
   > = async (data) => {
-    const { password } = data;
+    const { password, confirmPassword } = data as NewUserFormValues;
+
+    if (!emailExists && password !== confirmPassword) {
+      console.error('Passwords do not match');
+      return;
+    }
 
     try {
-      let userCredential;
-      if (emailExists) {
-        userCredential = await signInWithEmailAndPassword(
-          authFirebase,
-          email,
-          password,
-        );
-        await signIn('credentials', { redirect: false, email, password });
+      const result = await signIn('credentials', {
+        redirect: false,
+        email,
+        password,
+      });
+
+      if (result?.error) {
+        console.error('Error signing in or creating account:', result.error);
       } else {
-        userCredential = await createUserWithEmailAndPassword(
-          authFirebase,
-          email,
-          password,
-        );
-        await setDoc(doc(db, 'users', userCredential.user.uid), {
-          email: userCredential.user.email,
-          createdAt: new Date(),
-        });
-        await signIn('credentials', { redirect: false, email, password });
+        onRequestClose();
       }
-      onRequestClose();
     } catch (error) {
-      console.error('Error signing in or creating account: ', error);
+      console.error('Error signing in or creating account:', error);
     }
   };
 

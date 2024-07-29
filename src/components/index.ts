@@ -30,3 +30,6 @@ export * from './breadcrumbs';
 export * from './customSelect';
 export * from './rangeSlider';
 export * from './customInput';
+
+//Profile Page
+export * from './profile';
