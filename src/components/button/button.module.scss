@@ -2,13 +2,18 @@
 @import '@/styles/_colors.scss';
 
 .button {
-  display: inline-block;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   cursor: pointer;
   text-decoration: none;
   border: none;
   outline: none;
   transition: background-color 0.3s;
+  text-wrap: nowrap;
 
   font-size: 16px;
   font-weight: 400;
@@ -20,4 +25,12 @@
   padding: var(--padding, 20px 20px);
   border: var(--border, none);
   font-weight: var(--font-weight, 400);
+}
+
+.btnImgBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
 }

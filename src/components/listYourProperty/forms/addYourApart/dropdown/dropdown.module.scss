@@ -1,0 +1,63 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.dropdown {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.arrow {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+  transform: rotate(270deg);
+}
+
+.arrow.open {
+  transform: rotate(360deg);
+}
+
+.dropdownTextBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 80%;
+}
+
+.dropdownTitle {
+  color: #222;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration-line: underline;
+}
+
+.dropdownDesc {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: #5e5e5e;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  max-height: 0;
+  overflow: hidden;
+  transition:
+    max-height 0.3s ease,
+    opacity 0.3s ease;
+  opacity: 0;
+}
+
+.dropdownDesc.show {
+  max-height: 500px;
+  opacity: 1;
+}
+
+.dropdownDesc.hide {
+  max-height: 0;
+  opacity: 0;
+}

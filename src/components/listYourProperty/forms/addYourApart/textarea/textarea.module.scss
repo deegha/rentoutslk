@@ -1,0 +1,49 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.textareaContainer {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  gap: 16px;
+}
+
+.label {
+  color: #222;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.textarea {
+  width: 100%;
+  padding: 16px;
+  color: #222;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  font-family: inherit;
+  resize: none;
+  &::placeholder {
+    color: #b0b0b0;
+  }
+}
+
+.charCount {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: #717171;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 12px;
+}

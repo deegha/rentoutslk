@@ -1,0 +1,54 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+
+  @include tabletAndBeyondView() {
+    max-width: 200px;
+    margin-left: 12px;
+  }
+}
+
+.label {
+  color: #222;
+  text-align: start;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-bottom: 24px;
+  width: fit-content;
+}
+
+.sliderContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  @include tabletAndBeyondView() {
+    max-width: 200px;
+  }
+}
+
+.valueContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 12px;
+
+  @include tabletAndBeyondView() {
+    max-width: 200px;
+  }
+}
+
+.valueContainer span {
+  color: #222;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}

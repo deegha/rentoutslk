@@ -1,0 +1,61 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.questionsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  border-radius: 12px;
+  padding: 24px 12px;
+  background-color: $primary-bg-color;
+  width: calc(100% - 48px);
+  margin: 0 auto;
+  @include tabletAndBeyondView() {
+    padding: 36px;
+    width: calc(100% - 160px);
+    max-width: 1920px;
+  }
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.title {
+  color: #222;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.subtitle {
+  color: #222;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+}
+
+.questionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  width: 100%;
+}
+
+.questionBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.questionTitle {
+  color: #222;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
