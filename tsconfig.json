@@ -21,7 +21,7 @@
       "@/*": ["./src/*"],
       "config/*": ["./src/config/*"],
       "icons/*": ["./src/icons/*"],
-      "firebase/*": ["./src/firebase/*"]
+      "config/firebase/*": ["./src/firebase/*"]
     },
     "typeRoots": ["./node_modules/@types", "./types"]
   },
