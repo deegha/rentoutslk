@@ -5,7 +5,6 @@ import { SignModal } from '@/components/auth';
 import styles from './header.module.scss';
 import Favorite from '@/icons/carbon_favorite.svg';
 
-
 export const Header = async () => {
   return (
     <header className={styles.header}>
