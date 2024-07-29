@@ -1,15 +1,27 @@
 import NextAuth from 'next-auth';
-import type { NextAuthConfig } from 'next-auth';
+import type { NextAuthOptions, JWT } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import FacebookProvider from 'next-auth/providers/facebook';
+import { authFirebase, db } from '@/firebase/config';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut as firebaseSignOut,
+} from 'firebase/auth';
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+  doc,
+  updateDoc,
+} from 'firebase/firestore';
+import { getCustomToken } from '@/firebase/firebaseAdmin';
+import { CustomSession, UserRent } from '@/interface/session';
 
-interface User {
-  id: string;
-  email: string;
-}
-
-export const authConfig: NextAuthConfig = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -18,11 +30,68 @@ export const authConfig: NextAuthConfig = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        const user = { id: '1', email: credentials?.email } as User;
+        const email = credentials?.email;
+        const password = credentials?.password;
 
-        if (user) {
-          return user;
-        } else {
+        if (!email || !password) {
+          console.error('Email or password is missing');
+          return null;
+        }
+
+        try {
+          const q = query(collection(db, 'users'), where('email', '==', email));
+          const querySnapshot = await getDocs(q);
+
+          if (!querySnapshot.empty) {
+            try {
+              const userCredential = await signInWithEmailAndPassword(
+                authFirebase,
+                email,
+                password,
+              );
+              const user = userCredential.user;
+
+              const docSnap = querySnapshot.docs[0];
+              const userRef = doc(db, 'users', docSnap.id);
+              await updateDoc(userRef, { lastLogin: new Date() });
+
+              const userDoc = { id: docSnap.id, ...docSnap.data() };
+              const customToken = await getCustomToken(user.uid);
+              return { ...userDoc, customToken };
+            } catch (signInError) {
+              console.error('Error signing in:', signInError);
+              return null;
+            }
+          } else {
+            try {
+              const userCredential = await createUserWithEmailAndPassword(
+                authFirebase,
+                email,
+                password,
+              );
+              const newUser = userCredential.user;
+
+              const userRef = await addDoc(collection(db, 'users'), {
+                email: newUser.email,
+                uid: newUser.uid,
+                createdAt: new Date(),
+                lastLogin: new Date(),
+              });
+
+              const userDoc = {
+                id: userRef.id,
+                email: newUser.email,
+                uid: newUser.uid,
+              };
+              const customToken = await getCustomToken(newUser.uid);
+              return { ...userDoc, customToken };
+            } catch (createUserError) {
+              console.error('Error creating user:', createUserError);
+              return null;
+            }
+          }
+        } catch (error) {
+          console.error('Error during authorization:', error);
           return null;
         }
       },
@@ -37,19 +106,31 @@ export const authConfig: NextAuthConfig = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: { token: JWT; user?: UserRent }) {
       if (user) {
         token.id = user.id;
+        token.customToken = (user as UserRent).customToken;
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: CustomSession; token: JWT }) {
       if (session.user) {
         session.user.id = token.id as string;
+        session.user.customToken = token.customToken as string;
       }
       return session;
     },
   },
+  events: {
+    async signOut() {
+      await firebaseSignOut(authFirebase);
+    },
+  },
 };
 
-export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);
+const nextAuthInstance = NextAuth(authOptions);
+
+const { handlers, auth, signIn, signOut } = nextAuthInstance;
+
+export { handlers, auth, signIn, signOut };
+export default nextAuthInstance;

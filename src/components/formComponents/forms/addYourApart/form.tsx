@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 
-import styles from './addYOurApart.module.scss';
+import styles from './addYourApart.module.scss';
 
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';

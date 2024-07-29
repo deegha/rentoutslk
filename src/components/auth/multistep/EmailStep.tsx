@@ -4,13 +4,14 @@ import { useFormContext } from 'react-hook-form';
 import { EmailFormValues } from './types';
 import styles from './multistep-form.module.scss';
 import Close from 'icons/Close_MD.svg';
-import Google from 'icons/auth/google.svg';
-import Facebook from 'icons/auth/facebook.svg';
+// import Google from 'icons/auth/google.svg';
+// import Facebook from 'icons/auth/facebook.svg';
 import Warning from '@/icons/Circle_Warning.svg';
-import { signIn } from 'next-auth/react';
+// import { signIn } from 'next-auth/react';
 
 interface EmailStepProps {
-  onSubmit: (data: EmailFormValues) => void;
+  // data: EmailFormValues
+  onSubmit: () => void;
   onRequestClose: () => void;
 }
 
@@ -51,7 +52,7 @@ const EmailStep: React.FC<EmailStepProps> = ({ onSubmit, onRequestClose }) => {
           </span>
           <div></div>
         </div>
-        <div className={styles.buttons__container}>
+        {/* <div className={styles.buttons__container}>
           <div
             className={styles.button__container__icon}
             onClick={() => signIn(`google`)}
@@ -74,7 +75,7 @@ const EmailStep: React.FC<EmailStepProps> = ({ onSubmit, onRequestClose }) => {
               <span>Sign up with Facebook</span>
             </button>
           </div>
-        </div>
+        </div> */}
         <div className={styles.formTextContainer}>
           <p className={styles.formText}>
             By signing in or creating an account, you agree

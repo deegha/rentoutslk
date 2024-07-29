@@ -27,3 +27,6 @@ export * from './tagsList';
 export * from './shareTooltip';
 export * from './auth';
 export * from './formComponents';
+
+//Profile Page
+export * from './profile';
