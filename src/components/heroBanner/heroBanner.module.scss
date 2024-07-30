@@ -9,22 +9,18 @@
   background-image: url('/images/home/hero_img.png');
   background-size: cover;
   background-position: center;
-  height: 480px;
-
-  @include tabletAndBeyondView() {
-    height: 300px;
-  }
-
   @include desktopAndBeyondView() {
     height: 600px;
+     background-color: $secondary-bg-color;
   }
 }
 
 .heroBlock {
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 40px;
   align-items: center;
+  position: relative;
 }
 
 .heroBlock h1 {
@@ -47,17 +43,23 @@
   }
 }
 
+.searchContainer {
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+}
+
 .searchBlock {
   display: flex;
   flex-direction: row;
   background-color: $primary-bg-color;
   border-radius: 8px;
   padding: 8px;
-  width: 95%;
   justify-content: space-between;
+  width: 100%;
 
   @include desktopAndBeyondView() {
-    width: 60%;
+    width: 100%;
   }
 }
 
@@ -78,6 +80,60 @@
     text-align: left;
   }
 }
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-width: 600px;
+  background-color: $primary-bg-color;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-top: 8px;
+  padding: 16px;
+  z-index: 10;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 1s ease, opacity 1s ease;
+  opacity: 0;
+}
+
+.dropdownVisible {
+  max-height: 250px;
+  opacity: 1;
+}
+
+.dropdownTitle {
+  color: $font-color-three;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  cursor: pointer;
+  color: #b0b0b0;
+  font-size: 16px;
+  font-weight: 400;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}
+
+.noResults {
+  counter-reset: $font-color-three;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: normal;
+  color: $font-color-one;
+  text-align: center;
+  padding: 8px;
+}
+
 
 .linkBlock {
   cursor: pointer;

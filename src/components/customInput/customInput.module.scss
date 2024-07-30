@@ -1,0 +1,39 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 12px;
+  min-width: 200px;
+}
+
+.label {
+  color: #222;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.input {
+  padding: 8px 16px;
+  background-color: white;
+  border: 1px solid #d3d3d3;
+  border-radius: 4px;
+  min-height: 48px;
+  box-shadow: none;
+  outline: none;
+  color: #5e5e5e;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  &:hover {
+    border-color: #222;
+  }
+  &::placeholder {
+    color: #b0b0b0;
+  }
+}

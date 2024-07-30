@@ -11,6 +11,7 @@ export default function Home() {
   return (
     <>
       {/* HEADER section - NAV Bar */}
+
       <Header />
 
       <main>

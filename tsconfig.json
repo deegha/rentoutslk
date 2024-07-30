@@ -18,8 +18,12 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": ["./src/*"],
+      "config/*": ["./src/config/*"],
+      "icons/*": ["./src/icons/*"],
+      "config/firebase/*": ["./src/firebase/*"]
+    },
+    "typeRoots": ["./node_modules/@types", "./types"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
