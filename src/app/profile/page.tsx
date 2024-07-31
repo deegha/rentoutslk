@@ -2,7 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { ProfileCard, InAuthed } from '@/components';
+import {
+  ProfileCard,
+  InAuthed,
+  Footer,
+  Header,
+  RouterProfile,
+} from '@/components';
 import BeatLoader from 'react-spinners/BeatLoader';
 
 const fetchUserData = async (userId: string) => {
@@ -54,25 +60,21 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <section
-      style={{
-        backgroundColor: '#F7F7F7',
-        width: '100%',
-        minHeight: '68vh',
-        zIndex: 20,
-      }}
-    >
-      {userData ? (
-        <ProfileCard user={userData} userId={session.user.id} />
-      ) : (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100vh',
-          }}
-        >
+    <>
+      {' '}
+      <Header />
+      <RouterProfile />
+      <section
+        style={{
+          backgroundColor: '#F7F7F7',
+          width: '100%',
+          minHeight: '68vh',
+          zIndex: 20,
+        }}
+      >
+        {userData ? (
+          <ProfileCard user={userData} userId={session.user.id} />
+        ) : (
           <div
             style={{
               display: 'flex',
@@ -81,11 +83,21 @@ const Profile: React.FC = () => {
               height: '100vh',
             }}
           >
-            <BeatLoader color="#DE225C" />
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh',
+              }}
+            >
+              <BeatLoader color="#DE225C" />
+            </div>
           </div>
-        </div>
-      )}
-    </section>
+        )}
+      </section>
+      <Footer />
+    </>
   );
 };
 

@@ -1,13 +1,57 @@
 @import '@/styles/_mixins.scss';
 @import '@/styles/_colors.scss';
 
-.authorized{
-    display:flex;
-    text-decoration:none;
-    gap:16px;
-    align-items: center;
-}
-.link{
+.authorized {
+  display: none;
+
+  @include tabletAndBeyondView() {
+    display: flex;
     text-decoration: none;
-    color:#000
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.link {
+  text-decoration: none;
+  color: #222;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.mobileAuthorized {
+  display: flex;
+
+  @include tabletAndBeyondView() {
+    display: none;
+  }
+}
+
+.desktopSignUp {
+  display: none;
+
+  @include tabletAndBeyondView() {
+    display: block;
+  }
+}
+
+.mobileSignUp {
+  display: block;
+
+  @include tabletAndBeyondView() {
+    display: none;
+  }
+}
+
+.mobileSignButton {
+  background-color: transparent;
+  border: none;
+  color: #222;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
 }
