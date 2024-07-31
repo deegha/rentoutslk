@@ -21,34 +21,49 @@ export const SignModal = () => {
   return (
     <div>
       {session ? (
-        <div className={styles.authorized}>
-          <div>
+        <>
+          <div className={styles.authorized}>
+            <div>
+              <Link href={'/profile'} className={styles.link}>
+                <span>Profile</span>
+              </Link>
+            </div>
+            <Button
+              text="Log out"
+              bgColor="#000"
+              textColor="#fff"
+              padding="10px"
+              borderRadius="4px"
+              fontWeight="600"
+              onClick={() => signOut()}
+            />
+          </div>
+          <div className={styles.mobileAuthorized}>
             <Link href={'/profile'} className={styles.link}>
               <span>Profile</span>
             </Link>
           </div>
-          <Button
-            text="Sign Out"
-            bgColor="#000"
-            textColor="#fff"
-            padding="10px"
-            borderRadius="4px"
-            fontWeight="600"
-            onClick={() => signOut()}
-          />
-        </div>
+        </>
       ) : (
         <>
-          <Button
-            text="Sign In"
-            bgColor="#000"
-            textColor="#fff"
-            padding="10px"
-            borderRadius="4px"
-            fontWeight="600"
-            onClick={openModal}
-          />
-          <MultiStepForm isOpen={isModalOpen} onRequestClose={closeModal} />
+          <div className={styles.desktopSignUp}>
+            <Button
+              text="Sign up"
+              bgColor="#000"
+              textColor="#fff"
+              padding="10px"
+              borderRadius="4px"
+              fontWeight="600"
+              onClick={openModal}
+            />
+            <MultiStepForm isOpen={isModalOpen} onRequestClose={closeModal} />
+          </div>
+          <div className={styles.mobileSignUp}>
+            <button className={styles.mobileSignButton} onClick={openModal}>
+              Log in
+            </button>
+            <MultiStepForm isOpen={isModalOpen} onRequestClose={closeModal} />
+          </div>
         </>
       )}
     </div>

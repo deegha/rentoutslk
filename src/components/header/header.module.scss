@@ -48,7 +48,7 @@
   font-weight: 600;
   line-height: 19.36px;
   display: none;
-  @include desktopAndBeyondView() {
+  @include tabletAndBeyondView() {
     display: block;
   }
 }
@@ -57,13 +57,9 @@
   display: none;
 
   @include tabletAndBeyondView() {
-    display: none;
-  }
-
-  @include desktopAndBeyondView() {
     display: flex;
     flex-direction: row;
-    gap: 24px;
+    gap: 20px;
     align-items: center;
   }
 }
@@ -111,4 +107,47 @@
     font-weight: 600;
     line-height: 19.36px;
   }
+}
+
+.mobileSignBlock {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+
+  @include tabletAndBeyondView() {
+    display: none;
+  }
+}
+
+.mobileHeaderMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: absolute;
+  padding: 20px 26px;
+  top: 99px;
+  width: 100%;
+  height: auto;
+  background-color: $secondary-bg-color;
+  z-index: 50;
+
+  @include tabletAndBeyondView() {
+    padding: 20px 72px;
+  }
+}
+
+.mobileMenuLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.mobileMenuLink {
+  color: #222;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
 }
