@@ -1,18 +1,29 @@
 import React from 'react';
 // import { redirect } from 'next/navigation';
-// import { auth } from '@/auth';
+import { auth } from '@/auth';
 // import { InAuthed } from '@/components';
+import { Header, RouterProfile, Footer, InAuthed } from '@/components';
+import { CustomSession } from '@/interface/session';
 
 const TourRequst: React.FC = async () => {
-  // const session = (await auth()) as CustomSession | null;
+  const session = (await auth()) as CustomSession | null;
 
-  //  if (!session) {
-  //    return <InAuthed/> ;
-  //  }
+  if (!session) {
+    return (
+      <>
+        <Header />
+        <RouterProfile />
+        <InAuthed />
+        <Footer />
+      </>
+    );
+  }
   // const userId = session.user.id;
   // const userData = await fetchUserData(userId);
   return (
     <>
+      <Header />
+      <RouterProfile />
       <div>
         <section>
           <h1>Profile</h1>
@@ -48,6 +59,7 @@ const TourRequst: React.FC = async () => {
           <button onClick={handleLogout}>Logout</button> */}
         </section>
       </div>
+      <Footer />
     </>
   );
 };
