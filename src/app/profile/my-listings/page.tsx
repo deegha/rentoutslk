@@ -1,58 +1,63 @@
 import React from 'react';
 import { auth } from '@/auth';
-import { Footer, Header, InAuthed, RouterProfile } from '@/components';
 import { CustomSession } from '@/interface/session';
+import {
+  Header,
+  RouterProfile,
+  Footer,
+  InAuthed,
+  CheckListings,
+} from '@/components';
+import { PropertyProps } from '@/interface/property';
 
-const Listinigs: React.FC = async () => {
-  const session = (await auth()) as CustomSession | null;
-  // const { data: session, status, update } = useSession();
+const CheckListingsPage = async () => {
+  const session = (await auth()) as CustomSession;
 
-  if (!session) {
-    return <InAuthed />;
+  if (!session || !session.user) {
+    return (
+      <>
+        <Header />
+        <RouterProfile />
+        <InAuthed />
+        <Footer />
+      </>
+    );
   }
-  // const userId = session.user.id;
-  // const userData = await fetchUserData(userId);
-  // const user = session.user;
+
+  const response = await fetch(
+    `${process.env.NEXTAUTH_URL}/api/check-listings`,
+    {
+      headers: {
+        Authorization: `Bearer ${session.user.idToken}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    console.error('Failed to fetch listings');
+    return <p>Failed to fetch listings.</p>;
+  }
+
+  const data = await response.json();
+  const listings: PropertyProps[] = data.listings;
+
   return (
     <>
       <Header />
       <RouterProfile />
-      <section>
-        <h1>Profile</h1>
-        {/* <p>User Name: {user?.name}</p>
-          <p>User Email: {user?.email}</p> */}
-        <div>
-          <label>
-            Name:
-            <input type="text" />
-          </label>
-        </div>
-        <div>
-          <label>
-            Phone Number:
-            {/* <input
-            type="text"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-          /> */}
-          </label>
-        </div>
-        <div>
-          <label>
-            City:
-            {/* <input
-            type="text"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-          /> */}
-          </label>
-        </div>
-        {/* <button onClick={handleUpdateProfile}>Update Profile</button>
-          <button onClick={handleLogout}>Logout</button> */}
-      </section>
+      <div
+        style={{
+          backgroundColor: '#F7F7F7',
+          width: '100%',
+          minHeight: '70vh',
+          zIndex: 20,
+        }}
+      >
+        <CheckListings listings={listings} idToken={session.user.idToken} />
+      </div>
       <Footer />
     </>
   );
 };
 
-export default Listinigs;
+export default CheckListingsPage;

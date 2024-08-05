@@ -11,14 +11,46 @@ import Bedrooms from '@/icons/bedrooms.svg';
 import Type from '@/icons/type.svg';
 import Fav from '@/icons/heart_gray.svg';
 import Arrow from '@/icons/arrow_next.svg';
-
 interface ApartmentsCardProps {
+  address: string;
+  availableFrom?: string;
+  deposit?: string;
+  floorArea: string;
+  propertyType: string;
+  monthlyRent: string;
+  title: string;
+  image1: string;
+  image2: string;
+  image3?: string;
+  image4?: string;
+  image5?: string;
+  image6?: string;
+  image7?: string;
+  image8?: string;
+  image9?: string;
+  numberBedrooms: string;
+  createdAt: string;
+}
+interface ApartmentsCardProp {
   showBestOffer: boolean;
+  listing: ApartmentsCardProps;
 }
 
-export const ApartmentsCard: React.FC<ApartmentsCardProps> = ({
+export const ApartmentsCard: React.FC<ApartmentsCardProp> = ({
   showBestOffer,
+  listing,
 }) => {
+  const {
+    address,
+    // availableFrom,
+    title,
+    propertyType,
+    monthlyRent,
+    // image1,
+    // image2,
+    floorArea,
+    numberBedrooms,
+  } = listing;
   const PrevArrow = (
     <div className="prevArrowBlock">
       <Arrow className="prevArrow" />
@@ -89,30 +121,28 @@ export const ApartmentsCard: React.FC<ApartmentsCardProps> = ({
       <div className={styles.cardDetailsBlock}>
         <div className={styles.cardDescBlock}>
           <a href="/" className={styles.cardPrice}>
-            54 244 Re
+            {monthlyRent}
           </a>
           <a href="/" className={styles.cardTitle}>
-            Sunny Deck Neightbourhood in Colombo South-East
+            {title}
           </a>
-          <p className={styles.cardLocation}>
-            12 Thorakolayaya, Middeniya Road
-          </p>
+          <p className={styles.cardLocation}>{address}</p>
         </div>
         <div className={styles.featuresBlock}>
           <div className={styles.featuresItem}>
             <Size />
             <p className={styles.featuresTitle}>Size</p>
-            <p className={styles.featuresDesc}>65 m2</p>
+            <p className={styles.featuresDesc}>{floorArea} m2</p>
           </div>
           <div className={styles.featuresItem}>
             <Bedrooms />
             <p className={styles.featuresTitle}>Bedrooms</p>
-            <p className={styles.featuresDesc}>3</p>
+            <p className={styles.featuresDesc}>{numberBedrooms}</p>
           </div>
           <div className={styles.featuresItem}>
             <Type />
             <p className={styles.featuresTitle}>Type</p>
-            <p className={styles.featuresDesc}>Apartment</p>
+            <p className={styles.featuresDesc}>{propertyType}</p>
           </div>
         </div>
         <div className={styles.showAll}>

@@ -8,6 +8,9 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
+  getIdToken,
+  onAuthStateChanged,
+  User,
 } from 'firebase/auth';
 import {
   collection,
@@ -20,6 +23,21 @@ import {
 } from 'firebase/firestore';
 import { getCustomToken } from '@/firebase/firebaseAdmin';
 import { CustomSession, UserRent } from '@/interface/session';
+
+const checkFirebaseAuth = async (): Promise<User | null> => {
+  return new Promise((resolve) => {
+    onAuthStateChanged(authFirebase, (user) => {
+      resolve(user || null);
+    });
+  });
+};
+
+const refreshFirebaseToken = async (user: User) => {
+  if (user) {
+    return await user.getIdToken(true);
+  }
+  return null;
+};
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -50,6 +68,7 @@ export const authOptions: NextAuthOptions = {
                 password,
               );
               const user = userCredential.user;
+              const idToken = await getIdToken(user, true);
 
               const docSnap = querySnapshot.docs[0];
               const userRef = doc(db, 'users', docSnap.id);
@@ -57,7 +76,7 @@ export const authOptions: NextAuthOptions = {
 
               const userDoc = { id: docSnap.id, ...docSnap.data() };
               const customToken = await getCustomToken(user.uid);
-              return { ...userDoc, customToken };
+              return { ...userDoc, customToken, idToken };
             } catch (signInError) {
               console.error('Error signing in:', signInError);
               return null;
@@ -70,6 +89,7 @@ export const authOptions: NextAuthOptions = {
                 password,
               );
               const newUser = userCredential.user;
+              const idToken = await getIdToken(newUser, true);
 
               const userRef = await addDoc(collection(db, 'users'), {
                 email: newUser.email,
@@ -84,7 +104,7 @@ export const authOptions: NextAuthOptions = {
                 uid: newUser.uid,
               };
               const customToken = await getCustomToken(newUser.uid);
-              return { ...userDoc, customToken };
+              return { ...userDoc, customToken, idToken };
             } catch (createUserError) {
               console.error('Error creating user:', createUserError);
               return null;
@@ -109,7 +129,22 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }: { token: JWT; user?: UserRent }) {
       if (user) {
         token.id = user.id;
-        token.customToken = (user as UserRent).customToken;
+        token.customToken = user.customToken;
+        token.idToken = user.idToken;
+        token.idTokenExpires = Math.floor(Date.now() / 1000) + 60 * 60; // 1 hour
+      }
+
+      if (
+        token.idTokenExpires &&
+        Math.floor(Date.now() / 1000) > token.idTokenExpires
+      ) {
+        const firebaseUser = await checkFirebaseAuth();
+        if (firebaseUser) {
+          token.idToken = await refreshFirebaseToken(firebaseUser);
+          token.idTokenExpires = Math.floor(Date.now() / 1000) + 60 * 60;
+        } else {
+          token = null;
+        }
       }
       return token;
     },
@@ -117,6 +152,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = token.id as string;
         session.user.customToken = token.customToken as string;
+        session.user.idToken = token.idToken as string;
       }
       return session;
     },

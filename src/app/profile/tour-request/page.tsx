@@ -1,25 +1,23 @@
 import React from 'react';
-import { auth } from '@/auth';
-import { Footer, Header, InAuthed, RouterProfile } from '@/components';
-import { CustomSession } from '@/interface/session';
+// import { redirect } from 'next/navigation';
+// import { auth } from '@/auth';
+// import { InAuthed } from '@/components';
 
-const TourRequest: React.FC = async () => {
-  const session = (await auth()) as CustomSession | null;
-  // const { data: session, status, update } = useSession();
+const TourRequst: React.FC = async () => {
+  // const session = (await auth()) as CustomSession | null;
 
-  if (!session) {
-    return <InAuthed />;
-  }
+  //  if (!session) {
+  //    return <InAuthed/> ;
+  //  }
   // const userId = session.user.id;
   // const userData = await fetchUserData(userId);
   // const user = session.user;
   return (
     <>
-      <Header />
-      <RouterProfile />
-      <section>
-        <h1>Profile</h1>
-        {/* <p>User Name: {user?.name}</p>
+      <div>
+        <section>
+          <h1>Profile</h1>
+          {/* <p>User Name: {user?.name}</p>
           <p>User Email: {user?.email}</p> */}
         <div>
           <label>
@@ -49,8 +47,8 @@ const TourRequest: React.FC = async () => {
         </div>
         {/* <button onClick={handleUpdateProfile}>Update Profile</button>
           <button onClick={handleLogout}>Logout</button> */}
-      </section>
-      <Footer />
+        </section>
+      </div>
     </>
   );
 };

@@ -6,6 +6,7 @@ import Instagram from '@/icons/ig.svg';
 import Facebook from '@/icons/fb.svg';
 import X from '@/icons/x.svg';
 import Heart from '@/icons/heart.svg';
+import Link from 'next/link';
 
 export const Footer = () => {
   return (
@@ -38,9 +39,9 @@ export const Footer = () => {
           </div>
         </div>
         <div className={styles.linksContainer}>
-          <a href="/">
+          <Link href="/">
             <Logo />
-          </a>
+          </Link>
           <div className={styles.linksBlock}>
             <a href="">
               <Instagram />

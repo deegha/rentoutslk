@@ -2,79 +2,55 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import {
-  ProfileCard,
-  InAuthed,
-  Footer,
-  Header,
-  RouterProfile,
-} from '@/components';
+import { ProfileCard, InAuthed } from '@/components';
 import BeatLoader from 'react-spinners/BeatLoader';
 
 const fetchUserData = async (userId: string) => {
-  const response = await fetch(`/api/get-user?id=${userId}`);
+  const response = await fetch(
+    `${process.env.NEXTAUTH_URL}/api/get-user?id=${userId}`,
+  );
   if (!response.ok) {
     throw new Error('Failed to fetch user data');
   }
   return await response.json();
 };
 
-const Profile: React.FC = () => {
-  const { data: session } = useSession();
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
+const ProfilePage = async () => {
+  const session = (await auth()) as CustomSession;
 
-  useEffect(() => {
-    const loadUserData = async () => {
-      if (session?.user?.id) {
-        try {
-          const userId = session.user.id;
-          const data = await fetchUserData(userId);
-          setUserData(data);
-        } catch (error) {
-          console.error('Failed to fetch user data', error);
-        }
-      }
-      setLoading(false);
-    };
-    loadUserData();
-  }, [session]);
-
-  if (loading) {
+  if (!session || !session.user || !session.user.id) {
     return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-        }}
-      >
-        <BeatLoader color="#DE225C" />
-      </div>
+      <>
+        <Header />
+        <RouterProfile />
+        <InAuthed />
+        <Footer />
+      </>
     );
   }
 
-  if (!session || !session.user || !session.user.id) {
-    return <InAuthed />;
-  }
+  const userData = await fetchUserData(session.user.id);
 
   return (
-    <>
-      {' '}
-      <Header />
-      <RouterProfile />
-      <section
-        style={{
-          backgroundColor: '#F7F7F7',
-          width: '100%',
-          minHeight: '68vh',
-          zIndex: 20,
-        }}
-      >
-        {userData ? (
-          <ProfileCard user={userData} userId={session.user.id} />
-        ) : (
+    <section
+      style={{
+        backgroundColor: '#F7F7F7',
+        width: '100%',
+        minHeight: '68vh',
+        zIndex: 20,
+      }}
+    >
+      {userData ? (
+        <ProfileCard user={userData} userId={session.user.id} />
+      ) : (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+          }}
+        >
           <div
             style={{
               display: 'flex',
@@ -83,22 +59,12 @@ const Profile: React.FC = () => {
               height: '100vh',
             }}
           >
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100vh',
-              }}
-            >
-              <BeatLoader color="#DE225C" />
-            </div>
+            <BeatLoader color="#DE225C" />
           </div>
-        )}
-      </section>
-      <Footer />
-    </>
+        </div>
+      )}
+    </section>
   );
 };
 
-export default Profile;
+export default ProfilePage;
