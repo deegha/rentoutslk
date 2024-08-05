@@ -40,7 +40,6 @@ const ProfilePage = async () => {
     <>
       <Header />
       <RouterProfile />
-
       <section
         style={{
           backgroundColor: '#F7F7F7',
@@ -73,8 +72,7 @@ const ProfilePage = async () => {
           </div>
         )}
       </section>
-
-      <Footer />
+    <Footer />
     </>
   );
 };
