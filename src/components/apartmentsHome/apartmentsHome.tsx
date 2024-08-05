@@ -2,7 +2,7 @@ import React from 'react';
 
 import styles from './apartmentsHome.module.scss';
 
-import { ApartmentsList } from '@/components';
+// import { ApartmentsList } from '@/components';
 
 export const ApartmentsHome = () => {
   return (
@@ -14,7 +14,7 @@ export const ApartmentsHome = () => {
           tour.
         </p>
       </div>
-      <ApartmentsList
+      {/* <ApartmentsList
         showBestOffer={true}
         buttonText="Show more"
         buttonTextColor="#222222"
@@ -23,7 +23,7 @@ export const ApartmentsHome = () => {
         buttonBorderRadius="4px"
         buttonBgColor="#ffffff"
         buttonBorderColor="#222222"
-      />
+      /> */}
     </section>
   );
 };
