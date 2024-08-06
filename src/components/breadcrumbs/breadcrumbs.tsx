@@ -46,10 +46,13 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
                 {category.name}
               </p>
             )}
-            {index < categories.length - 1 && <Arrow />}
+            {index < categories.length - 1 && (
+              <Arrow className={styles.arrow} />
+            )}
           </React.Fragment>
         ))}
       </div>
+      <hr className={styles.hr} />
     </section>
   );
 };

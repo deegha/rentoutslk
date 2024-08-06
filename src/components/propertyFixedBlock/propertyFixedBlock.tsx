@@ -1,9 +1,20 @@
+'use client';
 import React from 'react';
 import { Button } from '@/components';
 
 import styles from './propertyFixedBlock.module.scss';
 
-export const PropertyFixedBlock = () => {
+interface PropertyFixedProps {
+  setIsModalOpen: (_value: boolean) => void;
+}
+
+export const PropertyFixedBlock: React.FC<PropertyFixedProps> = ({
+  setIsModalOpen,
+}) => {
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
   return (
     <div className={styles.fixedBlock}>
       <div className={styles.fixedContainer}>
@@ -22,6 +33,7 @@ export const PropertyFixedBlock = () => {
             padding="14.5px 28px"
             borderRadius="4px"
             fontWeight="600"
+            onClick={handleOpenModal}
           />
         </div>
       </div>
