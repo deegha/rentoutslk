@@ -1,9 +1,14 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { ProfileCard, InAuthed } from '@/components';
+import React from 'react';
+import {
+  ProfileCard,
+  InAuthed,
+  Header,
+  RouterProfile,
+  Footer,
+} from '@/components';
 import BeatLoader from 'react-spinners/BeatLoader';
+import { auth } from '@/auth';
+import { CustomSession } from '@/interface/session';
 
 const fetchUserData = async (userId: string) => {
   const response = await fetch(
@@ -32,25 +37,21 @@ const ProfilePage = async () => {
   const userData = await fetchUserData(session.user.id);
 
   return (
-    <section
-      style={{
-        backgroundColor: '#F7F7F7',
-        width: '100%',
-        minHeight: '68vh',
-        zIndex: 20,
-      }}
-    >
-      {userData ? (
-        <ProfileCard user={userData} userId={session.user.id} />
-      ) : (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100vh',
-          }}
-        >
+    <>
+      <Header />
+      <RouterProfile />
+
+      <section
+        style={{
+          backgroundColor: '#F7F7F7',
+          width: '100%',
+          minHeight: '68vh',
+          zIndex: 20,
+        }}
+      >
+        {userData ? (
+          <ProfileCard user={userData} userId={session.user.id} />
+        ) : (
           <div
             style={{
               display: 'flex',
@@ -59,11 +60,22 @@ const ProfilePage = async () => {
               height: '100vh',
             }}
           >
-            <BeatLoader color="#DE225C" />
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh',
+              }}
+            >
+              <BeatLoader color="#DE225C" />
+            </div>
           </div>
-        </div>
-      )}
-    </section>
+        )}
+      </section>
+
+      <Footer />
+    </>
   );
 };
 
