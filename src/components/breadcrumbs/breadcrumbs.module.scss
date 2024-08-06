@@ -3,6 +3,11 @@
 
 .container {
   background-color: $secondary-bg-color;
+  padding-bottom: 24px;
+
+  @include tabletAndBeyondView() {
+    padding: 0;
+  }
 }
 
 .wrapper {
@@ -13,8 +18,21 @@
   padding: 12px 24px;
   max-width: 1920px;
   margin: 0 auto;
-  @include desktopAndBeyondView() {
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @include tabletAndBeyondView() {
+    border-bottom: none;
     padding: 12px 80px;
+    overflow-x: initial;
+    white-space: normal;
   }
 }
 
@@ -25,6 +43,7 @@
   font-weight: 400;
   line-height: 15.73px;
   text-align: left;
+  flex-shrink: 0;
 }
 
 .categoryActive {
@@ -34,4 +53,22 @@
   font-weight: 600;
   line-height: 15.73px;
   text-align: left;
+  flex-shrink: 0;
+}
+
+.arrow {
+  min-width: 12px;
+  min-height: 12px;
+}
+
+.hr {
+  border: none; 
+  border-top: 1px solid #d3d3d3; 
+  margin: 0 auto; 
+  height: 1px; 
+  background-color: #d3d3d3;
+
+  @include tabletAndBeyondView() {
+    display: none;
+  }
 }

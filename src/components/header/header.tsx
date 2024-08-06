@@ -29,7 +29,9 @@ export const Header = () => {
             alt="Logo"
           />
         </Link>
-        <div className={styles.list}>List your property</div>
+        <Link href={'/add-your-apartment'} className={styles.list}>
+          List your property
+        </Link>
         <div className={styles.signBlock}>
           <a className={styles.favorite}>
             <Favorite />

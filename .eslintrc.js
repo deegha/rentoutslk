@@ -45,6 +45,7 @@ module.exports = {
         objectLiteralTypeAssertions: 'never',
       },
     ],
+    '@typescript-eslint/no-explicit-any': 'off', // Allow usage of 'any' type
     // React rules
     'react/jsx-fragments': ['warn', 'syntax'], // Shorthand syntax for React fragments
     'react/jsx-filename-extension': [
