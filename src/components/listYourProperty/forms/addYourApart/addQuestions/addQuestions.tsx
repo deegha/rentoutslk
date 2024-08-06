@@ -59,7 +59,7 @@ export const AddQuestions = () => {
           option={firstQuestion}
           errors={errors}
           label={`Select a question from the list`}
-          name={'questions'}
+          name={'firstQuestion'}
         />
       </div>
       <div className={styles.questionBlock}>
@@ -69,7 +69,7 @@ export const AddQuestions = () => {
           option={secondQuestion}
           errors={errors}
           label={`Select a question from the list`}
-          name={'questions'}
+          name={'secondQuestion'}
         />
       </div>
       <Textarea

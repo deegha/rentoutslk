@@ -121,7 +121,7 @@ export const ApartmentsCard: React.FC<ApartmentsCardProp> = ({
       <div className={styles.cardDetailsBlock}>
         <div className={styles.cardDescBlock}>
           <a href="/" className={styles.cardPrice}>
-            {monthlyRent}
+            {monthlyRent} Re
           </a>
           <a href="/" className={styles.cardTitle}>
             {title}

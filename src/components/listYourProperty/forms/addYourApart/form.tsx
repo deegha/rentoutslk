@@ -104,9 +104,7 @@ export const MultiStepFormApparts = () => {
     <div className={styles.form}>
       {step === 0 && (
         <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(onSubmitDetails, handleFormError)}
-          >
+          <form onSubmit={methods.handleSubmit(onSubmitDetails)}>
             <PropertyLayout
               breadcrumbs={
                 <Breadcrumbs
@@ -130,12 +128,7 @@ export const MultiStepFormApparts = () => {
       )}
       {step === 1 && (
         <FormProvider {...imageMethods}>
-          <form
-            onSubmit={imageMethods.handleSubmit(
-              onSubmitImages,
-              handleFormError,
-            )}
-          >
+          <form onSubmit={imageMethods.handleSubmit(onSubmitImages)}>
             <PropertyAddImage
               breadcrumbs={
                 <Breadcrumbs
@@ -159,12 +152,7 @@ export const MultiStepFormApparts = () => {
       )}
       {step === 2 && (
         <FormProvider {...questionsMethods}>
-          <form
-            onSubmit={questionsMethods.handleSubmit(
-              onSubmitQuestions,
-              handleFormError,
-            )}
-          >
+          <form onSubmit={questionsMethods.handleSubmit(onSubmitQuestions)}>
             <PropertyAddQuestions
               breadcrumbs={
                 <Breadcrumbs
