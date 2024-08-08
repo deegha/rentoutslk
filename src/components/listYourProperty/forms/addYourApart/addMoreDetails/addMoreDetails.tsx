@@ -28,24 +28,24 @@ const typeOfAppart = [
 ];
 const typeOfRent = [
   { label: 'Unlimited', value: 'unlimited' },
-  { label: '1 Month', value: 'OneMonth' },
-  { label: '3 Month', value: 'ThreeMonth' },
-  { label: '6 Month', value: 'SixMonth' },
-  { label: '1 Year', value: 'OneYear' },
+  { label: '1 Month', value: '1 Month' },
+  { label: '3 Month', value: '3 Month' },
+  { label: '6 Month', value: '6 Month' },
+  { label: '1 Year', value: '1 Year' },
 ];
 const numbersOfBedrooms = [
-  { label: '1', value: 'OneBedrooms' },
-  { label: '2', value: 'TwoBedrooms' },
-  { label: '3', value: 'ThreeBedrooms' },
-  { label: '4', value: 'FourthBedrooms' },
-  { label: '5', value: 'FiveBedrooms' },
+  { label: '1', value: '1' },
+  { label: '2', value: '2' },
+  { label: '3', value: '3' },
+  { label: '4', value: '4' },
+  { label: '5', value: '5' },
 ];
 const numbersOfBathrooms = [
-  { label: '1', value: 'OneBathrooms' },
-  { label: '2', value: 'TwoBathrooms' },
-  { label: '3', value: 'ThreeBBathrooms' },
-  { label: '4', value: 'FourthBathrooms' },
-  { label: '5', value: 'FiveBathrooms' },
+  { label: '1', value: '1' },
+  { label: '2', value: '2' },
+  { label: '3', value: '3' },
+  { label: '4', value: '4' },
+  { label: '5', value: '5' },
 ];
 
 export const AddMoreDetails = () => {
@@ -64,15 +64,15 @@ export const AddMoreDetails = () => {
             {...register('address')}
             placeholder={'Address'}
             label={'Address'}
-            name={'Address'}
+            name={'address'}
             classNameContainer={styles.apartTitleContainer}
             required
           />
           <InputApart
-            {...register('apartTitle')}
+            {...register('title')}
             placeholder={'e. g. 3 Br Apartment in Havelock city'}
             label={'Apartment title'}
-            name={'apartmenttitle'}
+            name={'title'}
             classNameContainer={styles.apartTitleContainer}
             className={styles.apartTitle}
             required
@@ -87,21 +87,21 @@ export const AddMoreDetails = () => {
             option={typeOfAppart}
             errors={errors}
             label={`Property type`}
-            name={'typeOfAppart'}
+            name={'propertyType'}
           />
           <SelectInput
             control={control}
             option={typeOfRent}
             errors={errors}
             label={`Rental period`}
-            name={`typeOfRent`}
+            name={`rentalPeriod`}
             isDefaultOption
           />
           <InputApart
-            {...register('monthlyPrice')}
+            {...register('monthlyRent')}
             placeholder={'54 244 Re'}
             label={'Monthly rent'}
-            name={'monthlyPrice'}
+            name={'monthlyRent'}
             classNameContainer={styles.apartTitleContainer}
             className={styles.apartTitle}
             required
@@ -122,14 +122,14 @@ export const AddMoreDetails = () => {
             option={numbersOfBedrooms}
             errors={errors}
             label={`Number of bedrooms`}
-            name={'numbersOfBedrooms'}
+            name={'numberBedrooms'}
           />
           <SelectInput
             control={control}
             option={numbersOfBathrooms}
             errors={errors}
             label={`Number of bathrooms`}
-            name={`numbersOfBathrooms`}
+            name={`numberBathrooms`}
           />
         </div>
         <div className={styles.generalInfoContainer}>
@@ -142,7 +142,11 @@ export const AddMoreDetails = () => {
             className={styles.apartTitle}
             required
           />
-          <DateSelect label="Available from*" fontWeight="400" />
+          <DateSelect
+            label="Available from*"
+            name="availableFrom"
+            register={register}
+          />
           <SelectInput
             control={control}
             option={[
@@ -157,7 +161,7 @@ export const AddMoreDetails = () => {
         </div>
       </div>
       <div className={styles.ameneties}>
-        <h3 className={styles.categoryTitle}>Add ameneties</h3>
+        <h3 className={styles.categoryTitle}>Add amenities</h3>
         <div className={styles.amenitiesContainer}>
           <AmenitiesItem image={<Parking />} title="Parking" />
           <AmenitiesItem image={<Pool />} title="Pool" />

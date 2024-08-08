@@ -14,7 +14,9 @@ if (!admin.apps.length) {
 
 export const firestore = admin.firestore();
 export const auth = admin.auth();
-
+export const verifyIdToken = (token: string) => {
+  return auth.verifyIdToken(token);
+};
 export const getCustomToken = async (uid: string) => {
   try {
     const customToken = await auth.createCustomToken(uid);

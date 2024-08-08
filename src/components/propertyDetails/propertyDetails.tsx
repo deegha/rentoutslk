@@ -236,21 +236,6 @@ export const PropertyDetails = () => {
                   </a>
                 </div>
               </Tooltip>
-              {/* <Tooltip
-                anchorSelect="#clickable-link"
-                id={`tooltip-share-link`}
-                style={{
-                  background: '#5E5E5E',
-                  color: '#fff',
-                  opacity: `1`,
-
-                  borderRadius: '12px',
-                  padding: '12px 12px',
-                  boxShadow: `0px 4px 18px 0px rgba(0, 0, 0, 0.17)`,
-                }}
-              >
-                <div>Copy Link</div>
-              </Tooltip> */}
             </div>
             <ul className={styles.descList}>
               <DescriptionItem name="Price:" value="54 244 Re/mo" />
@@ -270,7 +255,7 @@ export const PropertyDetails = () => {
         <div className={styles.mapBlock}>
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4716.148121078742!2d80.86475347010926!3d6.291039922933511!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae6ababfdfb95eb%3A0x9a48abdc3be10a2e!2zTWlkZGVuaXlhIFJkLCBFbWJpbGlwaXRpeWEsINCo0YDQuC3Qm9Cw0L3QutCw!5e0!3m2!1sru!2sua!4v1720551106085!5m2!1sru!2sua"
-            width="150%"
+            width="100%"
             height="280px"
             style={{ border: 0 }}
             allowFullScreen

@@ -1,11 +1,22 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { SignModal } from '@/components/auth';
-import styles from './header.module.scss';
-import Favorite from '@/icons/carbon_favorite.svg';
 
-export const Header = async () => {
+import styles from './header.module.scss';
+
+import Favorite from '@/icons/carbon_favorite.svg';
+import BurgerMenu from '@/icons/burger_menu.svg';
+import Close from '@/icons/header_close.svg';
+import VerticalVector from '@/icons/vertical_vector.svg';
+import { useSession, signOut } from 'next-auth/react';
+import { Button } from '../button';
+
+export const Header = () => {
+  const [mobileMenu, setMobileMenu] = useState(false);
+  const { data: session } = useSession();
+
   return (
     <header className={styles.header}>
       <nav className={styles.navBar}>
@@ -18,33 +29,84 @@ export const Header = async () => {
             alt="Logo"
           />
         </Link>
-        <div className={styles.list}>List your property</div>
+        <Link href={'/add-your-apartment'} className={styles.list}>
+          List your property
+        </Link>
         <div className={styles.signBlock}>
           <a className={styles.favorite}>
             <Favorite />
           </a>
-          {/* <pre>{JSON.stringify(session, null, 2)}</pre> */}
-
-          {/* <AuthButton className={styles.logIn} /> */}
-          {/* {!session ? (
-            <>
-              <Button
-                text="SIGN UP"
-
-                bgColor="#000"
-                textColor="#fff"
-                padding="10px"
-                borderRadius="4px"
-                fontWeight="600"
-              />
-            </>
-          ) : (
-             
-          )} */}
-
           <SignModal />
         </div>
+        <div className={styles.mobileSignBlock}>
+          <a className={styles.favorite}>
+            <Favorite />
+          </a>
+          <VerticalVector />
+          <SignModal />
+          <VerticalVector />
+          {mobileMenu ? (
+            <Close onClick={() => setMobileMenu(false)} />
+          ) : (
+            <BurgerMenu onClick={() => setMobileMenu(true)} />
+          )}
+        </div>
       </nav>
+      {mobileMenu && (
+        <div className={styles.mobileHeaderMenu}>
+          <div className={styles.mobileMenuLinks}>
+            <Link className={styles.mobileMenuLink} href={'/'}>
+              Home
+            </Link>
+            <Link className={styles.mobileMenuLink} href={'/rentals'}>
+              Search
+            </Link>
+            <Link className={styles.mobileMenuLink} href={'/add-your-apart'}>
+              List property
+            </Link>
+            <Link className={styles.mobileMenuLink} href={'/'}>
+              Blog
+            </Link>
+          </div>
+          <hr />
+          {session ? (
+            <div className={styles.mobileMenuLinks}>
+              {' '}
+              <Link className={styles.mobileMenuLink} href={'/profile'}>
+                My profile
+              </Link>
+              <Link
+                className={styles.mobileMenuLink}
+                href={'/profile/my-listings'}
+              >
+                My listings
+              </Link>
+              <Link
+                className={styles.mobileMenuLink}
+                href={'/profile/tour-request'}
+              >
+                My requests
+              </Link>
+              <div>
+                <Button
+                  text="Log out"
+                  bgColor="transparent"
+                  textColor="#222"
+                  padding="0px"
+                  borderRadius="0px"
+                  fontWeight="600"
+                  onClick={() => signOut()}
+                />
+              </div>
+            </div>
+          ) : (
+            <div>
+              {' '}
+              <SignModal />
+            </div>
+          )}
+        </div>
+      )}
     </header>
   );
 };

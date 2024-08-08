@@ -67,8 +67,29 @@ export const ApartmentsList: React.FC<ApartmentsListProps> = ({
     return null;
   }
 
+  const list = {
+    address: '',
+    availableFrom: '',
+    deposit: '',
+    floorArea: '',
+    propertyType: '',
+    monthlyRent: '',
+    title: '',
+    image1: '',
+    image2: '',
+    image3: '',
+    image4: '',
+    image5: '',
+    image6: '',
+    image7: '',
+    image8: '',
+    image9: '',
+    numberBedrooms: '',
+    createdAt: '',
+  };
+
   const cards = Array.from({ length: cardCount }, (_, index) => (
-    <ApartmentsCard key={index} showBestOffer={showBestOffer} />
+    <ApartmentsCard listing={list} key={index} showBestOffer={showBestOffer} />
   ));
 
   return (

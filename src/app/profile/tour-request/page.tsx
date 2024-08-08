@@ -3,7 +3,7 @@ import React from 'react';
 // import { auth } from '@/auth';
 // import { InAuthed } from '@/components';
 
-const TourRequst: React.FC = async () => {
+const TourRequest: React.FC = async () => {
   // const session = (await auth()) as CustomSession | null;
 
   //  if (!session) {
@@ -11,6 +11,7 @@ const TourRequst: React.FC = async () => {
   //  }
   // const userId = session.user.id;
   // const userData = await fetchUserData(userId);
+  // const user = session.user;
   return (
     <>
       <div>
@@ -52,4 +53,4 @@ const TourRequst: React.FC = async () => {
   );
 };
 
-export default TourRequst;
+export default TourRequest;

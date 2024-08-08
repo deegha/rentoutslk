@@ -51,7 +51,7 @@ export const DateSelect: React.FC<DateSelectProps> = ({
       </label>
       <Controller
         control={control}
-        name="dateAvailable"
+        name="availableFrom"
         render={({ field }) => (
           <>
             <input
@@ -70,8 +70,9 @@ export const DateSelect: React.FC<DateSelectProps> = ({
                   selected={selectedDate}
                   onSelect={(date: Date | undefined) => {
                     if (date) {
+                      const formattedDate = date.toISOString();
                       setSelectedDate(date);
-                      field.onChange(date);
+                      field.onChange(formattedDate);
                       setShowCalendar(false);
                     }
                   }}
