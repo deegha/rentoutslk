@@ -84,10 +84,6 @@ export const MultiStepFormApparts = () => {
 
   const nextStep = () => setStep((prev) => prev + 1);
 
-  // const handleFormError = (errors: any) => {
-  //   console.error('Form Errors:', errors);
-  // };
-
   const categories = [
     { name: 'Rentouts', href: '/' },
     { name: 'List property', href: '/add-your-apart' },

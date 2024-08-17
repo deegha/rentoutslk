@@ -165,15 +165,15 @@ export const AddMoreDetails = () => {
         <div className={styles.amenitiesContainer}>
           <AmenitiesItem image={<Parking />} title="Parking" />
           <AmenitiesItem image={<Pool />} title="Pool" />
-          <AmenitiesItem image={<HotWater />} title="Hot water" />
-          <AmenitiesItem image={<Tv />} title="TV" />
+          <AmenitiesItem image={<HotWater />} title="HotWater" />
+          <AmenitiesItem image={<Tv />} title="Tv" />
           <AmenitiesItem image={<Gym />} title="Gym" />
-          <AmenitiesItem image={<Electric />} title="Electric charger" />
+          <AmenitiesItem image={<Electric />} title="Electric" />
           <AmenitiesItem image={<Playground />} title="Playground" />
-          <AmenitiesItem image={<Conditioner />} title="Air conditioner" />
+          <AmenitiesItem image={<Conditioner />} title="Conditioner" />
           <AmenitiesItem image={<Microwave />} title="Microwave" />
-          <AmenitiesItem image={<Washing />} title="Washing machine" />
-          <AmenitiesItem image={<Cultery />} title="Culteries" />
+          <AmenitiesItem image={<Washing />} title="Washing" />
+          <AmenitiesItem image={<Cultery />} title="Cultery" />
           <AmenitiesItem image={<Elevator />} title="Elevator" />
         </div>
       </div>

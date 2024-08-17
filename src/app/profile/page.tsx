@@ -23,11 +23,11 @@ const fetchUserData = async (userId: string) => {
 const ProfilePage = async () => {
   const session = (await auth()) as CustomSession;
 
-  if (!session || !session.user || !session.user.id) {
+  if (!session || !session.user || Date.now() >= session.user.exp * 1000) {
     return (
       <>
         <Header />
-        <RouterProfile />
+        <RouterProfile isAdmin={false} />
         <InAuthed />
         <Footer />
       </>
@@ -39,7 +39,7 @@ const ProfilePage = async () => {
   return (
     <>
       <Header />
-      <RouterProfile />
+      <RouterProfile isAdmin={session.user.admin} />
       <section
         style={{
           backgroundColor: '#F7F7F7',
@@ -72,7 +72,7 @@ const ProfilePage = async () => {
           </div>
         )}
       </section>
-    <Footer />
+      <Footer />
     </>
   );
 };

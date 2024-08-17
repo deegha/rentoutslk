@@ -1,4 +1,6 @@
-import React, { ReactNode, useState } from 'react';
+'use client';
+import React, { ReactNode } from 'react';
+import { useFormContext } from 'react-hook-form';
 import styles from './addYourApart.module.scss';
 
 interface AmenitiesItemProps {
@@ -10,10 +12,11 @@ export const AmenitiesItem: React.FC<AmenitiesItemProps> = ({
   title,
   image,
 }) => {
-  const [checked, setChecked] = useState(false);
+  const { setValue, watch } = useFormContext();
+  const isChecked = watch(title.toLowerCase(), false);
 
   const handleCheckboxChange = () => {
-    setChecked(!checked);
+    setValue(title.toLowerCase(), !isChecked);
   };
 
   return (
@@ -21,17 +24,17 @@ export const AmenitiesItem: React.FC<AmenitiesItemProps> = ({
       <div className={styles.amenitiesImage}>{image}</div>
       <p className={styles.amenitiesTitle}>{title}</p>
       <div
-        className={`${styles.amenitiesCheckboxContainer} ${checked ? styles.checked : ''}`}
+        className={`${styles.amenitiesCheckboxContainer} ${isChecked ? styles.checked : ''}`}
         onClick={handleCheckboxChange}
       >
         <input
           className={styles.amenitiesCheckbox}
           type="checkbox"
-          checked={checked}
+          checked={isChecked}
           onChange={handleCheckboxChange}
         />
         <div className={styles.customCheckbox}>
-          {checked && (
+          {isChecked && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"

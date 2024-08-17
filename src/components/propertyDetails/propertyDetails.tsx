@@ -17,13 +17,41 @@ import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Navigation, Pagination, Thumbs } from 'swiper/modules';
 import { Swiper as SwiperType } from 'swiper';
+import Warning from '@/icons/warning.svg';
+import { formatDate } from '@/utils/formateData';
+import { PropertyProps } from '@/interface/property';
 
-export const PropertyDetails = () => {
+export const PropertyDetails = ({ property }: { property: PropertyProps }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.toString());
   };
+  const {
+    // image1,
+    // image5,
+    title,
+    floorArea,
+    // image8,
+    numberBedrooms,
+    // image2,
+    furnishing,
+    // rentalPeriod,
+    createdAt,
+    // image6,
+    propertyType,
+    // views,
+    // image7,
+    // customQuestion,
+    monthlyRent,
+    // image9,
+    // favorite,
+    address,
+    // image4,
+    status,
+    numberBathrooms,
+  } = property;
+  const formattedDate = formatDate(createdAt);
 
   return (
     <section className={styles.container}>
@@ -174,13 +202,8 @@ export const PropertyDetails = () => {
           </div>
           <div className={styles.textBlock}>
             <div className={styles.titleBlock}>
-              <h1 className={styles.title}>
-                Rent 3 bedroom apartment in Sunny Neighbourhood of 65 m2 in
-                Colombo
-              </h1>
-              <p className={styles.subtitle}>
-                12 Thorakolayaya, Middeniya Road
-              </p>
+              <h1 className={styles.title}>{title}</h1>
+              <p className={styles.subtitle}>{address}</p>
             </div>
             <div className={styles.btnBlock}>
               <div className={styles.btn} data-tooltip-id={`tooltip-save`}>
@@ -238,16 +261,22 @@ export const PropertyDetails = () => {
               </Tooltip>
             </div>
             <ul className={styles.descList}>
-              <DescriptionItem name="Price:" value="54 244 Re/mo" />
-              <DescriptionItem name="Floor area:" value="65 m2" />
-              <DescriptionItem name="Available from:" value="Now" />
-              <DescriptionItem name="Property type:" value="Apartment" />
-              <DescriptionItem name="Bedrooms:" value="3  bedrooms" />
-              <DescriptionItem name="Bathrooms:" value="1 bathroom" />
-              <DescriptionItem name="Furnished:" value="Yes" />
+              <DescriptionItem name="Price:" value={`${monthlyRent} Re/mo`} />
+              <DescriptionItem name="Floor area:" value={`${floorArea} m2`} />
+              <DescriptionItem name="Available from:" value={formattedDate} />
+              <DescriptionItem name="Property type:" value={propertyType} />
+              <DescriptionItem
+                name="Bedrooms:"
+                value={`${numberBedrooms} bedrooms`}
+              />
+              <DescriptionItem
+                name="Bathrooms:"
+                value={`${numberBathrooms} bathroom`}
+              />
+              <DescriptionItem name="Furnished:" value={furnishing} />
               <DescriptionItem
                 name="Verified by Rentouts:"
-                value={<Verified />}
+                value={status !== 'not verified' ? <Verified /> : <Warning />}
               />
             </ul>
           </div>

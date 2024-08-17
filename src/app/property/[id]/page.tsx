@@ -1,4 +1,4 @@
-'use client';
+import React from 'react';
 import {
   Header,
   Footer,
@@ -6,32 +6,37 @@ import {
   TrendingProperties,
   AboutProperty,
   PropertyDetails,
-  PropertyFixedBlock,
   Breadcrumbs,
-  TourRequestForm,
+  PropertyComponent,
 } from '@/components';
-import { useEffect, useState } from 'react';
+import { PropertyProps } from '@/interface/property';
 
-export default function Property() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+interface PropertyPageProps {
+  params: {
+    id: string;
+  };
+}
 
-  useEffect(() => {
-    if (isModalOpen) {
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
-    } else {
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
-    }
+async function fetchProperty(id: string): Promise<PropertyProps> {
+  const response = await fetch(
+    `${process.env.NEXTAUTH_URL}/api/check-property/${id}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
+  );
 
-    return () => {
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
-    };
-  }, [isModalOpen]);
+  if (!response.ok) {
+    throw new Error('Failed to fetch property data');
+  }
+
+  const property: PropertyProps = await response.json();
+  return property;
+}
+
+const PropertyPage = async ({ params }: PropertyPageProps) => {
+  const property = await fetchProperty(params.id);
 
   const categories = [
     { name: 'Rentouts', href: '/' },
@@ -39,32 +44,25 @@ export default function Property() {
     { name: 'Colombo', href: '' },
     { name: 'Apartment', href: '' },
     {
-      name: 'Rent 3 bedroom apartment in Sunny Neighbourhood of 65 m2 in Colombo',
-      href: `/property/1`,
+      name: property.title,
+      href: `/property/${params.id}`,
     },
   ];
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
-
+  console.log(property);
   return (
-    <>
-      {/* HEADER section - NAV Bar */}
+    <div>
       <Header />
-
       <main>
         <Breadcrumbs categories={categories} />
-        <PropertyDetails />
-        <AboutProperty />
+        <PropertyDetails property={property} />
+        <AboutProperty property={property} />
         <TrendingProperties />
         <LookingForProperty />
-        <PropertyFixedBlock setIsModalOpen={setIsModalOpen} />
+        <PropertyComponent />
       </main>
-
       <Footer />
-
-      {isModalOpen && <TourRequestForm handleCloseModal={handleCloseModal} />}
-    </>
+    </div>
   );
-}
+};
+
+export default PropertyPage;

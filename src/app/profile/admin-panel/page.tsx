@@ -1,60 +1,57 @@
-import React, { useState, useEffect } from 'react';
-import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
-import { db } from '@/firebase/config';
-import { useSession } from 'next-auth/react';
-import { Button } from '@/components';
+import React from 'react';
+import { auth } from '@/auth';
+import { CustomSession } from '@/interface/session';
+import { Header, RouterProfile, Footer, InAuthed } from '@/components';
+import { PropertyProps } from '@/interface/property';
+import { AdminPanel } from '@/components/profile/adminPanel/adminPanel';
 
-const AdminListings = () => {
-  const { data: session } = useSession();
-  const [listings, setListings] = useState([]);
+const AdminPanelPage = async () => {
+  const session = (await auth()) as CustomSession;
 
-  useEffect(() => {
-    const fetchListings = async () => {
-      const querySnapshot = await getDocs(collection(db, 'listings'));
-      const listingsData = querySnapshot.docs
-        .map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }))
-        .filter((listing) => listing.status === 'not verified');
-      setListings(listingsData);
-    };
-
-    fetchListings();
-  }, []);
-
-  const handleVerify = async (id: string) => {
-    const listingDoc = doc(db, 'listings', id);
-    await updateDoc(listingDoc, {
-      status: 'verified',
-    });
-
-    setListings((prevListings) =>
-      prevListings.filter((listing) => listing.id !== id),
+  if (!session || !session.user) {
+    return (
+      <>
+        <Header />
+        <RouterProfile isAdmin={false} />
+        <InAuthed />
+        <Footer />
+      </>
     );
-  };
-
-  if (!session || session.user.role !== 'admin') {
-    return <div>Access Denied</div>;
   }
 
+  const response = await fetch(
+    `${process.env.NEXTAUTH_URL}/api/check-listings/not-verifed`,
+    {
+      headers: {
+        Authorization: `Bearer ${session.user.idToken}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    console.error('Failed to fetch unverified listings');
+    return <p>Failed to fetch listings.</p>;
+  }
+
+  const data = await response.json();
+  const listings: PropertyProps[] = data.listings;
   return (
-    <div>
-      <h1>Admin Listings</h1>
-      {listings.length === 0 ? (
-        <p>No listings to verify</p>
-      ) : (
-        <ul>
-          {listings.map((listing) => (
-            <li key={listing.id}>
-              {listing.title} - {listing.status}
-              <Button onClick={() => handleVerify(listing.id)}>Verify</Button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <>
+      <Header />
+      <RouterProfile isAdmin={true} />
+      <div
+        style={{
+          backgroundColor: '#F7F7F7',
+          width: '100%',
+          minHeight: '70vh',
+          zIndex: 20,
+        }}
+      >
+        <AdminPanel listings={listings} idToken={session.user.idToken} />
+      </div>
+      <Footer />
+    </>
   );
 };
 
-export default AdminListings;
+export default AdminPanelPage;
