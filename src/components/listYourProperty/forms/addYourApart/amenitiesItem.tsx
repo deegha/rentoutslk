@@ -1,30 +1,24 @@
-import React, { ReactNode } from 'react';
-import { useController, Control } from 'react-hook-form';
+import React, { ReactNode, useState } from 'react';
 import styles from './addYourApart.module.scss';
+import { Control } from 'react-hook-form';
 
 interface AmenitiesItemProps {
   title: string;
   image: ReactNode;
-  name: string;
-  control: Control;
+  _name: string;
+  _control: Control;
 }
 
 export const AmenitiesItem: React.FC<AmenitiesItemProps> = ({
   title,
   image,
-  name,
-  control,
+  _name,
+  _control,
 }) => {
-  const {
-    field: { value, onChange },
-  } = useController({
-    name,
-    control,
-    defaultValue: false,
-  });
+  const [checked, setChecked] = useState(false);
 
   const handleCheckboxChange = () => {
-    onChange(!value);
+    setChecked(!checked);
   };
 
   return (
@@ -32,19 +26,17 @@ export const AmenitiesItem: React.FC<AmenitiesItemProps> = ({
       <div className={styles.amenitiesImage}>{image}</div>
       <p className={styles.amenitiesTitle}>{title}</p>
       <div
-        className={`${styles.amenitiesCheckboxContainer} ${
-          value ? styles.checked : ''
-        }`}
+        className={`${styles.amenitiesCheckboxContainer} ${checked ? styles.checked : ''}`}
         onClick={handleCheckboxChange}
       >
         <input
           className={styles.amenitiesCheckbox}
           type="checkbox"
-          checked={!!value}
+          checked={checked}
           onChange={handleCheckboxChange}
         />
         <div className={styles.customCheckbox}>
-          {value && (
+          {checked && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
