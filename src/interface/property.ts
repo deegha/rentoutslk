@@ -1,10 +1,10 @@
 export interface PropertyProps {
   address: string;
   availableFrom?: string;
-  deposit?: string;
+  deposit?: number;
   floorArea: string;
   propertyType: string;
-  monthlyRent: string;
+  monthlyRent: number;
   title: string;
   image1: string;
   image2: string;

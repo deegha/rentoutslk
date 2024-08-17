@@ -14,10 +14,10 @@ import Arrow from '@/icons/arrow_next.svg';
 interface ApartmentsCardProps {
   address: string;
   availableFrom?: string;
-  deposit?: string;
-  floorArea: string;
+  deposit?: number;
+  floorArea: number;
   propertyType: string;
-  monthlyRent: string;
+  monthlyRent: number;
   title: string;
   image1: string;
   image2: string;
@@ -28,7 +28,8 @@ interface ApartmentsCardProps {
   image7?: string;
   image8?: string;
   image9?: string;
-  numberBedrooms: string;
+  numberBedrooms: number;
+  numberBathrooms: number;
   createdAt: string;
 }
 interface ApartmentsCardProp {

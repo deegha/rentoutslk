@@ -4,14 +4,15 @@ import { useFormContext } from 'react-hook-form';
 import { PasswordExistFormValues, NewUserFormValues } from './types';
 import styles from './multistep-form.module.scss';
 import Warning from '@/icons/Circle_Warning.svg';
-import Close from 'icons/Close_MD.svg';
+import Close from '@/icons/Close_MD.svg';
 
 interface PasswordStepProps {
   emailExists: boolean;
   email: string;
-  onSubmit: (data: PasswordExistFormValues | NewUserFormValues) => void;
+  onSubmit: (_data: PasswordExistFormValues | NewUserFormValues) => void;
   onRequestClose: () => void;
   onBack: () => void;
+  onForgotPassword: () => void;
 }
 
 const PasswordStep: React.FC<PasswordStepProps> = ({
@@ -20,6 +21,7 @@ const PasswordStep: React.FC<PasswordStepProps> = ({
   onSubmit,
   onRequestClose,
   onBack,
+  onForgotPassword,
 }) => {
   const {
     register,
@@ -28,7 +30,10 @@ const PasswordStep: React.FC<PasswordStepProps> = ({
   } = useFormContext<PasswordExistFormValues | NewUserFormValues>();
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles.container}>
+    <form
+      onSubmit={handleSubmit((_data) => onSubmit(_data))}
+      className={styles.container}
+    >
       <div className={styles.header}>
         <div className={styles.closeIcone} onClick={onRequestClose}>
           <Close />
@@ -73,7 +78,7 @@ const PasswordStep: React.FC<PasswordStepProps> = ({
               <div className={styles.errorContainer}>
                 <Warning />
                 <p className={styles.errorPasswordMessage}>
-                  {errors.confirmPassword.message}
+                  {errors.confirmPassword?.message}
                 </p>
               </div>
             )}
@@ -84,9 +89,13 @@ const PasswordStep: React.FC<PasswordStepProps> = ({
         </button>
       </div>
       <div className={styles.formTextContainer}>
-        <a className={styles.formLinks} href="">
+        <button
+          type="button"
+          className={styles.forgotPassword}
+          onClick={onForgotPassword}
+        >
           Forgot your password?
-        </a>
+        </button>
       </div>
     </form>
   );

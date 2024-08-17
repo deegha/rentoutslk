@@ -1,9 +1,8 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useForm, FormProvider } from 'react-hook-form';
-
 import styles from './rentalFilters.module.scss';
-
 import { Button, CustomInput, CustomSelect, RangeSlider } from '@/components';
 import { AmenitiesItem } from '../listYourProperty/forms/addYourApart/amenitiesItem';
 import { DateSelect } from '../listYourProperty/forms/addYourApart/dateSelect';
@@ -16,17 +15,49 @@ import Gym from '@/icons/gym.svg';
 import Electric from '@/icons/electric.svg';
 import Filter from '@/icons/filter.svg';
 
-const typeOfRent = [
+const propertyType = [
   { label: 'All', value: 'all' },
-  { label: 'Apartments', value: 'apartments' },
-  { label: 'Studios', value: 'studios' },
-  { label: 'Houses', value: 'houses' },
+  { label: 'Apartments', value: 'Apartment' },
+  { label: 'Studios', value: 'Studio' },
+  { label: 'Houses', value: 'House' },
 ];
 
-export const RentalFilters: React.FC = () => {
-  const methods = useForm();
-  const [extraFilters, setExtraFilters] = useState(false);
+interface RentalFiltersProps {
+  filters: any;
+  onFilterChange: (_newFilters: any) => void;
+  _removeFilter?: (_filterName: string) => void;
+}
+
+export const RentalFilters: React.FC<RentalFiltersProps> = ({
+  filters,
+  onFilterChange,
+  _removeFilter,
+}) => {
+  const searchParams = useSearchParams();
+  const addressQuery = searchParams.get('address') || '';
+
   const [mobileFilters, setMobileFilters] = useState(false);
+  const [extraFilters, setExtraFilters] = useState(false);
+  const [tempBedrooms, setTempBedrooms] = useState({
+    min: filters.minBedrooms || 1,
+    max: filters.maxBedrooms || 8,
+  });
+
+  const [tempBathrooms, setTempBathrooms] = useState({
+    min: filters.minBathrooms || 1,
+    max: filters.maxBathrooms || 8,
+  });
+
+  const [tempAvailableFrom, setTempAvailableFrom] = useState<
+    string | undefined
+  >(filters.availableFrom || '');
+
+  const methods = useForm({
+    defaultValues: {
+      ...filters,
+      address: addressQuery,
+    },
+  });
 
   useEffect(() => {
     if (mobileFilters) {
@@ -40,9 +71,45 @@ export const RentalFilters: React.FC = () => {
     };
   }, [mobileFilters]);
 
+  // Эффект для автоматического запуска поиска при наличии address
+  useEffect(() => {
+    if (addressQuery) {
+      methods.handleSubmit(handleSubmit)();
+    }
+  }, [addressQuery]);
+
+  const handleSubmit = (data: any) => {
+    const adjustedFilters = {
+      ...data,
+      furnishing: data.furnishing ? 'Yes' : '',
+      minBedrooms: tempBedrooms.min,
+      maxBedrooms: tempBedrooms.max,
+      minBathrooms: tempBathrooms.min,
+      maxBathrooms: tempBathrooms.max,
+      availableFrom: tempAvailableFrom,
+    };
+    onFilterChange(adjustedFilters);
+    setMobileFilters(false);
+  };
+
+  const handleBedroomsChange = (min: number, max: number) => {
+    setTempBedrooms({ min, max });
+  };
+
+  const handleBathroomsChange = (min: number, max: number) => {
+    setTempBathrooms({ min, max });
+  };
+
+  const handleDateChange = (date: string) => {
+    setTempAvailableFrom(date);
+  };
+
   return (
     <FormProvider {...methods}>
-      <form className={styles.form}>
+      <form
+        className={styles.form}
+        onSubmit={methods.handleSubmit(handleSubmit)}
+      >
         <div className={styles.desktopContainer}>
           <div className={styles.filtersBlock}>
             <div className={styles.inputsBlock}>
@@ -50,15 +117,15 @@ export const RentalFilters: React.FC = () => {
                 control={methods.control}
                 errors={methods.formState.errors}
                 label="Location"
-                name="location"
+                name="address"
                 placeholder="|City, neighbourhood"
               />
               <CustomSelect
                 control={methods.control}
-                option={typeOfRent}
+                option={propertyType}
                 errors={methods.formState.errors}
                 label="Type"
-                name="typeOfRent"
+                name="propertyType"
                 isDefaultOption
               />
               <CustomInput
@@ -68,10 +135,16 @@ export const RentalFilters: React.FC = () => {
                 name="maxRent"
                 placeholder="|Max rent"
               />
-              <RangeSlider label="Number of bedrooms" />
+              <RangeSlider
+                label="Number of bedrooms"
+                minValue={tempBedrooms.min}
+                maxValue={tempBedrooms.max}
+                onChange={handleBedroomsChange}
+              />
             </div>
             <div className={styles.filterBtnBlock}>
               <Button
+                type="submit"
                 text="Search"
                 textColor="#FFFFFF"
                 bgColor="#222"
@@ -92,27 +165,68 @@ export const RentalFilters: React.FC = () => {
           <div className={styles.showOnly}>
             <label className={styles.checkboxContainer}>
               <span className={styles.checkboxLabel}>Show only furnished</span>
-              <input type="checkbox" className={styles.checkbox} />
+              <input
+                type="checkbox"
+                className={styles.checkbox}
+                {...methods.register('furnishing')}
+              />
             </label>
           </div>
           {extraFilters && (
             <div className={styles.extraFiltersBlock}>
               <div className={styles.extraFiltersRow}>
-                <RangeSlider label="Number of bathrooms" />
+                <RangeSlider
+                  label="Number of bathrooms"
+                  minValue={tempBathrooms.min}
+                  maxValue={tempBathrooms.max}
+                  onChange={handleBathroomsChange}
+                />
                 <div className={styles.amenitiesList}>
-                  <AmenitiesItem image={<Parking />} title="Parking" />
-                  <AmenitiesItem image={<Pool />} title="Pool" />
-                  <AmenitiesItem image={<HotWater />} title="Hot water" />
-                  <AmenitiesItem image={<Tv />} title="TV" />
-                  <AmenitiesItem image={<Gym />} title="Gym" />
+                  <AmenitiesItem
+                    image={<Parking />}
+                    title="Parking"
+                    name="amenities.parking"
+                    control={methods.control}
+                  />
+                  <AmenitiesItem
+                    image={<Pool />}
+                    title="Pool"
+                    name="amenities.pool"
+                    control={methods.control}
+                  />
+                  <AmenitiesItem
+                    image={<HotWater />}
+                    title="Hot water"
+                    name="amenities.hotWater"
+                    control={methods.control}
+                  />
+                  <AmenitiesItem
+                    image={<Tv />}
+                    title="TV"
+                    name="amenities.tv"
+                    control={methods.control}
+                  />
+                  <AmenitiesItem
+                    image={<Gym />}
+                    title="Gym"
+                    name="amenities.gym"
+                    control={methods.control}
+                  />
                   <AmenitiesItem
                     image={<Electric />}
                     title="Electric charger"
+                    name="amenities.electricCharger"
+                    control={methods.control}
                   />
                 </div>
               </div>
               <div className={styles.dateSelectBlock}>
-                <DateSelect label="Moving in from" fontWeight="600" />
+                <DateSelect
+                  name="availableFrom"
+                  onDateChange={handleDateChange}
+                  label="Moving in from"
+                  fontWeight="600"
+                />
               </div>
             </div>
           )}
@@ -149,15 +263,15 @@ export const RentalFilters: React.FC = () => {
                       control={methods.control}
                       errors={methods.formState.errors}
                       label="Location"
-                      name="location"
+                      name="address"
                       placeholder="|City, neighbourhood"
                     />
                     <CustomSelect
                       control={methods.control}
-                      option={typeOfRent}
+                      option={propertyType}
                       errors={methods.formState.errors}
                       label="Type"
-                      name="typeOfRent"
+                      name="propertyType"
                       isDefaultOption
                     />
                     <CustomInput
@@ -171,31 +285,78 @@ export const RentalFilters: React.FC = () => {
                       <span className={styles.checkboxLabel}>
                         Show only furnished
                       </span>
-                      <input type="checkbox" className={styles.checkbox} />
+                      <input
+                        type="checkbox"
+                        className={styles.checkbox}
+                        {...methods.register('furnishing')}
+                      />
                     </label>
-                    <RangeSlider label="Number of bedrooms" />
+                    <RangeSlider
+                      label="Number of bedrooms"
+                      minValue={tempBedrooms.min}
+                      maxValue={tempBedrooms.max}
+                      onChange={handleBedroomsChange}
+                    />
                   </div>
                   {extraFilters && (
                     <div className={styles.mobileExtraFilters}>
-                      <RangeSlider label="Number of bathrooms" />
+                      <RangeSlider
+                        label="Number of bathrooms"
+                        minValue={tempBathrooms.min}
+                        maxValue={tempBathrooms.max}
+                        onChange={handleBathroomsChange}
+                      />
                       <div className={styles.dateSelectBlock}>
-                        <DateSelect label="Moving in from" fontWeight="600" />
+                        <DateSelect
+                          name="availableFrom"
+                          onDateChange={handleDateChange}
+                          label="Moving in from"
+                          fontWeight="600"
+                        />
                       </div>
                       <div className={styles.amenitiesList}>
-                        <AmenitiesItem image={<Parking />} title="Parking" />
-                        <AmenitiesItem image={<Pool />} title="Pool" />
-                        <AmenitiesItem image={<HotWater />} title="Hot water" />
-                        <AmenitiesItem image={<Tv />} title="TV" />
-                        <AmenitiesItem image={<Gym />} title="Gym" />
+                        <AmenitiesItem
+                          image={<Parking />}
+                          title="Parking"
+                          name="amenities.parking"
+                          control={methods.control}
+                        />
+                        <AmenitiesItem
+                          image={<Pool />}
+                          title="Pool"
+                          name="amenities.pool"
+                          control={methods.control}
+                        />
+                        <AmenitiesItem
+                          image={<HotWater />}
+                          title="Hot water"
+                          name="amenities.hotWater"
+                          control={methods.control}
+                        />
+                        <AmenitiesItem
+                          image={<Tv />}
+                          title="TV"
+                          name="amenities.tv"
+                          control={methods.control}
+                        />
+                        <AmenitiesItem
+                          image={<Gym />}
+                          title="Gym"
+                          name="amenities.gym"
+                          control={methods.control}
+                        />
                         <AmenitiesItem
                           image={<Electric />}
                           title="Electric charger"
+                          name="amenities.electricCharger"
+                          control={methods.control}
                         />
                       </div>
                     </div>
                   )}
                   <div className={styles.mobileSearchBtnBlock}>
                     <Button
+                      type="submit"
                       text="Search"
                       textColor="#FFFFFF"
                       bgColor="#222"

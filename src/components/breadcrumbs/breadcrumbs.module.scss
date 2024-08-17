@@ -3,7 +3,6 @@
 
 .container {
   background-color: $secondary-bg-color;
-  padding-bottom: 24px;
 
   @include tabletAndBeyondView() {
     padding: 0;

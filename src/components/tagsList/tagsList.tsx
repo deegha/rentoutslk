@@ -1,20 +1,22 @@
 'use client';
-import React, { useState } from 'react';
-
+import React from 'react';
 import styles from './tagsList.module.scss';
 import { Tag } from './tag';
 
-export const TagsList = () => {
-  const [tags, setTags] = useState(['All', 'Furnished', 'Parking']);
+interface TagsListProps {
+  tags: string[];
+  onRemoveTag: (_tag: string) => void;
+}
 
-  const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove));
-  };
+export const TagsList: React.FC<TagsListProps> = ({ tags, onRemoveTag }) => {
+  if (tags.length === 0) {
+    return null;
+  }
 
   return (
     <div className={styles.tagsList}>
-      {tags.map((tag) => (
-        <Tag key={tag} tag={tag} onRemove={() => removeTag(tag)} />
+      {tags.map((_tag) => (
+        <Tag key={_tag} tag={_tag} onRemove={() => onRemoveTag(_tag)} />
       ))}
     </div>
   );

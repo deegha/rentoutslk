@@ -1,5 +1,6 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation'; // Импортируем из next/navigation
 import { Button } from '@/components';
 import { Dropdown } from './dropdown';
 
@@ -7,41 +8,71 @@ import styles from './heroBanner.module.scss';
 
 import ArrowRight from '@/icons/arrow_right_outline.svg';
 
-const placesData = ['Colombo', 'Kandy', 'Galle'];
-const addressesData = ['Colombian Road', 'Kandy Street', 'Galle Avenue'];
-
 export const HeroBanner = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<{
-    places: string[];
-    addresses: string[];
-  }>({ places: [], addresses: [] });
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchResults, setSearchResults] = useState<string[]>([]);
+  const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const router = useRouter(); // Используем useRouter из next/navigation
+
+  useEffect(() => {
+    const fetchSearchResults = async () => {
+      if (searchQuery.trim().length === 0) {
+        setSearchResults([]);
+        setIsDropdownVisible(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `/api/rental-search?address=${encodeURIComponent(searchQuery.toLowerCase())}`,
+        );
+        const data: { addresses: string[] } = await response.json();
+
+        setSearchResults(data.addresses || []);
+        setIsDropdownVisible(true);
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+        setSearchResults([]);
+        setIsDropdownVisible(false);
+      }
+    };
+
+    fetchSearchResults();
+  }, [searchQuery]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownVisible(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
-
-    if (query.length > 0) {
-      setSearchResults({
-        places: placesData.filter((place) =>
-          place.toLowerCase().includes(query.toLowerCase()),
-        ),
-        addresses: addressesData.filter((address) =>
-          address.toLowerCase().includes(query.toLowerCase()),
-        ),
-      });
-      setIsDropdownVisible(true);
-    } else {
-      setSearchResults({ places: [], addresses: [] });
-      setIsDropdownVisible(false);
-    }
   };
 
   const handleItemClick = (value: string) => {
     setSearchQuery(value);
-    setSearchResults({ places: [], addresses: [] });
+    setSearchResults([]);
     setIsDropdownVisible(false);
+  };
+
+  const handleSearchClick = () => {
+    if (searchQuery.trim()) {
+      // Перенаправляем на страницу rentals с параметром address
+      router.push(`/rentals?address=${encodeURIComponent(searchQuery)}`);
+    }
   };
 
   return (
@@ -56,24 +87,27 @@ export const HeroBanner = () => {
               placeholder="City, Neighbourhood"
               value={searchQuery}
               onChange={handleInputChange}
+              onFocus={() => setIsDropdownVisible(true)}
             />
             <Button
               text="SEARCH"
-              link="/"
+              onClick={handleSearchClick}
               bgColor="#DE225C"
               textColor="#FFFFFF"
               padding="20px"
               fontWeight="600"
             />
           </div>
-          <Dropdown
-            searchQuery={searchQuery}
-            searchResults={searchResults}
-            onItemClick={handleItemClick}
-            isVisible={isDropdownVisible}
-          />
+          <div ref={dropdownRef}>
+            <Dropdown
+              searchQuery={searchQuery}
+              searchResults={searchResults}
+              onItemClick={handleItemClick}
+              isVisible={isDropdownVisible}
+            />
+          </div>
         </div>
-        <a className={styles.linkBlock}>
+        <a href="/rentals" className={styles.linkBlock}>
           <p>See all rentals</p>
           <ArrowRight />
         </a>
