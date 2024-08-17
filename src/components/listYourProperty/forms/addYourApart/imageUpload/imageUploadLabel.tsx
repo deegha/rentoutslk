@@ -7,7 +7,6 @@ import UploadImgHover from '@/icons/uploadImgHover.svg';
 import DeleteImgIcon from '@/icons/deleteImg.svg';
 import Featured from '@/icons/featured.svg';
 import Unfeatured from '@/icons/unfeatured.svg';
-
 interface ImageUploadLabelProps {
   imageKey: string;
   preview: string;
@@ -23,28 +22,28 @@ interface ImageUploadLabelProps {
 }
 
 export const ImageUploadLabel: React.FC<ImageUploadLabelProps> = ({
-  imageKey,
+  imageKey: _imageKey,
   preview,
   register,
-  onChange,
+  onChange: _onChange,
   setPreview,
   isFeatured,
-  onFeatureClick,
+  onFeatureClick: _onFeatureClick,
   error,
 }) => {
-  const handleRemoveImage = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    setPreview(imageKey, '');
+  const handleRemoveImage = (_event: React.MouseEvent) => {
+    _event.stopPropagation();
+    setPreview(_imageKey, '');
   };
 
-  const handleFeatureClick = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    onFeatureClick(imageKey);
+  const handleFeatureClick = (_event: React.MouseEvent) => {
+    _event.stopPropagation();
+    _onFeatureClick(_imageKey);
   };
 
-  const handleInputClick = (event: React.MouseEvent<HTMLInputElement>) => {
+  const handleInputClick = (_event: React.MouseEvent<HTMLInputElement>) => {
     if (preview) {
-      event.preventDefault();
+      _event.preventDefault();
     }
   };
 
@@ -77,8 +76,8 @@ export const ImageUploadLabel: React.FC<ImageUploadLabelProps> = ({
       <input
         type="file"
         accept=".png,.jpg,.jpeg,.webp"
-        {...register(imageKey)}
-        onChange={(e) => onChange(e, imageKey)}
+        {...register(_imageKey)}
+        onChange={(e) => _onChange(e, _imageKey)}
         className={styles.hiddenInput}
         onClick={handleInputClick}
       />

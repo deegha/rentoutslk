@@ -37,8 +37,19 @@ export const propertyDetailsSchema = z.object({
 });
 
 export const imageUploadSchema = z.object({
-  image1: z.instanceof(File).optional(),
-  image2: z.instanceof(File).optional(),
+  image1: z
+    .string()
+    .optional()
+    .refine((val) => val?.startsWith('data:image'), {
+      message: 'Invalid image format',
+    }),
+  image2: z
+    .string()
+    .optional()
+    .refine((val) => val?.startsWith('data:image'), {
+      message: 'Invalid image format',
+    }),
+  // Add more images as needed
 });
 
 export const questionsFormSchema = z.object({

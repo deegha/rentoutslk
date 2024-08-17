@@ -34,3 +34,4 @@ export * from './customInput';
 
 //Profile Page
 export * from './profile';
+export * from './propertyComponent';

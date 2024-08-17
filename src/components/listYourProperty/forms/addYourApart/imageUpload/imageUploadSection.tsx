@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-
 import styles from './imageUpload.module.scss';
 import { ImageUploadLabel } from './imageUploadLabel';
 import { Dropdown } from '../dropdown';
 
-export const ImageUploadSection = () => {
+const toBase64 = (file: File) =>
+  new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
+
+export const ImageUploadSection: React.FC = () => {
   const {
     register,
     formState: { errors },
@@ -17,21 +24,20 @@ export const ImageUploadSection = () => {
   );
   const [featuredImage, setFeaturedImage] = useState<string | null>(null);
 
-  const handleImageChange = (
+  const handleImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
     imageKey: string,
   ) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreviews((prev) => ({
-          ...prev,
-          [imageKey]: reader.result as string,
-        }));
-        setValue(imageKey, file);
-      };
-      reader.readAsDataURL(file);
+      const previewUrl = URL.createObjectURL(file);
+      setPreview(imageKey, previewUrl);
+
+      // Convert the file to a base64 string
+      const base64String = await toBase64(file);
+      setValue(imageKey, base64String); // Save the base64 string in form state
+    } else {
+      console.log('Input not instance of File');
     }
   };
 
@@ -40,7 +46,6 @@ export const ImageUploadSection = () => {
       ...prev,
       [imageKey]: value,
     }));
-    setValue(imageKey, null);
     if (imageKey === featuredImage) {
       setFeaturedImage(null);
     }
@@ -119,7 +124,7 @@ export const ImageUploadSection = () => {
                 To feature an image, start by deciding which image best
                 represents your property and would attract the most interest
                 from potential renters. The featured image is the first one
-                viewers see when they visit your listing.{' '}
+                viewers see when they visit your listing.
               </p>
               <p>
                 To set an image as featured, look for the feature icon in the
@@ -131,96 +136,22 @@ export const ImageUploadSection = () => {
         />
       </div>
       <div className={styles.imgList}>
-        <ImageUploadLabel
-          imageKey="image1"
-          preview={imagePreviews['image1'] || ''}
-          register={register}
-          onChange={handleImageChange}
-          setPreview={setPreview}
-          isFeatured={featuredImage === 'image1'}
-          onFeatureClick={handleFeatureClick}
-          error={errors.image1?.message?.toString()}
-        />
-        <ImageUploadLabel
-          imageKey="image2"
-          preview={imagePreviews['image2'] || ''}
-          register={register}
-          onChange={handleImageChange}
-          setPreview={setPreview}
-          isFeatured={featuredImage === 'image2'}
-          onFeatureClick={handleFeatureClick}
-          error={errors.image2?.message?.toString()}
-        />
-        <ImageUploadLabel
-          imageKey="image3"
-          preview={imagePreviews['image3'] || ''}
-          register={register}
-          onChange={handleImageChange}
-          setPreview={setPreview}
-          isFeatured={featuredImage === 'image3'}
-          onFeatureClick={handleFeatureClick}
-          error={errors.image3?.message?.toString()}
-        />
-        <ImageUploadLabel
-          imageKey="image4"
-          preview={imagePreviews['image4'] || ''}
-          register={register}
-          onChange={handleImageChange}
-          setPreview={setPreview}
-          isFeatured={featuredImage === 'image4'}
-          onFeatureClick={handleFeatureClick}
-          error={errors.image4?.message?.toString()}
-        />
-        <ImageUploadLabel
-          imageKey="image5"
-          preview={imagePreviews['image5'] || ''}
-          register={register}
-          onChange={handleImageChange}
-          setPreview={setPreview}
-          isFeatured={featuredImage === 'image5'}
-          onFeatureClick={handleFeatureClick}
-          error={errors.image5?.message?.toString()}
-        />
-        <ImageUploadLabel
-          imageKey="image6"
-          preview={imagePreviews['image6'] || ''}
-          register={register}
-          onChange={handleImageChange}
-          setPreview={setPreview}
-          isFeatured={featuredImage === 'image6'}
-          onFeatureClick={handleFeatureClick}
-          error={errors.image6?.message?.toString()}
-        />
-        <ImageUploadLabel
-          imageKey="image7"
-          preview={imagePreviews['image7'] || ''}
-          register={register}
-          onChange={handleImageChange}
-          setPreview={setPreview}
-          isFeatured={featuredImage === 'image7'}
-          onFeatureClick={handleFeatureClick}
-          error={errors.image7?.message?.toString()}
-        />
-        <ImageUploadLabel
-          imageKey="image8"
-          preview={imagePreviews['image8'] || ''}
-          register={register}
-          onChange={handleImageChange}
-          setPreview={setPreview}
-          isFeatured={featuredImage === 'image8'}
-          onFeatureClick={handleFeatureClick}
-          error={errors.image8?.message?.toString()}
-        />
-        <ImageUploadLabel
-          imageKey="image9"
-          preview={imagePreviews['image9'] || ''}
-          register={register}
-          onChange={handleImageChange}
-          setPreview={setPreview}
-          isFeatured={featuredImage === 'image9'}
-          onFeatureClick={handleFeatureClick}
-          error={errors.image9?.message?.toString()}
-        />
+        {Array.from({ length: 9 }, (_, index) => {
+          const imageKey = `image${index + 1}`;
+          return (
+            <ImageUploadLabel
+              key={imageKey}
+              imageKey={imageKey}
+              preview={imagePreviews[imageKey] || ''}
+              register={register}
+              onChange={handleImageChange}
+              setPreview={setPreview}
+              isFeatured={featuredImage === imageKey}
+              onFeatureClick={handleFeatureClick}
+              error={errors[imageKey]?.message?.toString()}
+            />
+          );
+        })}
       </div>
     </div>
   );
