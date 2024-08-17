@@ -71,6 +71,7 @@ export const LookingFor = () => {
         fontWeight="600"
         padding="14.5px 28px"
         borderRadius="4px"
+        link="/rentals"
       />
     </section>
   );

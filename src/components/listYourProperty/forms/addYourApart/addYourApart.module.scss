@@ -174,3 +174,9 @@
   background-color: #5e5e5e;
   border: 1px solid #5e5e5e;
 }
+
+.input[type='number']::-webkit-inner-spin-button,
+.input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

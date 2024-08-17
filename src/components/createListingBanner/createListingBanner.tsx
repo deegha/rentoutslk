@@ -17,7 +17,7 @@ export const CreateListingBanner = () => {
         </div>
         <Button
           text="Create listing for free"
-          link="/"
+          link="/add-your-apartment"
           bgColor="#222222"
           textColor="#FFFFFF"
           padding="14.5px 28px"

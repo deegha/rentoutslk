@@ -23,7 +23,11 @@
 }
 
 .availableRents {
-  padding-bottom: 24px;
+  padding-bottom: 12px;
+
+  @include tabletAndBeyondView() {
+    padding-bottom: 24px;
+  }
 }
 
 .availableRents p {
@@ -40,4 +44,12 @@
   font-size: 20px;
   font-weight: 600;
   line-height: 24.2px;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 20px;
 }

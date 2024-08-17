@@ -1,5 +1,4 @@
 import React from 'react';
-
 import styles from './tagsList.module.scss';
 
 import Close from '@/icons/close.svg';
