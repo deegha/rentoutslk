@@ -23,7 +23,6 @@ const CheckListingsPage = async () => {
       </>
     );
   }
-  console.log(session);
   const response = await fetch(
     `${process.env.NEXTAUTH_URL}/api/check-listings`,
     {

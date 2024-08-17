@@ -18,7 +18,7 @@ cloudinary.v2.config({
 
 export async function POST(req: NextRequest) {
   try {
-    const data = await req.json();
+    const data = await req.json(); // Extract data from the request
     const userId = data.userId;
 
     // Extract image keys from the data
@@ -58,8 +58,6 @@ export async function POST(req: NextRequest) {
       ...imageUrls, // Cloudinary URLs
       status: 'not verified',
       active: true,
-      favorite: 0,
-      views: 0,
       createdAt: serverTimestamp(),
     };
 
@@ -74,10 +72,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       message: 'Listing published successfully',
-      id: docRef.id,
     });
   } catch (error) {
-    console.error('Error saving listing:', error);
+    console.error('Error publishing listing:', error);
     return NextResponse.json(
       { message: 'Failed to publish listing' },
       { status: 500 },
