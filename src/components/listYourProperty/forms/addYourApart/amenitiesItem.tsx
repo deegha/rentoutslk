@@ -1,14 +1,19 @@
 import React, { ReactNode, useState } from 'react';
 import styles from './addYourApart.module.scss';
+import { Control } from 'react-hook-form';
 
 interface AmenitiesItemProps {
   title: string;
   image: ReactNode;
+  _name: string;
+  _control: Control;
 }
 
 export const AmenitiesItem: React.FC<AmenitiesItemProps> = ({
   title,
   image,
+  _name,
+  _control,
 }) => {
   const [checked, setChecked] = useState(false);
 

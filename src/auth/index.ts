@@ -24,19 +24,16 @@ import {
 import { getCustomToken } from '@/firebase/firebaseAdmin';
 import { CustomSession, UserRent } from '@/interface/session';
 
+// Helper function to check Firebase authentication
 const checkFirebaseAuth = async (): Promise<User | null> => {
   return new Promise((resolve) => {
-    onAuthStateChanged(authFirebase, (user) => {
-      resolve(user || null);
-    });
+    onAuthStateChanged(authFirebase, (user) => resolve(user || null));
   });
 };
 
+// Helper function to refresh Firebase token
 const refreshFirebaseToken = async (user: User) => {
-  if (user) {
-    return await user.getIdToken(true);
-  }
-  return null;
+  return user ? await user.getIdToken(true) : null;
 };
 
 export const authOptions: NextAuthOptions = {
@@ -57,58 +54,60 @@ export const authOptions: NextAuthOptions = {
         }
 
         try {
-          const q = query(collection(db, 'users'), where('email', '==', email));
-          const querySnapshot = await getDocs(q);
+          const userQuery = query(
+            collection(db, 'users'),
+            where('email', '==', email),
+          );
+          const userDocs = await getDocs(userQuery);
 
-          if (!querySnapshot.empty) {
-            try {
-              const userCredential = await signInWithEmailAndPassword(
-                authFirebase,
-                email,
-                password,
-              );
-              const user = userCredential.user;
-              const idToken = await getIdToken(user, true);
+          if (!userDocs.empty) {
+            const userDoc = userDocs.docs[0];
+            const userData = userDoc.data();
+            const userCredential = await signInWithEmailAndPassword(
+              authFirebase,
+              email,
+              password,
+            );
+            const user = userCredential.user;
+            const idToken = await getIdToken(user, true);
 
-              const docSnap = querySnapshot.docs[0];
-              const userRef = doc(db, 'users', docSnap.id);
-              await updateDoc(userRef, { lastLogin: new Date() });
+            await updateDoc(doc(db, 'users', userDoc.id), {
+              lastLogin: new Date(),
+            });
 
-              const userDoc = { id: docSnap.id, ...docSnap.data() };
-              const customToken = await getCustomToken(user.uid);
-              return { ...userDoc, customToken, idToken };
-            } catch (signInError) {
-              console.error('Error signing in:', signInError);
-              return null;
-            }
+            const customToken = await getCustomToken(user.uid);
+
+            return {
+              id: userDoc.id,
+              ...userData,
+              customToken,
+              idToken,
+              admin: userData.admin,
+            };
           } else {
-            try {
-              const userCredential = await createUserWithEmailAndPassword(
-                authFirebase,
-                email,
-                password,
-              );
-              const newUser = userCredential.user;
-              const idToken = await getIdToken(newUser, true);
+            const userCredential = await createUserWithEmailAndPassword(
+              authFirebase,
+              email,
+              password,
+            );
+            const newUser = userCredential.user;
+            const idToken = await getIdToken(newUser, true);
 
-              const userRef = await addDoc(collection(db, 'users'), {
-                email: newUser.email,
-                uid: newUser.uid,
-                createdAt: new Date(),
-                lastLogin: new Date(),
-              });
+            const newUserRef = await addDoc(collection(db, 'users'), {
+              email: newUser.email,
+              uid: newUser.uid,
+              createdAt: new Date(),
+              lastLogin: new Date(),
+            });
 
-              const userDoc = {
-                id: userRef.id,
-                email: newUser.email,
-                uid: newUser.uid,
-              };
-              const customToken = await getCustomToken(newUser.uid);
-              return { ...userDoc, customToken, idToken };
-            } catch (createUserError) {
-              console.error('Error creating user:', createUserError);
-              return null;
-            }
+            const customToken = await getCustomToken(newUser.uid);
+            return {
+              id: newUserRef.id,
+              email: newUser.email,
+              uid: newUser.uid,
+              customToken,
+              idToken,
+            };
           }
         } catch (error) {
           console.error('Error during authorization:', error);
@@ -131,9 +130,11 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.customToken = user.customToken;
         token.idToken = user.idToken;
-        token.idTokenExpires = Math.floor(Date.now() / 1000) + 60 * 60; // 1 hour
+        token.admin = user.admin || false;
+        token.exp = Math.floor(Date.now() / 1000) + 60 * 60; // 1 hour expiration
       }
 
+      // Check if the token needs to be refreshed
       if (
         token.idTokenExpires &&
         Math.floor(Date.now() / 1000) > token.idTokenExpires
@@ -141,11 +142,12 @@ export const authOptions: NextAuthOptions = {
         const firebaseUser = await checkFirebaseAuth();
         if (firebaseUser) {
           token.idToken = await refreshFirebaseToken(firebaseUser);
-          token.idTokenExpires = Math.floor(Date.now() / 1000) + 60 * 60;
+          token.idTokenExpires = Math.floor(Date.now() / 1000) + 60 * 60; // Extend expiration
         } else {
-          token = null;
+          token = null; // Invalidate token if no Firebase user
         }
       }
+
       return token;
     },
     async session({ session, token }: { session: CustomSession; token: JWT }) {
@@ -153,6 +155,8 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id as string;
         session.user.customToken = token.customToken as string;
         session.user.idToken = token.idToken as string;
+        session.user.admin = token.admin as boolean;
+        session.user.exp = token.exp as number;
       }
       return session;
     },

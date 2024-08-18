@@ -23,14 +23,13 @@ export const InputApart = React.forwardRef<HTMLInputElement, InputApartProps>(
       type = 'text',
       required = false,
       classNameContainer,
-      // error,
     },
     ref,
   ) => {
     const {
       register,
       formState: { errors },
-    } = useFormContext(); // Retrieve register and errors from useFormContext
+    } = useFormContext();
     const fieldError = errors[name] as FieldError;
 
     return (
@@ -41,11 +40,15 @@ export const InputApart = React.forwardRef<HTMLInputElement, InputApartProps>(
         </label>
         <input
           id={name}
-          // name={name}
           type={type}
           className={`${styles.input} ${className}`}
           placeholder={placeholder}
-          {...register(name, { required })}
+          {...register(name, {
+            required,
+            setValueAs: (value) => {
+              return type === 'number' ? parseFloat(value) : value;
+            },
+          })}
           ref={ref}
         />
         {fieldError && (
@@ -56,5 +59,4 @@ export const InputApart = React.forwardRef<HTMLInputElement, InputApartProps>(
   },
 );
 
-// Set the display name for the component
 InputApart.displayName = 'InputApart';

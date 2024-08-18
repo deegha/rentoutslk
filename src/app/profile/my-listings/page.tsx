@@ -13,17 +13,16 @@ import { PropertyProps } from '@/interface/property';
 const CheckListingsPage = async () => {
   const session = (await auth()) as CustomSession;
 
-  if (!session || !session.user) {
+  if (!session || !session.user || Date.now() >= session.user.exp * 1000) {
     return (
       <>
         <Header />
-        <RouterProfile />
+        <RouterProfile isAdmin={false} />
         <InAuthed />
         <Footer />
       </>
     );
   }
-
   const response = await fetch(
     `${process.env.NEXTAUTH_URL}/api/check-listings`,
     {
@@ -35,7 +34,14 @@ const CheckListingsPage = async () => {
 
   if (!response.ok) {
     console.error('Failed to fetch listings');
-    return <p>Failed to fetch listings.</p>;
+    return (
+      <>
+        <Header />
+        <RouterProfile isAdmin={false} />
+        <p>Failed to fetch listings.</p>
+        <Footer />
+      </>
+    );
   }
 
   const data = await response.json();
@@ -44,7 +50,7 @@ const CheckListingsPage = async () => {
   return (
     <>
       <Header />
-      <RouterProfile />
+      <RouterProfile isAdmin={session.user.admin} />
       <div
         style={{
           backgroundColor: '#F7F7F7',

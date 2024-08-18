@@ -1,10 +1,10 @@
 export interface PropertyProps {
   address: string;
   availableFrom?: string;
-  deposit?: string;
+  deposit?: number;
   floorArea: string;
   propertyType: string;
-  monthlyRent: string;
+  monthlyRent: number;
   title: string;
   image1: string;
   image2: string;
@@ -16,9 +16,14 @@ export interface PropertyProps {
   image8?: string;
   image9?: string;
   numberBedrooms: string;
+  numberBathrooms: string;
   createdAt: { seconds: number; nanoseconds: number };
   views: string;
   favorite: string;
   active: boolean;
   id: string;
+  userId: string;
+  furnishing: string;
+  customQuestion?: string;
+  status: string;
 }

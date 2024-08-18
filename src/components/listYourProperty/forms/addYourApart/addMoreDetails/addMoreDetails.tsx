@@ -25,6 +25,7 @@ import Elevator from '@/icons/elevator.svg';
 const typeOfAppart = [
   { label: 'Apartment', value: 'Apartment' },
   { label: 'House', value: 'House' },
+  { label: 'Studio', value: 'Studio' },
 ];
 const typeOfRent = [
   { label: 'Unlimited', value: 'unlimited' },
@@ -39,6 +40,9 @@ const numbersOfBedrooms = [
   { label: '3', value: '3' },
   { label: '4', value: '4' },
   { label: '5', value: '5' },
+  { label: '6', value: '6' },
+  { label: '7', value: '7' },
+  { label: '8', value: '8' },
 ];
 const numbersOfBathrooms = [
   { label: '1', value: '1' },
@@ -46,6 +50,9 @@ const numbersOfBathrooms = [
   { label: '3', value: '3' },
   { label: '4', value: '4' },
   { label: '5', value: '5' },
+  { label: '6', value: '6' },
+  { label: '7', value: '7' },
+  { label: '8', value: '8' },
 ];
 
 export const AddMoreDetails = () => {
@@ -99,9 +106,10 @@ export const AddMoreDetails = () => {
           />
           <InputApart
             {...register('monthlyRent')}
-            placeholder={'54 244 Re'}
+            placeholder={'54 244'}
             label={'Monthly rent'}
             name={'monthlyRent'}
+            type="number"
             classNameContainer={styles.apartTitleContainer}
             className={styles.apartTitle}
             required
@@ -143,8 +151,8 @@ export const AddMoreDetails = () => {
             required
           />
           <DateSelect
-            label="Available from*"
-            name="availableFrom"
+            label={'Available from*'}
+            name={'availableFrom'}
             register={register}
           />
           <SelectInput
@@ -163,18 +171,78 @@ export const AddMoreDetails = () => {
       <div className={styles.ameneties}>
         <h3 className={styles.categoryTitle}>Add amenities</h3>
         <div className={styles.amenitiesContainer}>
-          <AmenitiesItem image={<Parking />} title="Parking" />
-          <AmenitiesItem image={<Pool />} title="Pool" />
-          <AmenitiesItem image={<HotWater />} title="Hot water" />
-          <AmenitiesItem image={<Tv />} title="TV" />
-          <AmenitiesItem image={<Gym />} title="Gym" />
-          <AmenitiesItem image={<Electric />} title="Electric charger" />
-          <AmenitiesItem image={<Playground />} title="Playground" />
-          <AmenitiesItem image={<Conditioner />} title="Air conditioner" />
-          <AmenitiesItem image={<Microwave />} title="Microwave" />
-          <AmenitiesItem image={<Washing />} title="Washing machine" />
-          <AmenitiesItem image={<Cultery />} title="Culteries" />
-          <AmenitiesItem image={<Elevator />} title="Elevator" />
+          <AmenitiesItem
+            name="parking"
+            image={<Parking />}
+            title="Parking"
+            control={control}
+          />
+          <AmenitiesItem
+            name="pool"
+            image={<Pool />}
+            title="Pool"
+            control={control}
+          />
+          <AmenitiesItem
+            name="hotWater"
+            image={<HotWater />}
+            title="Hot water"
+            control={control}
+          />
+          <AmenitiesItem
+            name="tv"
+            image={<Tv />}
+            title="TV"
+            control={control}
+          />
+          <AmenitiesItem
+            name="gym"
+            image={<Gym />}
+            title="Gym"
+            control={control}
+          />
+          <AmenitiesItem
+            name="charger"
+            image={<Electric />}
+            title="Electric charger"
+            control={control}
+          />
+          <AmenitiesItem
+            name="playground"
+            image={<Playground />}
+            title="Playground"
+            control={control}
+          />
+          <AmenitiesItem
+            name="conditioner"
+            image={<Conditioner />}
+            title="Air conditioner"
+            control={control}
+          />
+          <AmenitiesItem
+            name="microwave"
+            image={<Microwave />}
+            title="Microwave"
+            control={control}
+          />
+          <AmenitiesItem
+            name="washingMachine"
+            image={<Washing />}
+            title="Washing machine"
+            control={control}
+          />
+          <AmenitiesItem
+            name="culteries"
+            image={<Cultery />}
+            title="Culteries"
+            control={control}
+          />
+          <AmenitiesItem
+            name="elevator"
+            image={<Elevator />}
+            title="Elevator"
+            control={control}
+          />
         </div>
       </div>
     </div>

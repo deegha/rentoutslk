@@ -8,20 +8,24 @@ import styles from './dateSelect.module.scss';
 interface DateSelectProps {
   label: string;
   fontWeight: string;
+  name: string;
+  onDateChange?: (_date: string) => void;
 }
 
 export const DateSelect: React.FC<DateSelectProps> = ({
   label,
   fontWeight,
+  name,
+  onDateChange,
 }) => {
   const { control } = useFormContext();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
   const calendarRef = useRef<HTMLDivElement>(null);
 
-  const labelStyle = {
-    '--font-weight': fontWeight,
-  } as React.CSSProperties;
+  const labelStyle: React.CSSProperties = {
+    fontWeight,
+  };
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -51,7 +55,7 @@ export const DateSelect: React.FC<DateSelectProps> = ({
       </label>
       <Controller
         control={control}
-        name="availableFrom"
+        name={name}
         render={({ field }) => (
           <>
             <input
@@ -68,11 +72,14 @@ export const DateSelect: React.FC<DateSelectProps> = ({
                 <DayPicker
                   mode="single"
                   selected={selectedDate}
-                  onSelect={(date: Date | undefined) => {
-                    if (date) {
-                      const formattedDate = date.toISOString();
-                      setSelectedDate(date);
+                  onSelect={(_date: Date | undefined) => {
+                    if (_date) {
+                      const formattedDate = _date.toISOString();
+                      setSelectedDate(_date);
                       field.onChange(formattedDate);
+                      if (onDateChange) {
+                        onDateChange(formattedDate);
+                      }
                       setShowCalendar(false);
                     }
                   }}

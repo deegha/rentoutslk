@@ -14,13 +14,17 @@ const links: LinkProps[] = [
   { name: 'Tour request', link: '/profile/tour-request' },
 ];
 
-export const RouterProfile = () => {
+export const RouterProfile = ({ isAdmin }: { isAdmin: boolean }) => {
   const pathname = usePathname();
+
+  const allLinks = isAdmin
+    ? [...links, { name: 'Admin Panel', link: '/profile/admin-panel' }]
+    : links;
 
   return (
     <section className={styles.container}>
       <div className={styles.linkContainer}>
-        {links.map((item, index) => (
+        {allLinks.map((item, index) => (
           <Link key={index} href={item.link}>
             <span
               className={

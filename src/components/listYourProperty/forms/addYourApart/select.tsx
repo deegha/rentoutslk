@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './addYourApart.module.scss';
-import Select, { StylesConfig } from 'react-select';
+import Select from 'react-select';
+import StylesConfig from 'react-select';
 import { Controller, Control, FieldValues, FieldErrors } from 'react-hook-form';
 
 const customStyles: StylesConfig = {

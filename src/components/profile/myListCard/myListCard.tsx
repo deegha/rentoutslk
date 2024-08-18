@@ -6,6 +6,9 @@ import Edit from '@/icons/profile/edit.svg';
 import Delete from '@/icons/profile/Trash_Full.svg';
 import Left from '@/icons/profile/Swicht_Left.svg';
 import { PropertyProps } from '@/interface/property';
+import ArrowLink from '@/icons/arrowLink.svg';
+import Link from 'next/link';
+import { formatDate } from '@/utils/formateData';
 
 interface MyListCardProp {
   listing: PropertyProps;
@@ -79,13 +82,6 @@ export const MyListCard: React.FC<MyListCardProp> = ({
     }
   };
 
-  const formatDate = (timestamp: { seconds: number; nanoseconds: number }) => {
-    const date = new Date(timestamp.seconds * 1000);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  };
   const formattedDate = formatDate(createdAt);
 
   return (
@@ -103,7 +99,16 @@ export const MyListCard: React.FC<MyListCardProp> = ({
       </div>
       <div className={`${styles.contentContainer} `}>
         <div className={styles.infoContainer}>
-          <h1 className={styles.title}>{title}</h1>
+          <div className={styles.titleContainer}>
+            <div className={styles.titleLeftContainer}>
+              <h1 className={styles.title}>{title}</h1>
+
+              <Link href={`/property/${id}`}>
+                <ArrowLink />
+              </Link>
+            </div>
+            <p>Approved</p>
+          </div>
           <div className={styles.info}>
             <div>
               <h4>Views</h4>

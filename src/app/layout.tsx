@@ -6,8 +6,9 @@ import { SessionProvider } from 'next-auth/react';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Rentoutslk',
-  description: '',
+  title: 'rentoutslk | Innovative Property Management Solutions in Sri Lanka',
+  description:
+    'Discover innovative property management solutions in Sri Lanka with our technology-driven approach. We are dedicated to helping our customers find effective solutions for their property needs.',
 };
 
 export default function RootLayout({

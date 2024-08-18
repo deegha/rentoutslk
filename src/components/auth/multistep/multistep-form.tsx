@@ -14,6 +14,7 @@ import {
 } from './types';
 import EmailStep from './EmailStep';
 import PasswordStep from './PasswordStep';
+import { ForgotPassword } from './ForgotPassword';
 
 Modal.setAppElement('#main');
 
@@ -26,20 +27,19 @@ const MultiStepForm = ({
 }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [emailExists, setEmailExists] = useState(false);
+  const [forgotPassword, setForgotPassword] = useState(false);
 
   const closeModal = () => {
     onRequestClose();
     setCurrentStep(1);
+    setForgotPassword(false); // Reset forgotPassword state
   };
 
   const emailMethods = useForm<EmailFormValues>({
     resolver: zodResolver(emailSchema),
   });
-  const passwordMethods = useForm<PasswordExistFormValues>({
-    resolver: zodResolver(passwordExistSchema),
-  });
-  const newUserMethods = useForm<NewUserFormValues>({
-    resolver: zodResolver(newUserSchema),
+  const passwordMethods = useForm<PasswordExistFormValues | NewUserFormValues>({
+    resolver: zodResolver(forgotPassword ? newUserSchema : passwordExistSchema),
   });
 
   const handleNextStep = () => {
@@ -79,27 +79,33 @@ const MultiStepForm = ({
   const onSubmitPassword: SubmitHandler<
     PasswordExistFormValues | NewUserFormValues
   > = async (data) => {
-    const { password, confirmPassword } = data as NewUserFormValues;
+    if (forgotPassword) {
+      console.log('Resetting password:', data.password);
+      // Implement your password reset logic here
+      closeModal();
+    } else {
+      const { password, confirmPassword } = data as NewUserFormValues;
 
-    if (!emailExists && password !== confirmPassword) {
-      console.error('Passwords do not match');
-      return;
-    }
-
-    try {
-      const result = await signIn('credentials', {
-        redirect: false,
-        email,
-        password,
-      });
-
-      if (result?.error) {
-        console.error('Error signing in or creating account:', result.error);
-      } else {
-        onRequestClose();
+      if (!emailExists && password !== confirmPassword) {
+        console.error('Passwords do not match');
+        return;
       }
-    } catch (error) {
-      console.error('Error signing in or creating account:', error);
+
+      try {
+        const result = await signIn('credentials', {
+          redirect: false,
+          email,
+          password,
+        });
+
+        if (result?.error) {
+          console.error('Error signing in or creating account:', result.error);
+        } else {
+          onRequestClose();
+        }
+      } catch (error) {
+        console.error('Error signing in or creating account:', error);
+      }
     }
   };
 
@@ -111,7 +117,16 @@ const MultiStepForm = ({
       className="Modal"
       overlayClassName="Overlay"
     >
-      {currentStep === 1 ? (
+      {forgotPassword ? (
+        <FormProvider {...passwordMethods}>
+          <ForgotPassword
+            email={email}
+            onSubmit={onSubmitPassword}
+            onRequestClose={closeModal}
+            onBack={() => setForgotPassword(false)}
+          />
+        </FormProvider>
+      ) : currentStep === 1 ? (
         <FormProvider {...emailMethods}>
           <EmailStep onSubmit={onSubmitEmail} onRequestClose={onRequestClose} />
         </FormProvider>
@@ -123,16 +138,18 @@ const MultiStepForm = ({
             onSubmit={onSubmitPassword}
             onRequestClose={closeModal}
             onBack={handlePrevStep}
+            onForgotPassword={() => setForgotPassword(true)}
           />
         </FormProvider>
       ) : (
-        <FormProvider {...newUserMethods}>
+        <FormProvider {...passwordMethods}>
           <PasswordStep
             emailExists={emailExists}
             email={email}
             onSubmit={onSubmitPassword}
             onRequestClose={closeModal}
             onBack={handlePrevStep}
+            onForgotPassword={() => setForgotPassword(true)}
           />
         </FormProvider>
       )}
