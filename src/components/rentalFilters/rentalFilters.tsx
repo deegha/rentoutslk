@@ -71,7 +71,6 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
     };
   }, [mobileFilters]);
 
-  // Эффект для автоматического запуска поиска при наличии address
   useEffect(() => {
     if (addressQuery) {
       methods.handleSubmit(handleSubmit)();

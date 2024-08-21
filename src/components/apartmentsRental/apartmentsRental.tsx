@@ -125,15 +125,21 @@ export const ApartmentsRental: React.FC<ApartmentsRentalProps> = ({
 
       if (filters.amenities) {
         Object.keys(filters.amenities).forEach((key) => {
+          console.log(
+            `Filtering by amenity: ${key}, value: ${filters.amenities[key as keyof typeof filters.amenities]}`,
+          );
           if (filters.amenities[key as keyof typeof filters.amenities]) {
-            filteredData = filteredData.filter(
-              (apartment) => apartment[key as keyof Apartment],
-            );
+            filteredData = filteredData.filter((apartment) => {
+              const amenityValue = apartment[key as keyof Apartment];
+              console.log(
+                `Apartment ${apartment.id}: ${key} = ${amenityValue}`,
+              );
+              return typeof amenityValue === 'boolean' && amenityValue === true;
+            });
           }
         });
       }
 
-      console.log('Filtered Data:', filteredData);
       setFilteredApartments(filteredData);
     },
     [filters],
