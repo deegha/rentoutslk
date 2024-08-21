@@ -14,6 +14,7 @@ export default function Rentals() {
     address: '',
     propertyType: '',
     maxRent: '',
+    monthlyRent: 0,
     minBedrooms: 1,
     maxBedrooms: 8,
     minBathrooms: 1,

@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation'; // Импортируем из next/navigation
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components';
 import { Dropdown } from './dropdown';
 
@@ -13,7 +13,7 @@ export const HeroBanner = () => {
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const router = useRouter(); // Используем useRouter из next/navigation
+  const router = useRouter();
 
   useEffect(() => {
     const fetchSearchResults = async () => {
@@ -70,7 +70,6 @@ export const HeroBanner = () => {
 
   const handleSearchClick = () => {
     if (searchQuery.trim()) {
-      // Перенаправляем на страницу rentals с параметром address
       router.push(`/rentals?address=${encodeURIComponent(searchQuery)}`);
     }
   };
