@@ -1,42 +1,44 @@
-import React, { ReactNode, useState } from 'react';
+import React from 'react';
+import { useController, Control } from 'react-hook-form';
 import styles from './addYourApart.module.scss';
-import { Control } from 'react-hook-form';
 
 interface AmenitiesItemProps {
   title: string;
-  image: ReactNode;
-  _name: string;
-  _control: Control;
+  image: React.ReactNode;
+  name: string;
+  control: Control<any>;
 }
 
 export const AmenitiesItem: React.FC<AmenitiesItemProps> = ({
   title,
   image,
-  _name,
-  _control,
+  name,
+  control,
 }) => {
-  const [checked, setChecked] = useState(false);
-
-  const handleCheckboxChange = () => {
-    setChecked(!checked);
-  };
+  const {
+    field: { value, onChange },
+  } = useController({
+    name,
+    control,
+    defaultValue: false,
+  });
 
   return (
     <div className={styles.amenitiesItem}>
       <div className={styles.amenitiesImage}>{image}</div>
       <p className={styles.amenitiesTitle}>{title}</p>
       <div
-        className={`${styles.amenitiesCheckboxContainer} ${checked ? styles.checked : ''}`}
-        onClick={handleCheckboxChange}
+        className={`${styles.amenitiesCheckboxContainer} ${value ? styles.checked : ''}`}
+        onClick={() => onChange(!value)}
       >
         <input
           className={styles.amenitiesCheckbox}
           type="checkbox"
-          checked={checked}
-          onChange={handleCheckboxChange}
+          checked={value}
+          onChange={(e) => onChange(e.target.checked)}
         />
         <div className={styles.customCheckbox}>
-          {checked && (
+          {value && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"

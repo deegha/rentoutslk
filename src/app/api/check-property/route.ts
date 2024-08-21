@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from 'config/firebase/config'; // Путь к вашему файлу конфигурации Firebase
+import { db } from 'config/firebase/config';
 
 export async function GET(req: NextRequest) {
   try {
