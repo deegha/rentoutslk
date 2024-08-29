@@ -7,6 +7,7 @@ import BeatLoader from 'react-spinners/BeatLoader';
 interface ApartmentsRentalProps {
   filters: {
     address: string;
+    place: string;
     monthlyRent: number;
     propertyType: string;
     maxRent: string;
@@ -31,6 +32,7 @@ interface ApartmentsRentalProps {
 interface Apartment {
   id: string;
   address: string;
+  place: string;
   availableFrom: string;
   deposit: number;
   floorArea: number;
@@ -65,11 +67,19 @@ export const ApartmentsRental: React.FC<ApartmentsRentalProps> = ({
     (data: Apartment[]) => {
       let filteredData = data;
 
-      if (filters.address) {
-        filteredData = filteredData.filter((apartment) =>
-          apartment.address
-            .toLowerCase()
-            .includes(filters.address.toLowerCase()),
+      if (filters.address || filters.place) {
+        filteredData = filteredData.filter(
+          (apartment) =>
+            (filters.address &&
+              apartment.address &&
+              apartment.address
+                .toLowerCase()
+                .includes(filters.address.toLowerCase())) ||
+            (filters.place &&
+              apartment.place &&
+              apartment.place
+                .toLowerCase()
+                .includes(filters.place.toLowerCase())),
         );
       }
 
@@ -83,9 +93,6 @@ export const ApartmentsRental: React.FC<ApartmentsRentalProps> = ({
         const maxRentValue = parseInt(filters.maxRent, 10);
         if (!isNaN(maxRentValue)) {
           filteredData = filteredData.filter((apartment) => {
-            console.log(
-              `Filtering by maxRent: ${maxRentValue}, Apartment Rent: ${apartment.monthlyRent}`,
-            );
             return apartment.monthlyRent <= maxRentValue;
           });
         } else {
@@ -125,15 +132,9 @@ export const ApartmentsRental: React.FC<ApartmentsRentalProps> = ({
 
       if (filters.amenities) {
         Object.keys(filters.amenities).forEach((key) => {
-          console.log(
-            `Filtering by amenity: ${key}, value: ${filters.amenities[key as keyof typeof filters.amenities]}`,
-          );
           if (filters.amenities[key as keyof typeof filters.amenities]) {
             filteredData = filteredData.filter((apartment) => {
               const amenityValue = apartment[key as keyof Apartment];
-              console.log(
-                `Apartment ${apartment.id}: ${key} = ${amenityValue}`,
-              );
               return typeof amenityValue === 'boolean' && amenityValue === true;
             });
           }
@@ -158,8 +159,15 @@ export const ApartmentsRental: React.FC<ApartmentsRentalProps> = ({
         const data = await response.json();
 
         if (Array.isArray(data)) {
-          setApartments(data);
-          applyFilters(data);
+          const apartmentsWithDefaultValues = data.map(
+            (apartment: Apartment) => ({
+              ...apartment,
+              address: apartment.address || '',
+              place: apartment.place || '',
+            }),
+          );
+          setApartments(apartmentsWithDefaultValues);
+          applyFilters(apartmentsWithDefaultValues);
         } else {
           console.error('Expected an array but received:', data);
         }
@@ -230,12 +238,12 @@ export const ApartmentsRental: React.FC<ApartmentsRentalProps> = ({
     <section className={styles.container}>
       <div className={styles.wrapper}>
         <div className={styles.availableRents}>
-          {filters.address ? (
+          {filters.address || filters.place ? (
             <p>
               <span className={styles.availableCount}>
                 {filteredApartments.length}
               </span>{' '}
-              available rentals in {filters.address}
+              available rentals in {filters.address || filters.place}
             </p>
           ) : (
             <p>

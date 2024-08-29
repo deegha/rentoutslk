@@ -203,22 +203,13 @@
   width: 100%;
   @include tabletAndBeyondView() {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 1fr 1fr;
     width: 80%;
   }
 }
 
 .apartTitleContainer {
   width: 100%;
-}
-
-.apartTitle {
-  width: 100%;
-  color: #222;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
 }
 
 .mainContainer {

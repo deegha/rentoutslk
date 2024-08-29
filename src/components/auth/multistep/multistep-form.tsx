@@ -80,7 +80,6 @@ const MultiStepForm = ({
     PasswordExistFormValues | NewUserFormValues
   > = async (data) => {
     if (forgotPassword) {
-      console.log('Resetting password:', data.password);
       // Implement your password reset logic here
       closeModal();
     } else {

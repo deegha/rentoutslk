@@ -4,10 +4,10 @@ import { db } from '@/firebase/config';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const addressQuery = searchParams.get('address')?.toLowerCase() || '';
+  const searchQuery = searchParams.get('query')?.toLowerCase() || '';
 
-  if (!addressQuery) {
-    return NextResponse.json({ addresses: [] });
+  if (!searchQuery) {
+    return NextResponse.json({ results: [] });
   }
 
   try {
@@ -20,17 +20,32 @@ export async function GET(request: Request) {
       ),
     );
 
-    const addresses = allListingsSnapshot.docs
-      .map((doc) => doc.data().address as string)
-      .filter((address) => address.toLowerCase().includes(addressQuery));
+    const results = allListingsSnapshot.docs
+      .map((doc) => {
+        const data = doc.data();
+        return {
+          address: typeof data.address === 'string' ? data.address : '',
+          place: typeof data.place === 'string' ? data.place : '',
+        };
+      })
+      .filter(
+        (result) =>
+          result.address.toLowerCase().includes(searchQuery) ||
+          result.place.toLowerCase().includes(searchQuery),
+      );
 
     return NextResponse.json({
-      addresses: Array.from(new Set(addresses)).slice(0, 3),
+      results: Array.from(new Set(results.map((item) => JSON.stringify(item))))
+        .slice(0, 3)
+        .map((item) => JSON.parse(item)),
     });
   } catch (error) {
-    console.error('Error fetching addresses:', error);
+    console.error('Error fetching search results:', (error as Error).message);
     return NextResponse.json(
-      { message: 'Failed to fetch addresses' },
+      {
+        message: 'Failed to fetch search results',
+        error: (error as Error).message,
+      },
       { status: 500 },
     );
   }

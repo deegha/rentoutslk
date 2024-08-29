@@ -3,17 +3,24 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components';
 import { Dropdown } from './dropdown';
+import { useSearchContext } from '@/context/searchProvider/searchProvider';
 
 import styles from './heroBanner.module.scss';
 
 import ArrowRight from '@/icons/arrow_right_outline.svg';
 
+type SearchResult = {
+  address: string;
+  place: string;
+};
+
 export const HeroBanner = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [searchResults, setSearchResults] = useState<string[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isDropdownVisible, setIsDropdownVisible] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const { setSearchQuery: setGlobalSearchQuery } = useSearchContext();
 
   useEffect(() => {
     const fetchSearchResults = async () => {
@@ -25,11 +32,11 @@ export const HeroBanner = () => {
 
       try {
         const response = await fetch(
-          `/api/rental-search?address=${encodeURIComponent(searchQuery.toLowerCase())}`,
+          `/api/rental-search?query=${encodeURIComponent(searchQuery.toLowerCase())}`,
         );
-        const data: { addresses: string[] } = await response.json();
+        const data: { results: SearchResult[] } = await response.json();
 
-        setSearchResults(data.addresses || []);
+        setSearchResults(data.results || []);
         setIsDropdownVisible(true);
       } catch (error) {
         console.error('Error fetching search results:', error);
@@ -70,7 +77,8 @@ export const HeroBanner = () => {
 
   const handleSearchClick = () => {
     if (searchQuery.trim()) {
-      router.push(`/rentals?address=${encodeURIComponent(searchQuery)}`);
+      setGlobalSearchQuery(searchQuery);
+      router.push(`/rentals?combined=${encodeURIComponent(searchQuery)}`);
     }
   };
 

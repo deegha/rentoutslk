@@ -1,3 +1,4 @@
+// src/components/RentalFilters.tsx
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -14,6 +15,7 @@ import Tv from '@/icons/tv.svg';
 import Gym from '@/icons/gym.svg';
 import Electric from '@/icons/electric.svg';
 import Filter from '@/icons/filter.svg';
+import { useSearchContext } from '@/context/searchProvider/searchProvider';
 
 const propertyType = [
   { label: 'All', value: 'all' },
@@ -34,7 +36,8 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
   _removeFilter,
 }) => {
   const searchParams = useSearchParams();
-  const addressQuery = searchParams.get('address') || '';
+  const combinedQuery = searchParams.get('combined') || '';
+  const { searchQuery } = useSearchContext();
 
   const [mobileFilters, setMobileFilters] = useState(false);
   const [extraFilters, setExtraFilters] = useState(false);
@@ -55,7 +58,7 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
   const methods = useForm({
     defaultValues: {
       ...filters,
-      address: addressQuery,
+      combined: searchQuery || combinedQuery,
     },
   });
 
@@ -72,10 +75,10 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
   }, [mobileFilters]);
 
   useEffect(() => {
-    if (addressQuery) {
+    if (combinedQuery) {
       methods.handleSubmit(handleSubmit)();
     }
-  }, [addressQuery]);
+  }, [combinedQuery]);
 
   const handleSubmit = (data: any) => {
     const adjustedFilters = {
@@ -86,6 +89,8 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
       minBathrooms: tempBathrooms.min,
       maxBathrooms: tempBathrooms.max,
       availableFrom: tempAvailableFrom,
+      address: data.combined,
+      place: data.combined,
     };
     onFilterChange(adjustedFilters);
     setMobileFilters(false);
@@ -116,8 +121,8 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
                 control={methods.control}
                 errors={methods.formState.errors}
                 label="Location"
-                name="address"
-                placeholder="|City, neighbourhood"
+                name="combined"
+                placeholder="City, neighbourhood, or place"
               />
               <CustomSelect
                 control={methods.control}
@@ -132,7 +137,7 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
                 errors={methods.formState.errors}
                 label="Max. rent"
                 name="maxRent"
-                placeholder="|Max rent"
+                placeholder="Max rent"
               />
               <RangeSlider
                 label="Number of bedrooms"
@@ -262,8 +267,8 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
                       control={methods.control}
                       errors={methods.formState.errors}
                       label="Location"
-                      name="address"
-                      placeholder="|City, neighbourhood"
+                      name="combined"
+                      placeholder="City, neighbourhood, or place"
                     />
                     <CustomSelect
                       control={methods.control}
@@ -278,7 +283,7 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
                       errors={methods.formState.errors}
                       label="Max. rent"
                       name="maxRent"
-                      placeholder="|Max rent"
+                      placeholder="Max rent"
                     />
                     <label className={styles.checkboxContainer}>
                       <span className={styles.checkboxLabel}>
