@@ -14,6 +14,7 @@ const getInitialCardCount = (width: number) => {
 interface Apartment {
   id: string;
   address: string;
+  place: string;
   availableFrom: string;
   deposit: number;
   floorArea: number;
@@ -68,7 +69,6 @@ export const ApartmentsHome = () => {
           throw new Error(`Failed to fetch listings: ${response.statusText}`);
         }
         const data = await response.json();
-        console.log('API Response Data:', data);
 
         const filteredData = data
           .filter(
@@ -76,8 +76,6 @@ export const ApartmentsHome = () => {
               item.status === 'verified' && item.active === true,
           )
           .sort((a: Apartment, b: Apartment) => b.views - a.views);
-
-        console.log('Filtered Data:', filteredData);
 
         setApartments(filteredData);
       } catch (error) {

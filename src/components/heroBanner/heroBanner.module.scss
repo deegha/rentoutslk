@@ -22,6 +22,7 @@
   gap: 40px;
   align-items: center;
   position: relative;
+  max-width: 600px;
 }
 
 .heroBlock h1 {
@@ -33,7 +34,7 @@
   text-align: center;
 
   @include tabletAndBeyondView() {
-    width: 312px;
+    width: 500px;
   }
 
   @include desktopAndBeyondView() {

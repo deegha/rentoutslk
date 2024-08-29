@@ -48,7 +48,6 @@ const PropertyPage = async ({ params }: PropertyPageProps) => {
       href: `/property/${params.id}`,
     },
   ];
-  console.log(property);
   return (
     <div>
       <Header />

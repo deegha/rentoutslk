@@ -13,6 +13,7 @@ export const RegisterSchema = z.object({
 export const propertyDetailsSchema = z.object({
   address: z.string().min(1, 'Address is required'),
   title: z.string().min(1, 'Title is required'),
+  place: z.string().min(1, 'Place is required'),
   propertyType: z.string().min(1, 'Property type is required'),
   rentalPeriod: z.string().min(1, 'Rental period is required'),
   monthlyRent: z.number().min(1, 'Monthly rent is required'),

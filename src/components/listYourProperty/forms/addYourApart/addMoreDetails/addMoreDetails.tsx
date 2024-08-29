@@ -77,11 +77,18 @@ export const AddMoreDetails = () => {
           />
           <InputApart
             {...register('title')}
-            placeholder={'e. g. 3 Br Apartment in Havelock city'}
+            placeholder={'e. g. 3 Br Apartment'}
             label={'Apartment title'}
             name={'title'}
             classNameContainer={styles.apartTitleContainer}
-            className={styles.apartTitle}
+            required
+          />
+          <InputApart
+            {...register('place')}
+            placeholder={'e. g. Havelock city'}
+            label={'Place'}
+            name={'place'}
+            classNameContainer={styles.apartTitleContainer}
             required
           />
         </div>
