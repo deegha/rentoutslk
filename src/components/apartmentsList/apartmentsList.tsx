@@ -13,6 +13,7 @@ interface Apartment {
   propertyType: string;
   monthlyRent: number;
   title: string;
+  place: string;
   image1: string;
   image2: string;
   numberBedrooms: number;

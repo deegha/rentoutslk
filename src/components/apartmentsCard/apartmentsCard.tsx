@@ -13,6 +13,7 @@ import Fav from '@/icons/heart_gray.svg';
 import Arrow from '@/icons/arrow_next.svg';
 interface ApartmentsCardProps {
   address: string;
+  place: string;
   availableFrom?: string;
   deposit?: number;
   floorArea: number;
@@ -45,6 +46,7 @@ export const ApartmentsCard: React.FC<ApartmentsCardProp> = ({
     address,
     // availableFrom,
     title,
+    place,
     propertyType,
     monthlyRent,
     // image1,
@@ -125,7 +127,7 @@ export const ApartmentsCard: React.FC<ApartmentsCardProp> = ({
             {monthlyRent} Re
           </a>
           <a href="/" className={styles.cardTitle}>
-            {title}
+            {title} in {place}
           </a>
           <p className={styles.cardLocation}>{address}</p>
         </div>

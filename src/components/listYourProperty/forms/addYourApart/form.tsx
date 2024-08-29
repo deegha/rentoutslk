@@ -66,7 +66,7 @@ export const MultiStepFormApparts = () => {
       userId: session?.user?.id,
     };
 
-    const response = await fetch('/api/upload-listing', {
+    const response = await fetch('/api/uploadListing', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

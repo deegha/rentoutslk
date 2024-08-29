@@ -7,12 +7,14 @@ import {
   Breadcrumbs,
   ApartmentsRental,
 } from '@/components';
+import { SearchProvider } from '@/context/searchProvider/searchProvider';
 import React, { useState, useEffect } from 'react';
 
 export default function Rentals() {
   const [filters, setFilters] = useState({
     address: '',
     propertyType: '',
+    place: '',
     maxRent: '',
     monthlyRent: 0,
     minBedrooms: 1,
@@ -50,7 +52,7 @@ export default function Rentals() {
   };
 
   return (
-    <>
+    <SearchProvider>
       <Header />
       <main>
         <RentalFilters filters={filters} onFilterChange={handleFilterChange} />
@@ -62,6 +64,6 @@ export default function Rentals() {
         <YouCanRent />
       </main>
       <Footer />
-    </>
+    </SearchProvider>
   );
 }

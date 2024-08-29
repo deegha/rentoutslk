@@ -19,17 +19,16 @@ cloudinary.v2.config({
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    const userId = data.userId;
+    console.log('Received data:', data);
 
-    // Extract image keys from the data
+    const userId = data.userId;
     const imageKeys = Object.keys(data).filter((key) =>
       key.startsWith('image'),
     );
 
-    // Upload images to Cloudinary
     const uploadPromises = imageKeys.map(async (imageKey) => {
       const base64String = data[imageKey];
-      console.log(`Type of base64String for ${imageKey}:`, typeof base64String);
+      console.log(`Processing ${imageKey}:`, base64String);
 
       if (
         typeof base64String === 'string' &&
@@ -41,7 +40,8 @@ export async function POST(req: NextRequest) {
             upload_preset: process.env.CLOUDINARY_UPLOAD_PRESET,
           },
         );
-        return { [imageKey]: uploadResponse.secure_url }; // Return the image URL
+        console.log(`Upload response for ${imageKey}:`, uploadResponse);
+        return { [imageKey]: uploadResponse.secure_url };
       }
       return null;
     });
@@ -52,10 +52,9 @@ export async function POST(req: NextRequest) {
       {},
     );
 
-    // Combine the data with the uploaded image URLs
     const listingData = {
-      ...data, // Original data
-      ...imageUrls, // Cloudinary URLs
+      ...data,
+      ...imageUrls,
       status: 'not verified',
       active: true,
       favorite: 0,
@@ -63,10 +62,10 @@ export async function POST(req: NextRequest) {
       createdAt: serverTimestamp(),
     };
 
-    // Save listing to Firestore
+    console.log('Final listing data:', listingData);
+
     const docRef = await addDoc(collection(db, 'listings'), listingData);
 
-    // Update user's listings array in Firestore
     const userRef = doc(db, 'users', userId);
     await updateDoc(userRef, {
       listings: arrayUnion(docRef.id),
@@ -77,9 +76,9 @@ export async function POST(req: NextRequest) {
       id: docRef.id,
     });
   } catch (error) {
-    console.error('Error saving listing:', error);
+    console.error('Detailed error:', error);
     return NextResponse.json(
-      { message: 'Failed to publish listing' },
+      { message: `Failed to publish listing: ${error.message}` },
       { status: 500 },
     );
   }
