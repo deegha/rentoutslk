@@ -1,4 +1,3 @@
-'use client';
 import React from 'react';
 import Image from 'next/image';
 import { Slide } from 'react-slideshow-image';
@@ -11,7 +10,9 @@ import Bedrooms from '@/icons/bedrooms.svg';
 import Type from '@/icons/type.svg';
 import Fav from '@/icons/heart_gray.svg';
 import Arrow from '@/icons/arrow_next.svg';
+
 interface ApartmentsCardProps {
+  id: string;
   address: string;
   place: string;
   availableFrom?: string;
@@ -20,8 +21,8 @@ interface ApartmentsCardProps {
   propertyType: string;
   monthlyRent: number;
   title: string;
-  image1: string;
-  image2: string;
+  image1?: string;
+  image2?: string;
   image3?: string;
   image4?: string;
   image5?: string;
@@ -33,6 +34,7 @@ interface ApartmentsCardProps {
   numberBathrooms: number;
   createdAt: string;
 }
+
 interface ApartmentsCardProp {
   showBestOffer: boolean;
   listing: ApartmentsCardProps;
@@ -44,16 +46,38 @@ export const ApartmentsCard: React.FC<ApartmentsCardProp> = ({
 }) => {
   const {
     address,
-    // availableFrom,
+    id,
     title,
     place,
     propertyType,
     monthlyRent,
-    // image1,
-    // image2,
     floorArea,
     numberBedrooms,
+    image1,
+    image2,
+    image3,
+    image4,
+    image5,
+    image6,
+    image7,
+    image8,
+    image9,
   } = listing;
+
+  const images = [
+    image1,
+    image2,
+    image3,
+    image4,
+    image5,
+    image6,
+    image7,
+    image8,
+    image9,
+  ].filter(
+    (img): img is string => typeof img === 'string' && img.trim() !== '',
+  );
+
   const PrevArrow = (
     <div className="prevArrowBlock">
       <Arrow className="prevArrow" />
@@ -67,7 +91,6 @@ export const ApartmentsCard: React.FC<ApartmentsCardProp> = ({
   );
 
   const customIndicators = () => <span className="pagination"></span>;
-
   return (
     <div className={styles.cardBlock}>
       <div className={styles.cardImageBlock}>
@@ -89,46 +112,24 @@ export const ApartmentsCard: React.FC<ApartmentsCardProp> = ({
           prevArrow={PrevArrow}
           nextArrow={NextArrow}
         >
-          <Image
-            src="/images/apartments_card.png"
-            width={412}
-            height={216}
-            alt="Apartments"
-          />
-          <Image
-            src="/images/apartments_card.png"
-            width={412}
-            height={216}
-            alt="Apartments"
-          />
-          <Image
-            src="/images/apartments_card.png"
-            width={412}
-            height={216}
-            alt="Apartments"
-          />
-          <Image
-            src="/images/apartments_card.png"
-            width={412}
-            height={216}
-            alt="Apartments"
-          />
-          <Image
-            src="/images/apartments_card.png"
-            width={412}
-            height={216}
-            alt="Apartments"
-          />
+          {images.map((image, index) => (
+            <div key={index}>
+              <Image
+                src={image}
+                width={412}
+                height={216}
+                alt={`Apartment image ${index + 1}`}
+              />
+            </div>
+          ))}
         </Slide>
       </div>
-      <div className={styles.cardDetailsBlock}>
+      <a href={`/property/${id}`} className={styles.cardDetailsBlock}>
         <div className={styles.cardDescBlock}>
-          <a href="/" className={styles.cardPrice}>
-            {monthlyRent} Re
-          </a>
-          <a href="/" className={styles.cardTitle}>
+          <p className={styles.cardPrice}>{monthlyRent} Re</p>
+          <p className={styles.cardTitle}>
             {title} in {place}
-          </a>
+          </p>
           <p className={styles.cardLocation}>{address}</p>
         </div>
         <div className={styles.featuresBlock}>
@@ -153,7 +154,7 @@ export const ApartmentsCard: React.FC<ApartmentsCardProp> = ({
             Show all rentals
           </a>
         </div>
-      </div>
+      </a>
     </div>
   );
 };

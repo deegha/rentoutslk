@@ -27,30 +27,48 @@ export const PropertyDetails = ({ property }: { property: PropertyProps }) => {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.toString());
   };
+
   const {
-    // image1,
-    // image5,
     title,
-    floorArea,
-    // image8,
-    numberBedrooms,
-    // image2,
-    furnishing,
-    // rentalPeriod,
-    createdAt,
-    // image6,
-    propertyType,
-    // views,
-    // image7,
-    // customQuestion,
-    monthlyRent,
-    // image9,
-    // favorite,
     address,
-    // image4,
-    status,
+    place,
+    floorArea,
+    numberBedrooms,
     numberBathrooms,
+    furnishing,
+    createdAt,
+    propertyType,
+    monthlyRent,
+    image1,
+    image2,
+    image3,
+    image4,
+    image5,
+    image6,
+    image7,
+    image8,
+    image9,
+    // rentalPeriod,
+    // views,
+    // customQuestion,
+    // favorite,
+    status,
   } = property;
+
+  const images = [
+    image1,
+    image2,
+    image3,
+    image4,
+    image5,
+    image6,
+    image7,
+    image8,
+    image9,
+  ].filter(
+    (img): img is string => typeof img === 'string' && img.trim() !== '',
+  );
+
   const formattedDate = formatDate(createdAt);
 
   return (
@@ -71,54 +89,16 @@ export const PropertyDetails = ({ property }: { property: PropertyProps }) => {
               modules={[FreeMode, Navigation, Thumbs, Pagination]}
               className="mySwiper2"
             >
-              <SwiperSlide>
-                <Image
-                  src="/images/propertyPage/propertyImg.png"
-                  width={800}
-                  height={500}
-                  alt="Apartments"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Image
-                  src="/images/propertyPage/propertyImg.png"
-                  width={800}
-                  height={500}
-                  alt="Apartments"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Image
-                  src="/images/propertyPage/propertyImg.png"
-                  width={800}
-                  height={500}
-                  alt="Apartments"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Image
-                  src="/images/apartments_card.png"
-                  width={800}
-                  height={500}
-                  alt="Apartments"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Image
-                  src="/images/propertyPage/propertyImg.png"
-                  width={800}
-                  height={500}
-                  alt="Apartments"
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Image
-                  src="/images/propertyPage/propertyImg.png"
-                  width={800}
-                  height={500}
-                  alt="Apartments"
-                />
-              </SwiperSlide>
+              {images.map((image, index) => (
+                <SwiperSlide key={index}>
+                  <Image
+                    src={image}
+                    width={800}
+                    height={500}
+                    alt={`Property image ${index + 1}`}
+                  />
+                </SwiperSlide>
+              ))}
             </Swiper>
             <Swiper
               onSwiper={setThumbsSwiper}
@@ -144,65 +124,24 @@ export const PropertyDetails = ({ property }: { property: PropertyProps }) => {
                 },
               }}
             >
-              <SwiperSlide>
-                <Image
-                  src="/images/propertyPage/propertyImg.png"
-                  width={150}
-                  height={100}
-                  alt="Apartments"
-                  className={styles.thumbImage}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Image
-                  src="/images/propertyPage/propertyImg.png"
-                  width={150}
-                  height={100}
-                  alt="Apartments"
-                  className={styles.thumbImage}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Image
-                  src="/images/propertyPage/propertyImg.png"
-                  width={150}
-                  height={100}
-                  alt="Apartments"
-                  className={styles.thumbImage}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Image
-                  src="/images/apartments_card.png"
-                  width={150}
-                  height={100}
-                  alt="Apartments"
-                  className={styles.thumbImage}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Image
-                  src="/images/propertyPage/propertyImg.png"
-                  width={150}
-                  height={100}
-                  alt="Apartments"
-                  className={styles.thumbImage}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Image
-                  src="/images/propertyPage/propertyImg.png"
-                  width={150}
-                  height={100}
-                  alt="Apartments"
-                  className={styles.thumbImage}
-                />
-              </SwiperSlide>
+              {images.map((image, index) => (
+                <SwiperSlide key={index}>
+                  <Image
+                    src={image}
+                    width={150}
+                    height={100}
+                    alt={`Property thumbnail ${index + 1}`}
+                    className={styles.thumbImage}
+                  />
+                </SwiperSlide>
+              ))}
             </Swiper>
           </div>
           <div className={styles.textBlock}>
             <div className={styles.titleBlock}>
-              <h1 className={styles.title}>{title}</h1>
+              <h1 className={styles.title}>
+                {title} in {place}
+              </h1>
               <p className={styles.subtitle}>{address}</p>
             </div>
             <div className={styles.btnBlock}>
@@ -215,7 +154,6 @@ export const PropertyDetails = ({ property }: { property: PropertyProps }) => {
                   background: '#5E5E5E',
                   color: '#fff',
                   opacity: `1`,
-
                   borderRadius: '12px',
                   padding: '12px 12px',
                   boxShadow: `0px 4px 18px 0px rgba(0, 0, 0, 0.17)`,
@@ -238,7 +176,6 @@ export const PropertyDetails = ({ property }: { property: PropertyProps }) => {
                   background: '#fff',
                   color: '#5E5E5E',
                   opacity: `1`,
-
                   borderRadius: '12px',
                   padding: '12px 12px',
                   boxShadow: `0px 4px 18px 0px rgba(0, 0, 0,0.25)`,
@@ -249,7 +186,6 @@ export const PropertyDetails = ({ property }: { property: PropertyProps }) => {
               >
                 <div id="clickable-link" className={styles.copyBtnContainer}>
                   <h3>Share this property</h3>
-
                   <a
                     onClick={() => copyToClipboard()}
                     className={styles.copyContainer}

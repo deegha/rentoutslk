@@ -14,8 +14,15 @@ interface Apartment {
   monthlyRent: number;
   title: string;
   place: string;
-  image1: string;
-  image2: string;
+  image1?: string;
+  image2?: string;
+  image3?: string;
+  image4?: string;
+  image5?: string;
+  image6?: string;
+  image7?: string;
+  image8?: string;
+  image9?: string;
   numberBedrooms: number;
   numberBathrooms: number;
   furnishing: string;
