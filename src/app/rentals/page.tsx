@@ -7,6 +7,7 @@ import {
   Breadcrumbs,
   ApartmentsRental,
 } from '@/components';
+import PageTitle from '@/components/nav/pageTitle';
 import { SearchProvider } from '@/context/searchProvider/searchProvider';
 import React, { useState, useEffect } from 'react';
 
@@ -55,6 +56,7 @@ export default function Rentals() {
     <SearchProvider>
       <Header />
       <main>
+        <PageTitle title="retnoutslk | All rentals" />
         <RentalFilters filters={filters} onFilterChange={handleFilterChange} />
         <Breadcrumbs categories={categories} />
         <ApartmentsRental

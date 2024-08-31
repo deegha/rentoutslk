@@ -1,13 +1,14 @@
 export interface PropertyProps {
   address: string;
+  place: string;
   availableFrom?: string;
   deposit?: number;
   floorArea: string;
   propertyType: string;
   monthlyRent: number;
   title: string;
-  image1: string;
-  image2: string;
+  image1?: string;
+  image2?: string;
   image3?: string;
   image4?: string;
   image5?: string;
