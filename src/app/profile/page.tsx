@@ -9,6 +9,7 @@ import {
 import BeatLoader from 'react-spinners/BeatLoader';
 import { auth } from '@/auth';
 import { CustomSession } from '@/interface/session';
+import PageTitle from '@/components/nav/pageTitle';
 
 const fetchUserData = async (userId: string) => {
   const response = await fetch(
@@ -39,6 +40,7 @@ const ProfilePage = async () => {
   return (
     <>
       <Header />
+      <PageTitle title="retnoutslk | Profile" />
       <RouterProfile isAdmin={session.user.admin} />
       <section
         style={{

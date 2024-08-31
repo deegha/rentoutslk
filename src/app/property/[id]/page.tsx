@@ -10,6 +10,7 @@ import {
   PropertyComponent,
 } from '@/components';
 import { PropertyProps } from '@/interface/property';
+import PageTitle from '@/components/nav/pageTitle';
 
 interface PropertyPageProps {
   params: {
@@ -35,7 +36,7 @@ async function fetchProperty(id: string): Promise<PropertyProps> {
   return property;
 }
 
-const PropertyPage = async ({ params }: PropertyPageProps) => {
+export const PropertyPage = async ({ params }: PropertyPageProps) => {
   const property = await fetchProperty(params.id);
 
   const categories = [
@@ -44,14 +45,19 @@ const PropertyPage = async ({ params }: PropertyPageProps) => {
     { name: 'Colombo', href: '' },
     { name: 'Apartment', href: '' },
     {
-      name: property.title,
+      name: `${property.title} in ${property.place}`,
       href: `/property/${params.id}`,
     },
   ];
+
   return (
-    <div>
+    <>
       <Header />
       <main>
+        <PageTitle
+          title={`rentoutslk | ${property.title} in ${property.place}`}
+          description={`${property.title} in ${property.place}`}
+        />
         <Breadcrumbs categories={categories} />
         <PropertyDetails property={property} />
         <AboutProperty property={property} />
@@ -60,7 +66,7 @@ const PropertyPage = async ({ params }: PropertyPageProps) => {
         <PropertyComponent />
       </main>
       <Footer />
-    </div>
+    </>
   );
 };
 
