@@ -1,12 +1,12 @@
 'use client';
-import { UserRent } from '@/interface/session';
+import { useSession, signOut } from 'next-auth/react';
 import React, { useState } from 'react';
-import styles from './profileCard.module.scss';
+import { CustomSession, UserRent } from '@/interface/session';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import styles from './profileCard.module.scss';
 import { Modal } from '@mui/material';
-import { signOut, useSession } from 'next-auth/react';
 
 const UserSchema = z.object({
   email: z.string().email(),
@@ -38,11 +38,11 @@ export const ProfileCard = ({
   user: UserRent;
   userId: string;
 }) => {
-  const { data: session } = useSession();
-  const customToken = session?.customToken;
+  const { data: session, status } = useSession();
   const [isEditingMobile, setIsEditingMobile] = useState(false);
   const [isEditingPassword, setIsEditingPassword] = useState(false);
   const [isDeleteAccount, setDeleteAccount] = useState(false);
+
   const mobileMethods = useForm<UserFormValues>({
     resolver: zodResolver(UserSchema),
     defaultValues: {
@@ -59,6 +59,16 @@ export const ProfileCard = ({
       confirmPassword: '',
     },
   });
+
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
+
+  if (!session) {
+    return <div>No session available</div>;
+  }
+
+  const customToken = (session as CustomSession)?.user?.customToken;
 
   const onSubmitMobile = async (data: UserFormValues) => {
     try {

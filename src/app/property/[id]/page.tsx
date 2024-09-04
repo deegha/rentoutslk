@@ -36,7 +36,7 @@ async function fetchProperty(id: string): Promise<PropertyProps> {
   return property;
 }
 
-export const PropertyPage = async ({ params }: PropertyPageProps) => {
+const PropertyPage = async ({ params }: PropertyPageProps) => {
   const property = await fetchProperty(params.id);
 
   const categories = [

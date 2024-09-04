@@ -18,7 +18,7 @@ export const DateSelect: React.FC<DateSelectProps> = ({
   name,
   onDateChange,
 }) => {
-  const { control } = useFormContext();
+  const { control } = useFormContext(); // Получаем control из useFormContext
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
   const calendarRef = useRef<HTMLDivElement>(null);
@@ -54,7 +54,7 @@ export const DateSelect: React.FC<DateSelectProps> = ({
         {label}
       </label>
       <Controller
-        control={control}
+        control={control} // Используем control из контекста
         name={name}
         render={({ field }) => (
           <>

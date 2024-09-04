@@ -1,30 +1,29 @@
-
 @import '@/styles/_mixins.scss';
 @import '@/styles/_colors.scss';
 
 .form__block {
   width: 100%;
   height: 100vh;
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   position: fixed;
   left: 0;
-  top:0;
+  top: 0;
 }
-.headerForm{
-  background-color: #F7F7F7;
+.headerForm {
+  background-color: #f7f7f7;
   display: flex;
   justify-content: center;
-  padding:24px 4px;
-   border-radius:24px 24px 0 0;
-   position: relative;
+  padding: 24px 4px;
+  border-radius: 24px 24px 0 0;
+  position: relative;
 }
-.closeIcone{
+.closeIcone {
   position: absolute;
-  left:16px;
-  top:16px;
+  left: 16px;
+  top: 16px;
   cursor: pointer;
 }
-.content{
+.content {
   padding: 0 16px;
 }
 .container {
@@ -34,7 +33,7 @@
   border-radius: 4px;
   background-color: $primary-bg-color;
   margin: auto auto;
-  border-radius:32px;
+  border-radius: 32px;
   z-index: 30;
 }
 
@@ -44,16 +43,15 @@
   font-size: 21px;
 }
 
-
 .buttons__container {
   display: flex;
   flex-direction: column;
   gap: 16px 0;
-  padding: 16px 0 ;
+  padding: 16px 0;
 }
 
 .button__sign {
-  background-color: #DE225C;
+  background-color: #de225c;
   color: #fff;
   text-align: center;
   width: 100%;
@@ -101,8 +99,8 @@
   text-align: center;
   margin: 0 0 24px 0;
 }
-.modalWindow{
+.modalWindow {
   position: absolute;
   right: 100px;
-  top:80px
+  top: 80px;
 }

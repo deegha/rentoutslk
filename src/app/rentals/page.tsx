@@ -37,7 +37,6 @@ export default function Rentals() {
   const [categories, setCategories] = useState([
     { name: 'Rentouts', href: '/' },
     { name: 'Rentals', href: '/rentals' },
-    { name: 'All rentals', href: '/rentals' },
   ]);
 
   useEffect(() => {

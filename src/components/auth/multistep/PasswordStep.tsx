@@ -74,7 +74,7 @@ const PasswordStep: React.FC<PasswordStepProps> = ({
               {...register('confirmPassword')}
               type="password"
             />
-            {errors.confirmPassword && (
+            {'confirmPassword' in errors && (
               <div className={styles.errorContainer}>
                 <Warning />
                 <p className={styles.errorPasswordMessage}>

@@ -2,18 +2,22 @@ import { useEffect, useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { signInWithCustomToken } from 'firebase/auth';
 import { authFirebase } from '@/firebase/config';
+import { CustomSession } from '@/interface/session';
 
 const useFirebaseAuth = () => {
-  const { data: session, status } = useSession();
+  const { data: session, status } = useSession() as {
+    data: CustomSession | null;
+    status: 'authenticated' | 'loading' | 'unauthenticated';
+  }; // Сохраняем стандартные свойства useSession
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const checkFirebaseAuth = async () => {
       if (status === 'authenticated' && session) {
         const user = authFirebase.currentUser;
-        if (!user && session.customToken) {
+        if (!user && session.user.customToken) {
           try {
-            await signInWithCustomToken(authFirebase, session.customToken);
+            await signInWithCustomToken(authFirebase, session.user.customToken);
             setIsAuthenticated(true);
           } catch (error) {
             console.error('Error signing in with Firebase:', error);
