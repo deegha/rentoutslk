@@ -4,9 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components';
 import { Dropdown } from './dropdown';
 import { useSearchContext } from '@/context/searchProvider/searchProvider';
-
 import styles from './heroBanner.module.scss';
-
 import ArrowRight from '@/icons/arrow_right_outline.svg';
 
 type SearchResult = {

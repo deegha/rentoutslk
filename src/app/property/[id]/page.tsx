@@ -11,11 +11,11 @@ import {
 } from '@/components';
 import { PropertyProps } from '@/interface/property';
 import PageTitle from '@/components/nav/pageTitle';
+import { SearchProvider } from '@/context/searchProvider/searchProvider';
 
-// Функция для получения данных о недвижимости на сервере
 async function fetchProperty(id: string): Promise<PropertyProps> {
   const response = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/check-property/${id}`,
+    `${process.env.NEXTAUTH_URL}/api/check-property/${id}?timestamp=${Date.now()}`,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -31,15 +31,14 @@ async function fetchProperty(id: string): Promise<PropertyProps> {
   return property;
 }
 
-// Асинхронный компонент для рендеринга страницы
 const PropertyPage = async ({ params }: { params: { id: string } }) => {
   const property = await fetchProperty(params.id);
 
   const categories = [
     { name: 'Rentouts', href: '/' },
     { name: 'Rentals', href: '/rentals' },
-    { name: 'Colombo', href: '' },
-    { name: 'Apartment', href: '' },
+    { name: `${property.address}`, href: '' },
+    { name: `${property.propertyType}`, href: '' },
     {
       name: `${property.title} in ${property.place}`,
       href: `/property/${property.id}`,
@@ -47,7 +46,7 @@ const PropertyPage = async ({ params }: { params: { id: string } }) => {
   ];
 
   return (
-    <>
+    <SearchProvider>
       <Header />
       <main>
         <PageTitle
@@ -57,12 +56,12 @@ const PropertyPage = async ({ params }: { params: { id: string } }) => {
         <Breadcrumbs categories={categories} />
         <PropertyDetails property={property} />
         <AboutProperty property={property} />
-        <TrendingProperties />
-        <LookingForProperty />
+        <TrendingProperties address={property.address} place={property.place} />
+        <LookingForProperty place={property.place} />
         <PropertyComponent />
       </main>
       <Footer />
-    </>
+    </SearchProvider>
   );
 };
 
