@@ -12,24 +12,22 @@ const TourRequest: React.FC = async () => {
     return (
       <>
         <Header />
-        <RouterProfile />
+        <RouterProfile isAdmin={false} />
         <InAuthed />
         <Footer />
       </>
     );
   }
-  // const userId = session.user.id;
-  // const userData = await fetchUserData(userId);
-  // const user = session.user;
+
+  const isAdmin = session.user?.admin || false;
+
   return (
     <>
       <Header />
-      <RouterProfile />
+      <RouterProfile isAdmin={isAdmin} />
       <div>
         <section>
           <h1>Profile</h1>
-          {/* <p>User Name: {user?.name}</p>
-          <p>User Email: {user?.email}</p> */}
           <div>
             <label>
               Name:
@@ -37,27 +35,11 @@ const TourRequest: React.FC = async () => {
             </label>
           </div>
           <div>
-            <label>
-              Phone Number:
-              {/* <input
-            type="text"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-          /> */}
-            </label>
+            <label>Phone Number:</label>
           </div>
           <div>
-            <label>
-              City:
-              {/* <input
-            type="text"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-          /> */}
-            </label>
+            <label>City:</label>
           </div>
-          {/* <button onClick={handleUpdateProfile}>Update Profile</button>
-          <button onClick={handleLogout}>Logout</button> */}
         </section>
       </div>
       <Footer />

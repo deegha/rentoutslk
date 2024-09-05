@@ -1,258 +1,258 @@
 @import '@/styles/_mixins.scss';
 @import '@/styles/_colors.scss';
 
-.container{
-  
-    @include largeDesktopAndBeyondView(){
-     display:flex;
-   justify-content:center;
-   items-align:center;
-   width:100%;
-   height:100%;
-   padding:64px 0px;
-    }
-
-}
-.containerProfile{
-     @include largeDesktopAndBeyondView(){
-    width:90%;
-    background:white;
-    border-radius:24px;
-    margin:0 auto;
-    height: auto;
-    }
-}
-.cardHeader{
-    border-bottom:1px solid #222;
-    @include largeDesktopAndBeyondView(){
-        padding: 32px 36px;
-    }
-}
-.titleHeader{
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal; 
-    color: #5e5e5e;
-    @include largeDesktopAndBeyondView(){
-    font-size: 20px;
-
-    } 
-}
-
-.savedChanges{
-    color:#058C84;
-    font-size:12px;
-    font-weight: 600;
-}
-.editButton{
-padding: 8px var(--Numbers-Spacings-7, 24px);
-justify-content: center;
-align-items: center; 
-color:#222;
-border-radius: var(--Numbers-Corner-radius-Corner-2, 4px);
-border: 1px solid var(--Color-Shades-Black, #222);
-transition:color 0.8s ease, background-color 0.8s ease;
-cursor:pointer;
-font-weight: 600; 
-}
-.editButton:hover{
-    color:#fff;
-    background-color:#222;
-}
-.editableContainer{
-    display:flex;
-    gap:8px;
-    align-items:center;
-}
-.inEditableContainer{
-    display:flex;
-    align-items:center;
-   
-}
-.profileProperty{
-    transition:all 0.4s;
-    display:flex;
-    flex-direction:column;
-    min-height:100px;
-
-    @include largeDesktopAndBeyondView(){
-       
-        padding:32px 36px;
-         border-bottom:1px solid #D3D3D3;
-    }
-}
-.profilePropertyActive{
-  transition:all 0.4s;
-    display:flex;
-    flex-direction:column;
-    min-height:275px;
-
-    @include largeDesktopAndBeyondView(){
-        padding:32px 36px;
-        border-bottom:1px solid #D3D3D3;
-    }
-}
-.profilePropertyContainer{
-     display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.deleteAccountProperty{
-    flex-direction: row;
-    justify-content: space-between;
-    border-bottom: 0;
-}
-.emailProperty{
-    flex-direction: row;
-    justify-content: space-between;
-}
-.editMobileTitle{
-color:#222;
-font-size: 16px;
-font-style: normal;
-font-weight: 400;
-line-height: normal; 
-}
-.editInput{
-    border-radius: 4px;
-border: 1px solid #D3D3D3;
-background: #FFF;
-display: flex;
-
-
-align-items: center;
-gap: 8px;
-align-self: stretch;
-color:#222;  
-@include largeDesktopAndBeyondView(){
-       
-       max-width: 250px;
-padding: 0px 16px;
-height: 40px;
-    }
-}
-.editForm{
-    width:25%;
-    display:flex;
-    flex-direction:column;
-    gap:16px;
-    transition:opacity 0.6s ease-in, display 0.8s ease-in;
-    margin: auto 0;
-}
-.saveButton{
+.container {
+  @include largeDesktopAndBeyondView() {
     display: flex;
-height: var(--numbers-width-hight-48, 48px);
-padding: 8px var(--Numbers-Spacings-8, 28px);
-justify-content: flex-end;
-align-items: center;
-gap: 8px; 
-    border-radius: var(--Numbers-Corner-radius-Corner-2, 4px);
-background: var(--Shade-02, #222); 
-font-size: 16px;
-font-style: normal;
-font-weight: 600;
-line-height: normal; 
-color: var(--Shade-01, #FFF);
-border:1px solid #222;
-transition:all 0.8s ease;
-cursor:pointer;
+    justify-content: center;
+    items-align: center;
+    width: 100%;
+    height: 100%;
+    padding: 64px 0px;
+  }
 }
-.saveButton:hover{
-    background-color:#fff;
-    color:#222;
+.containerProfile {
+  @include largeDesktopAndBeyondView() {
+    width: 90%;
+    background: white;
+    border-radius: 24px;
+    margin: 0 auto;
+    height: auto;
+  }
 }
-.title{
-    color: var(--Color-Neutrals-Neutral-8, #5E5E5E);
+.cardHeader {
+  border-bottom: 1px solid #222;
+  @include largeDesktopAndBeyondView() {
+    padding: 32px 36px;
+  }
+}
+.titleHeader {
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  color: #5e5e5e;
+  @include largeDesktopAndBeyondView() {
+    font-size: 20px;
+  }
+}
 
-font-size: 16px;
-font-style: normal;
-font-weight: 400;
-line-height: normal; 
+.savedChanges {
+  color: #058c84;
+  font-size: 12px;
+  font-weight: 600;
 }
-.opacityZero{
-    opacity:0;
-    transition:all 0.8s ease;
+.editButton {
+  padding: 8px var(--Numbers-Spacings-7, 24px);
+  justify-content: center;
+  align-items: center;
+  color: #222;
+  border-radius: var(--Numbers-Corner-radius-Corner-2, 4px);
+  border: 1px solid var(--Color-Shades-Black, #222);
+  transition:
+    color 0.8s ease,
+    background-color 0.8s ease;
+  cursor: pointer;
+  font-weight: 600;
 }
-.modal{
-    background-color:#fff;
-    width:20%;
-    border-radius:12px;
-    padding:16px;
-    margin:auto;
-    min-height:250px;
-    display:flex;
-    flex-direction:column;
-    gap:16px;
-    transform:translateY(150%)
+.editButton:hover {
+  color: #fff;
+  background-color: #222;
 }
-.modalDesc{
-    color: var(--Color-Neutrals-Neutral-8, #5E5E5E);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;  
+.editableContainer {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
-.modalTitle{
-    font-size: 24px;
-font-style: normal;
-font-weight: 600;
-line-height: normal; 
-color:#222;
+.inEditableContainer {
+  display: flex;
+  align-items: center;
 }
-.modalForm{
-    gap:16px;
-    display:flex;
-    flex-direction:column;
-    margin-top:auto;
-}
-.buttonGroup{
-    gap:16px;
-    display:flex;
+.profileProperty {
+  transition: all 0.4s;
+  display: flex;
+  flex-direction: column;
+  min-height: 100px;
 
+  @include largeDesktopAndBeyondView() {
+    padding: 32px 36px;
+    border-bottom: 1px solid #d3d3d3;
+  }
 }
-.modalEmail{
-    color:#5e5e5e;
-    font-weight:600
+.profilePropertyActive {
+  transition: all 0.4s;
+  display: flex;
+  flex-direction: column;
+  min-height: 275px;
+
+  @include largeDesktopAndBeyondView() {
+    padding: 32px 36px;
+    border-bottom: 1px solid #d3d3d3;
+  }
 }
-.modalCheck{
-    margin-bottom:16px;
+.profilePropertyContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.checkText{
-    font-size: 13px;
-font-style: normal;
-font-weight: 400;
-line-height: normal; 
-color:#5E5E5E;
+.deleteAccountProperty {
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 0;
 }
-.deleteButton{
-padding: 8px var(--Numbers-Spacings-7, 24px);
-justify-content: center;
-align-items: center; 
-color:#fff;
-border-radius: var(--Numbers-Corner-radius-Corner-2, 4px);
-border: 1px solid var(--Color-Shades-Black, #222);
-transition:color 0.8s ease, background-color 0.8s ease;
-cursor:pointer;
-font-weight: 600; 
-background-color:#222;
+.emailProperty {
+  flex-direction: row;
+  justify-content: space-between;
 }
-.cancleButton{
-    padding: 8px var(--Numbers-Spacings-7, 24px);
-justify-content: center;
-align-items: center; 
-color:#222;
-border-radius: var(--Numbers-Corner-radius-Corner-2, 4px);
-border: 1px solid var(--Color-Shades-Black, #222);
-transition:color 0.8s ease, background-color 0.8s ease;
-cursor:pointer;
-font-weight: 600; 
-background-color:transparent;
+.editMobileTitle {
+  color: #222;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
-.deleteButton:hover{
-color:#222;
-background-color:#fff;
+.editInput {
+  border-radius: 4px;
+  border: 1px solid #d3d3d3;
+  background: #fff;
+  display: flex;
+
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  color: #222;
+  @include largeDesktopAndBeyondView() {
+    max-width: 250px;
+    padding: 0px 16px;
+    height: 40px;
+  }
 }
-.cancleButton:hover{
-color:#fff;
-background-color:#222;
+.editForm {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition:
+    opacity 0.6s ease-in,
+    display 0.8s ease-in;
+  margin: auto 0;
+}
+.saveButton {
+  display: flex;
+  height: var(--numbers-width-hight-48, 48px);
+  padding: 8px var(--Numbers-Spacings-8, 28px);
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--Numbers-Corner-radius-Corner-2, 4px);
+  background: var(--Shade-02, #222);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  color: var(--Shade-01, #fff);
+  border: 1px solid #222;
+  transition: all 0.8s ease;
+  cursor: pointer;
+}
+.saveButton:hover {
+  background-color: #fff;
+  color: #222;
+}
+.title {
+  color: var(--Color-Neutrals-Neutral-8, #5e5e5e);
+
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.opacityZero {
+  opacity: 0;
+  transition: all 0.8s ease;
+}
+.modal {
+  background-color: #fff;
+  width: 20%;
+  border-radius: 12px;
+  padding: 16px;
+  margin: auto;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transform: translateY(150%);
+}
+.modalDesc {
+  color: var(--Color-Neutrals-Neutral-8, #5e5e5e);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.modalTitle {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  color: #222;
+}
+.modalForm {
+  gap: 16px;
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+}
+.buttonGroup {
+  gap: 16px;
+  display: flex;
+}
+.modalEmail {
+  color: #5e5e5e;
+  font-weight: 600;
+}
+.modalCheck {
+  margin-bottom: 16px;
+}
+.checkText {
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  color: #5e5e5e;
+}
+.deleteButton {
+  padding: 8px var(--Numbers-Spacings-7, 24px);
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  border-radius: var(--Numbers-Corner-radius-Corner-2, 4px);
+  border: 1px solid var(--Color-Shades-Black, #222);
+  transition:
+    color 0.8s ease,
+    background-color 0.8s ease;
+  cursor: pointer;
+  font-weight: 600;
+  background-color: #222;
+}
+.cancleButton {
+  padding: 8px var(--Numbers-Spacings-7, 24px);
+  justify-content: center;
+  align-items: center;
+  color: #222;
+  border-radius: var(--Numbers-Corner-radius-Corner-2, 4px);
+  border: 1px solid var(--Color-Shades-Black, #222);
+  transition:
+    color 0.8s ease,
+    background-color 0.8s ease;
+  cursor: pointer;
+  font-weight: 600;
+  background-color: transparent;
+}
+.deleteButton:hover {
+  color: #222;
+  background-color: #fff;
+}
+.cancleButton:hover {
+  color: #fff;
+  background-color: #222;
 }

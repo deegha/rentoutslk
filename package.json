@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -p 4000",
+    "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "lint:strict": "next lint '*/**/*.{js,jsx,ts,tsx}'",
@@ -14,6 +14,7 @@
     "build:scss": "sass styles/scss -o styles/css"
   },
   "dependencies": {
+    "@auth/core": "^0.34.2",
     "@auth/firebase-adapter": "^2.4.1",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
@@ -48,6 +49,7 @@
     "react-tooltip": "^5.27.1",
     "sass": "^1.77.4",
     "scss": "^0.2.4",
+    "sharp": "^0.33.5",
     "swiper": "^11.1.5",
     "zod": "^3.23.8"
   },

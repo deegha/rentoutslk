@@ -21,7 +21,11 @@ type ImageUploadValues = z.infer<typeof imageUploadSchema>;
 type QuestionsFormValues = z.infer<typeof questionsFormSchema>;
 
 export const MultiStepFormApparts = () => {
-  const { data: session } = useSession() as { data: CustomSession };
+  const { data: sessionData, status } = useSession();
+
+  // Проверяем, аутентифицирован ли пользователь
+  const session = sessionData as CustomSession | null;
+
   const [step, setStep] = useState(0);
   const methods = useForm<PropertyDetailsValues>({
     resolver: zodResolver(propertyDetailsSchema),
@@ -84,10 +88,6 @@ export const MultiStepFormApparts = () => {
 
   const nextStep = () => setStep((prev) => prev + 1);
 
-  // const handleFormError = (errors: any) => {
-  //   console.error('Form Errors:', errors);
-  // };
-
   const categories = [
     { name: 'Rentouts', href: '/' },
     { name: 'List property', href: '/add-your-apartment' },
@@ -99,6 +99,14 @@ export const MultiStepFormApparts = () => {
   const filteredCategories = categories.filter(
     (category, index) => index <= step + 2,
   );
+
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
+
+  if (!session) {
+    return <div>You need to sign in to list your property.</div>;
+  }
 
   return (
     <div className={styles.form}>

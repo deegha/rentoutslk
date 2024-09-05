@@ -22,7 +22,7 @@
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -61,10 +61,10 @@
 }
 
 .hr {
-  border: none; 
-  border-top: 1px solid #d3d3d3; 
-  margin: 0 auto; 
-  height: 1px; 
+  border: none;
+  border-top: 1px solid #d3d3d3;
+  margin: 0 auto;
+  height: 1px;
   background-color: #d3d3d3;
 
   @include tabletAndBeyondView() {

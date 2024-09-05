@@ -77,8 +77,9 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     console.error('Detailed error:', error);
+    const err = error as Error;
     return NextResponse.json(
-      { message: `Failed to publish listing: ${error.message}` },
+      { message: `Failed to publish listing: ${err.message}` },
       { status: 500 },
     );
   }

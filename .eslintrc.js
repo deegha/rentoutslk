@@ -29,7 +29,7 @@ module.exports = {
     'prefer-const': 'error',
     'no-var': 'warn',
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'object-shorthand': 'warn',
     'quote-props': ['warn', 'as-needed'],
     // TypeScript rules

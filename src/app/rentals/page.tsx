@@ -1,4 +1,5 @@
 'use client';
+
 import {
   Header,
   YouCanRent,
@@ -7,9 +8,9 @@ import {
   Breadcrumbs,
   ApartmentsRental,
 } from '@/components';
+import React, { useState, useEffect, Suspense } from 'react';
 import PageTitle from '@/components/nav/pageTitle';
 import { SearchProvider } from '@/context/searchProvider/searchProvider';
-import React, { useState, useEffect } from 'react';
 
 export default function Rentals() {
   const [filters, setFilters] = useState({
@@ -37,7 +38,6 @@ export default function Rentals() {
   const [categories, setCategories] = useState([
     { name: 'Rentouts', href: '/' },
     { name: 'Rentals', href: '/rentals' },
-    { name: 'All rentals', href: '/rentals' },
   ]);
 
   useEffect(() => {
@@ -57,7 +57,12 @@ export default function Rentals() {
       <Header />
       <main>
         <PageTitle title="retnoutslk | All rentals" />
-        <RentalFilters filters={filters} onFilterChange={handleFilterChange} />
+        <Suspense fallback={<div>Loading filters...</div>}>
+          <RentalFilters
+            filters={filters}
+            onFilterChange={handleFilterChange}
+          />
+        </Suspense>
         <Breadcrumbs categories={categories} />
         <ApartmentsRental
           filters={filters}

@@ -1,5 +1,5 @@
 import NextAuth from 'next-auth';
-import type { NextAuthOptions, JWT } from 'next-auth';
+import type { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import FacebookProvider from 'next-auth/providers/facebook';
@@ -22,21 +22,19 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { getCustomToken } from '@/firebase/firebaseAdmin';
-import { CustomSession, UserRent } from '@/interface/session';
+import { UserRent } from '@/interface/session';
 
-// Helper function to check Firebase authentication
 const checkFirebaseAuth = async (): Promise<User | null> => {
   return new Promise((resolve) => {
     onAuthStateChanged(authFirebase, (user) => resolve(user || null));
   });
 };
 
-// Helper function to refresh Firebase token
 const refreshFirebaseToken = async (user: User) => {
   return user ? await user.getIdToken(true) : null;
 };
 
-export const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthConfig = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -45,11 +43,16 @@ export const authOptions: NextAuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        const email = credentials?.email;
-        const password = credentials?.password;
+        const email = credentials?.email as string | undefined;
+        const password = credentials?.password as string | undefined;
 
-        if (!email || !password) {
-          console.error('Email or password is missing');
+        if (
+          !email ||
+          typeof email !== 'string' ||
+          !password ||
+          typeof password !== 'string'
+        ) {
+          console.error('Email or password is missing or not a string');
           return null;
         }
 
@@ -125,38 +128,39 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user?: UserRent }) {
+    async jwt({ token, user, ..._rest }) {
       if (user) {
-        token.id = user.id;
-        token.customToken = user.customToken;
-        token.idToken = user.idToken;
-        token.admin = user.admin || false;
-        token.exp = Math.floor(Date.now() / 1000) + 60 * 60; // 1 hour expiration
+        const customUser = user as unknown as UserRent;
+        token.id = customUser.id;
+        token.customToken = customUser.customToken;
+        token.idToken = customUser.idToken;
+        token.admin = customUser.admin || false;
+        token.exp = Math.floor(Date.now() / 1000) + 60 * 60;
       }
 
-      // Check if the token needs to be refreshed
       if (
         token.idTokenExpires &&
+        typeof token.idTokenExpires === 'number' &&
         Math.floor(Date.now() / 1000) > token.idTokenExpires
       ) {
         const firebaseUser = await checkFirebaseAuth();
         if (firebaseUser) {
           token.idToken = await refreshFirebaseToken(firebaseUser);
-          token.idTokenExpires = Math.floor(Date.now() / 1000) + 60 * 60; // Extend expiration
-        } else {
-          token = null; // Invalidate token if no Firebase user
+          token.idTokenExpires = Math.floor(Date.now() / 1000) + 60 * 60;
         }
       }
 
       return token;
     },
-    async session({ session, token }: { session: CustomSession; token: JWT }) {
+
+    async session({ session, token }) {
+      const customUser = session.user as unknown as UserRent;
       if (session.user) {
-        session.user.id = token.id as string;
-        session.user.customToken = token.customToken as string;
-        session.user.idToken = token.idToken as string;
-        session.user.admin = token.admin as boolean;
-        session.user.exp = token.exp as number;
+        customUser.id = token.id as string;
+        customUser.customToken = token.customToken as string;
+        customUser.idToken = token.idToken as string;
+        customUser.admin = token.admin as boolean;
+        customUser.exp = token.exp as number;
       }
       return session;
     },
@@ -166,6 +170,7 @@ export const authOptions: NextAuthOptions = {
       await firebaseSignOut(authFirebase);
     },
   },
+  trustHost: true,
 };
 
 const nextAuthInstance = NextAuth(authOptions);

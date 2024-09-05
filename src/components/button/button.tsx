@@ -28,14 +28,14 @@ export const Button: React.FC<ButtonProps> = ({
   type = 'button',
   image,
 }) => {
-  const buttonStyle = {
+  const buttonStyle: Record<string, string | undefined> = {
     '--bg-color': bgColor,
     '--text-color': textColor,
     '--border-radius': borderRadius,
     '--border': borderColor ? `1px solid ${borderColor}` : 'none',
     '--padding': padding,
     '--font-weight': fontWeight,
-  } as React.CSSProperties;
+  };
 
   return link ? (
     <a href={link} className={styles.button} style={buttonStyle}>

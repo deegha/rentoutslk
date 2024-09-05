@@ -49,7 +49,7 @@ interface ApartmentsListProps {
   buttonBorderRadius: string;
   buttonBgColor: string;
   buttonBorderColor: string;
-  onShowMore: () => void;
+  onShowMore?: () => void;
 }
 
 export const ApartmentsList: React.FC<ApartmentsListProps> = ({

@@ -160,7 +160,7 @@ export const AddMoreDetails = () => {
           <DateSelect
             label={'Available from*'}
             name={'availableFrom'}
-            register={register}
+            fontWeight="400"
           />
           <SelectInput
             control={control}
