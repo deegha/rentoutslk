@@ -1,7 +1,5 @@
 import NextAuth from 'next-auth';
 import type { NextAuthConfig } from 'next-auth';
-// Удаляем import JWT если он не используется
-// Удаляем import CustomSession если он не используется
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import FacebookProvider from 'next-auth/providers/facebook';
@@ -26,14 +24,12 @@ import {
 import { getCustomToken } from '@/firebase/firebaseAdmin';
 import { UserRent } from '@/interface/session';
 
-// Helper function to check Firebase authentication
 const checkFirebaseAuth = async (): Promise<User | null> => {
   return new Promise((resolve) => {
     onAuthStateChanged(authFirebase, (user) => resolve(user || null));
   });
 };
 
-// Helper function to refresh Firebase token
 const refreshFirebaseToken = async (user: User) => {
   return user ? await user.getIdToken(true) : null;
 };
@@ -139,7 +135,7 @@ export const authOptions: NextAuthConfig = {
         token.customToken = customUser.customToken;
         token.idToken = customUser.idToken;
         token.admin = customUser.admin || false;
-        token.exp = Math.floor(Date.now() / 1000) + 60 * 60; // 1 hour expiration
+        token.exp = Math.floor(Date.now() / 1000) + 60 * 60;
       }
 
       if (
@@ -150,7 +146,7 @@ export const authOptions: NextAuthConfig = {
         const firebaseUser = await checkFirebaseAuth();
         if (firebaseUser) {
           token.idToken = await refreshFirebaseToken(firebaseUser);
-          token.idTokenExpires = Math.floor(Date.now() / 1000) + 60 * 60; // Extend expiration
+          token.idTokenExpires = Math.floor(Date.now() / 1000) + 60 * 60;
         }
       }
 
@@ -174,6 +170,7 @@ export const authOptions: NextAuthConfig = {
       await firebaseSignOut(authFirebase);
     },
   },
+  trustHost: true,
 };
 
 const nextAuthInstance = NextAuth(authOptions);
