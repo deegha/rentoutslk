@@ -81,7 +81,7 @@ export const ApartmentsList: React.FC<ApartmentsListProps> = ({
   return (
     <div className={styles.container}>
       <div className={styles.list}>{cards}</div>
-      {apartments.length > 8 && cardCount < apartments.length && (
+      {apartments.length > 4 && cardCount < apartments.length && (
         <div className={styles.btnBlock}>
           <Button
             text={buttonText}
