@@ -1,17 +1,14 @@
+'use client';
 import React from 'react';
 import styles from './addYourApart.module.scss';
-import Select from 'react-select';
-import StylesConfig from 'react-select';
+import Select, { StylesConfig } from 'react-select';
 import { Controller, Control, FieldValues, FieldErrors } from 'react-hook-form';
 
 const customStyles: StylesConfig = {
-  container: (provided) => ({
+  control: (provided) => ({
     ...provided,
     width: '100%',
     marginTop: '8px',
-  }),
-  control: (provided) => ({
-    ...provided,
     backgroundColor: 'white',
     borderColor: '#ccc',
     minHeight: '48px',
@@ -97,6 +94,7 @@ interface SelectInputProps {
   required?: boolean;
   isDefaultOption?: boolean;
 }
+
 export const SelectInput: React.FC<SelectInputProps> = ({
   control,
   option,

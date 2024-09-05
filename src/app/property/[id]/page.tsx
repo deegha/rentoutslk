@@ -12,12 +12,7 @@ import {
 import { PropertyProps } from '@/interface/property';
 import PageTitle from '@/components/nav/pageTitle';
 
-interface PropertyPageProps {
-  params: {
-    id: string;
-  };
-}
-
+// Функция для получения данных о недвижимости на сервере
 async function fetchProperty(id: string): Promise<PropertyProps> {
   const response = await fetch(
     `${process.env.NEXTAUTH_URL}/api/check-property/${id}`,
@@ -36,7 +31,8 @@ async function fetchProperty(id: string): Promise<PropertyProps> {
   return property;
 }
 
-export const PropertyPage = async ({ params }: PropertyPageProps) => {
+// Асинхронный компонент для рендеринга страницы
+const PropertyPage = async ({ params }: { params: { id: string } }) => {
   const property = await fetchProperty(params.id);
 
   const categories = [
@@ -46,7 +42,7 @@ export const PropertyPage = async ({ params }: PropertyPageProps) => {
     { name: 'Apartment', href: '' },
     {
       name: `${property.title} in ${property.place}`,
-      href: `/property/${params.id}`,
+      href: `/property/${property.id}`,
     },
   ];
 

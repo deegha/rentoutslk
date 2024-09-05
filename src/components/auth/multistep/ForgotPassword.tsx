@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, FieldErrors } from 'react-hook-form';
 import { PasswordExistFormValues, NewUserFormValues } from './types';
 import styles from './multistep-form.module.scss';
 import Warning from '@/icons/Circle_Warning.svg';
@@ -24,6 +24,12 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({
     handleSubmit,
     formState: { errors },
   } = useFormContext<PasswordExistFormValues | NewUserFormValues>();
+
+  const isNewUserForm = (
+    errors: FieldErrors<NewUserFormValues>,
+  ): errors is FieldErrors<NewUserFormValues> => {
+    return 'confirmPassword' in errors;
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.container}>
@@ -54,20 +60,24 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({
             </p>
           </div>
         )}
-        <label>Confirm New Password</label>
-        <input
-          className={styles.input}
-          placeholder="Confirm your new password"
-          {...register('confirmPassword')}
-          type="password"
-        />
-        {errors.confirmPassword && (
-          <div className={styles.errorContainer}>
-            <Warning />
-            <p className={styles.errorPasswordMessage}>
-              {errors.confirmPassword?.message}
-            </p>
-          </div>
+        {isNewUserForm(errors) && (
+          <>
+            <label>Confirm New Password</label>
+            <input
+              className={styles.input}
+              placeholder="Confirm your new password"
+              {...register('confirmPassword')}
+              type="password"
+            />
+            {errors.confirmPassword && (
+              <div className={styles.errorContainer}>
+                <Warning />
+                <p className={styles.errorPasswordMessage}>
+                  {errors.confirmPassword?.message}
+                </p>
+              </div>
+            )}
+          </>
         )}
         <button type="submit" className={styles.button}>
           Reset Password

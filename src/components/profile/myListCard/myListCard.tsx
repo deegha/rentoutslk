@@ -25,9 +25,10 @@ export const MyListCard: React.FC<MyListCardProp> = ({
     // address,
     // availableFrom,
     title,
+    place,
     // propertyType,
     // monthlyRent,
-    // image1,
+    image1,
     // floorArea,
     // numberBedrooms,
     createdAt,
@@ -91,7 +92,7 @@ export const MyListCard: React.FC<MyListCardProp> = ({
       <div className={styles.imageContainer}>
         <Image
           className={styles.image}
-          src={'/images/apartments_card.png'}
+          src={`${image1}`}
           alt={''}
           width={1920}
           height={1080}
@@ -101,7 +102,9 @@ export const MyListCard: React.FC<MyListCardProp> = ({
         <div className={styles.infoContainer}>
           <div className={styles.titleContainer}>
             <div className={styles.titleLeftContainer}>
-              <h1 className={styles.title}>{title}</h1>
+              <h1 className={styles.title}>
+                {title} in {place}
+              </h1>
 
               <Link href={`/property/${id}`}>
                 <ArrowLink />
