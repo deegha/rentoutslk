@@ -14,31 +14,32 @@
 
 .container {
   background-color: #fff;
-  padding: 32px 72px;
+  // padding: 16px 24px;
   box-shadow: 0px 10px 12px 0px rgba(0, 0, 0, 0.04);
+  align-items: center;
   z-index: 30;
   position: relative;
+  @include tabletAndBeyondView() {
+    padding: 32px 72px;
+  }
 }
 .linkContainer {
   display: flex;
   width: 100%;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 64px;
-  padding: 32px 0;
-  position: fixed;
+  gap: 32px;
+  padding: 16px 24px;
   background-color: #fff;
-  height: 90vh;
-  left: 0;
-  transform: translateY(0px);
-  transition: transform 0.8s ease;
-  @include largeDesktopAndBeyondView() {
+  height: 100px;
+  // transition: transform 0.8s ease;
+  @include tabletAndBeyondView() {
     gap: 64px;
     padding: 0 36px;
-    position: relative;
+
     height: auto;
     flex-direction: row;
-    transform: translateY(0px);
+    // transform: translateY(0px);
   }
 }
 .linkContainer .active {

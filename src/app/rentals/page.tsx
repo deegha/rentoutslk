@@ -56,7 +56,7 @@ export default function Rentals() {
     <SearchProvider>
       <Header />
       <main>
-        <PageTitle title="retnoutslk | All rentals" />
+        <PageTitle title="rentoutslk | All rentals" />
         <Suspense fallback={<div>Loading filters...</div>}>
           <RentalFilters
             filters={filters}

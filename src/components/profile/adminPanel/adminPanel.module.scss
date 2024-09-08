@@ -2,10 +2,10 @@
 @import '@/styles/_colors.scss';
 
 .container {
-  @include largeDesktopAndBeyondView() {
+  @include tabletAndBeyondView() {
     display: flex;
     justify-content: center;
-    items-align: center;
+    align-items: center;
     width: 100%;
     height: 100%;
     padding: 64px 0px;
@@ -26,7 +26,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  @include largeDesktopAndBeyondView() {
+  @include tabletAndBeyondView() {
     padding: 32px 36px;
   }
 }

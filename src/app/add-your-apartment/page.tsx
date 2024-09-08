@@ -6,7 +6,7 @@ const AddYourApart = () => {
     <>
       <Header />
       <main>
-        <PageTitle title="retnoutslk | List your property" />
+        <PageTitle title="rentoutslk | List your property" />
         <MultiStepFormApparts />
       </main>
       <Footer />

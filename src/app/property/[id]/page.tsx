@@ -12,6 +12,7 @@ import {
 import { PropertyProps } from '@/interface/property';
 import PageTitle from '@/components/nav/pageTitle';
 import { SearchProvider } from '@/context/searchProvider/searchProvider';
+import ViewTracker from '@/components/viewTracker/viewTracker';
 
 async function fetchProperty(id: string): Promise<PropertyProps> {
   const response = await fetch(
@@ -41,7 +42,7 @@ const PropertyPage = async ({ params }: { params: { id: string } }) => {
     { name: `${property.propertyType}`, href: '' },
     {
       name: `${property.title} in ${property.place}`,
-      href: `/property/${property.id}`,
+      href: `/property/${params.id}`,
     },
   ];
 
@@ -59,6 +60,7 @@ const PropertyPage = async ({ params }: { params: { id: string } }) => {
         <TrendingProperties address={property.address} place={property.place} />
         <LookingForProperty place={property.place} />
         <PropertyComponent />
+        <ViewTracker propertyId={params.id} />
       </main>
       <Footer />
     </SearchProvider>
