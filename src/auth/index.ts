@@ -135,7 +135,7 @@ export const authOptions: NextAuthConfig = {
         token.customToken = customUser.customToken;
         token.idToken = customUser.idToken;
         token.admin = customUser.admin || false;
-        token.exp = Math.floor(Date.now() / 1000) + 60 * 60;
+        token.exp = Math.floor(Date.now() / 1000) + 60 * 60 * 2;
       }
 
       if (

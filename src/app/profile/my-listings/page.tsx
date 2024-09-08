@@ -1,14 +1,12 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { auth } from '@/auth';
 import { CustomSession } from '@/interface/session';
-import {
-  Header,
-  RouterProfile,
-  Footer,
-  InAuthed,
-  CheckListings,
-} from '@/components';
+import { Header, RouterProfile, Footer, InAuthed } from '@/components';
 import { PropertyProps } from '@/interface/property';
+
+const CheckListings = React.lazy(
+  () => import('@/components/profile/checkListings'),
+);
 
 const CheckListingsPage = async () => {
   const session = (await auth()) as CustomSession;
@@ -23,6 +21,7 @@ const CheckListingsPage = async () => {
       </>
     );
   }
+
   const response = await fetch(
     `${process.env.NEXTAUTH_URL}/api/check-listings`,
     {
@@ -59,7 +58,10 @@ const CheckListingsPage = async () => {
           zIndex: 20,
         }}
       >
-        <CheckListings listings={listings} idToken={session.user.idToken} />
+        {/* Добавляем Suspense для отложенной загрузки компонента CheckListings */}
+        <Suspense fallback={<div>Loading listings...</div>}>
+          <CheckListings listings={listings} idToken={session.user.idToken} />
+        </Suspense>
       </div>
       <Footer />
     </>

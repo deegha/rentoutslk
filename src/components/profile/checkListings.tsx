@@ -12,10 +12,7 @@ interface CheckListingsProps {
 
 type ActiveLink = 'All listings' | 'Active' | 'Inactive';
 
-export const CheckListings: React.FC<CheckListingsProps> = ({
-  listings,
-  idToken,
-}) => {
+const CheckListings: React.FC<CheckListingsProps> = ({ listings, idToken }) => {
   const [listingsState, setListingsState] = useState(listings);
   const [activeLink, setActiveLink] = useState<ActiveLink>('All listings');
 
@@ -75,3 +72,5 @@ export const CheckListings: React.FC<CheckListingsProps> = ({
     </div>
   );
 };
+
+export default CheckListings;

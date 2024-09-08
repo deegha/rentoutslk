@@ -110,20 +110,20 @@ export const MyListCard: React.FC<MyListCardProp> = ({
                 <ArrowLink />
               </Link>
             </div>
-            <p>Approved</p>
+            {/* <p>Approved</p> */}
           </div>
           <div className={styles.info}>
-            <div>
-              <h4>Views</h4>
-              <p>{views}</p>
+            <div className={styles.infoBlock}>
+              <h4 className={styles.infoTitle}>Views</h4>
+              <p className={styles.infoValue}>{views}</p>
             </div>
-            <div>
-              <h4>Favourites</h4>
-              <p>{favorite}</p>
+            <div className={styles.infoBlock}>
+              <h4 className={styles.infoTitle}>Favourites</h4>
+              <p className={styles.infoValue}>{favorite}</p>
             </div>
-            <div>
-              <h4>Created</h4>
-              <p>{formattedDate}</p>
+            <div className={styles.infoBlock}>
+              <h4 className={styles.infoTitle}>Created</h4>
+              <p className={styles.infoValue}>{formattedDate}</p>
             </div>
           </div>
         </div>

@@ -59,6 +59,7 @@ export async function POST(req: NextRequest) {
       status: 'not verified',
       active: true,
       createdAt: serverTimestamp(),
+      views: 0,
     };
 
     // Save listing to Firestore

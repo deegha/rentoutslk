@@ -124,15 +124,15 @@ export const ApartmentsCard: React.FC<ApartmentsCardProp> = ({
           ))}
         </Slide>
       </div>
-      <a href={`/property/${id}`} className={styles.cardDetailsBlock}>
-        <div className={styles.cardDescBlock}>
+      <div className={styles.cardDetailsBlock}>
+        <a href={`/property/${id}`} className={styles.cardDescBlock}>
           <p className={styles.cardPrice}>{monthlyRent} Re</p>
           <p className={styles.cardTitle}>
             {title} in {place}
           </p>
           <p className={styles.cardLocation}>{address}</p>
-        </div>
-        <div className={styles.featuresBlock}>
+        </a>
+        <a href={`/property/${id}`} className={styles.featuresBlock}>
           <div className={styles.featuresItem}>
             <Size />
             <p className={styles.featuresTitle}>Size</p>
@@ -148,13 +148,13 @@ export const ApartmentsCard: React.FC<ApartmentsCardProp> = ({
             <p className={styles.featuresTitle}>Type</p>
             <p className={styles.featuresDesc}>{propertyType}</p>
           </div>
-        </div>
+        </a>
         <div className={styles.showAll}>
           <a href="/rentals" target="_blank">
             Show all rentals
           </a>
         </div>
-      </a>
+      </div>
     </div>
   );
 };

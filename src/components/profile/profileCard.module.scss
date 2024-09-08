@@ -2,27 +2,31 @@
 @import '@/styles/_colors.scss';
 
 .container {
-  @include largeDesktopAndBeyondView() {
-    display: flex;
-    justify-content: center;
-    items-align: center;
-    width: 100%;
-    height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 64px 0px;
+  @include tabletAndBeyondView() {
     padding: 64px 0px;
   }
 }
 .containerProfile {
-  @include largeDesktopAndBeyondView() {
-    width: 90%;
-    background: white;
+  width: 90%;
+  background: white;
+  border-radius: 14px;
+  margin: 0 auto;
+  height: auto;
+  @include tabletAndBeyondView() {
     border-radius: 24px;
-    margin: 0 auto;
-    height: auto;
   }
 }
+
 .cardHeader {
   border-bottom: 1px solid #222;
-  @include largeDesktopAndBeyondView() {
+  padding: 26px 12px;
+  @include tabletAndBeyondView() {
     padding: 32px 36px;
   }
 }
@@ -31,7 +35,7 @@
   font-weight: 600;
   line-height: normal;
   color: #5e5e5e;
-  @include largeDesktopAndBeyondView() {
+  @include tabletAndBeyondView() {
     font-size: 20px;
   }
 }
@@ -60,31 +64,31 @@
 }
 .editableContainer {
   display: flex;
-  gap: 8px;
+  gap: 24px;
   align-items: center;
 }
 .inEditableContainer {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 4px;
 }
 .profileProperty {
   transition: all 0.4s;
   display: flex;
   flex-direction: column;
   min-height: 100px;
+  padding: 32px 12px;
+  border-bottom: 1px solid #d3d3d3;
 
-  @include largeDesktopAndBeyondView() {
+  @include tabletAndBeyondView() {
     padding: 32px 36px;
-    border-bottom: 1px solid #d3d3d3;
   }
 }
 .profilePropertyActive {
   transition: all 0.4s;
   display: flex;
   flex-direction: column;
-  min-height: 275px;
-
-  @include largeDesktopAndBeyondView() {
+  @include tabletAndBeyondView() {
     padding: 32px 36px;
     border-bottom: 1px solid #d3d3d3;
   }
@@ -120,7 +124,7 @@
   gap: 8px;
   align-self: stretch;
   color: #222;
-  @include largeDesktopAndBeyondView() {
+  @include tabletAndBeyondView() {
     max-width: 250px;
     padding: 0px 16px;
     height: 40px;
@@ -255,4 +259,40 @@
 .cancleButton:hover {
   color: #fff;
   background-color: #222;
+}
+
+.mobilePropertyTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.password {
+  display: none;
+  @include tabletAndBeyondView() {
+    display: flex;
+    margin-left: auto;
+    margin-right: 24px;
+  }
+}
+
+.passwordMobile {
+  display: flex;
+  @include tabletAndBeyondView() {
+    display: none;
+  }
+}
+
+.phone {
+  display: none;
+  @include tabletAndBeyondView() {
+    display: flex;
+  }
+}
+
+.phoneMobile {
+  display: block;
+  @include tabletAndBeyondView() {
+    display: none;
+  }
 }

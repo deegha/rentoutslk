@@ -163,9 +163,10 @@ export const ProfileCard = ({
           <div className={styles.profilePropertyContainer}>
             <div className={styles.inEditableContainer}>
               <p className={styles.title}>Mobile</p>
+              <p className={styles.phoneMobile}>{user.mobile}</p>
             </div>
             <div className={styles.editableContainer}>
-              <p>{user.mobile}</p>
+              <p className={styles.phone}>{user.mobile}</p>
               <div
                 className={styles.editButton}
                 onClick={() => setIsEditingMobile(!isEditingMobile)}
@@ -204,8 +205,15 @@ export const ProfileCard = ({
           style={{ height: isEditingPassword ? '325px' : '100px' }}
         >
           <div className={styles.profilePropertyContainer}>
-            <p className={styles.title}>Password</p>
-            <p>The password is not displayed for security reasons</p>
+            <div className={styles.mobilePropertyTitle}>
+              <p className={styles.title}>Password</p>
+              <p className={styles.passwordMobile}>
+                The password is not displayed for security reasons
+              </p>
+            </div>
+            <p className={styles.password}>
+              The password is not displayed for security reasons
+            </p>
             <div
               className={styles.editButton}
               onClick={() => setIsEditingPassword(!isEditingPassword)}
