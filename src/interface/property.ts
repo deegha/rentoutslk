@@ -19,7 +19,7 @@ export interface PropertyProps {
   numberBedrooms: string;
   numberBathrooms: string;
   createdAt: { seconds: number; nanoseconds: number };
-  views: string;
+  views: number;
   favorite: string;
   active: boolean;
   id: string;

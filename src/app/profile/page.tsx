@@ -40,7 +40,7 @@ const ProfilePage = async () => {
   return (
     <>
       <Header />
-      <PageTitle title="retnoutslk | Profile" />
+      <PageTitle title="rentoutslk | Profile" />
       <RouterProfile isAdmin={session.user.admin} />
       <section
         style={{

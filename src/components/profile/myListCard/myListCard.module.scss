@@ -1,21 +1,36 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
 .mainContainer {
   width: 95%;
   display: flex;
-  margin: 32px auto;
-  padding: 0;
+  flex-direction: column;
   border: 1px solid #d3d3d3;
-  border-radius: 12px;
+  margin: 12px auto;
+  padding: 0;
+  border-radius: 4px;
+  @include tabletAndBeyondView() {
+    flex-direction: row;
+    margin: 36px auto;
+  }
 }
+
 .inActiveContainer {
   opacity: 0.4;
 }
+
 .imageContainer {
-  width: 40%;
+  width: 100%;
+  height: 131px;
   position: relative;
   overflow: hidden;
-  height: 190px;
-  border-radius: 12px 0 0 12px;
+  border-radius: 4px 0 0 4px;
+  @include tabletAndBeyondView() {
+    width: 40%;
+    height: 190px;
+  }
 }
+
 .image {
   position: absolute;
   top: -25%;
@@ -24,12 +39,21 @@
   object-fit: cover;
   border-radius: 0px;
 }
+
 .contentContainer {
-  padding: 24px 32px;
-  width: 60%;
   display: flex;
-  gap: 64px;
+  flex-direction: column;
+  padding: 16px;
+  width: 100%;
+  gap: 16px;
+  @include tabletAndBeyondView() {
+    flex-direction: row;
+    padding: 24px 32px;
+    width: 60%;
+    gap: 64px;
+  }
 }
+
 .title {
   color: #222;
   font-size: 24px;
@@ -37,6 +61,7 @@
   font-weight: 600;
   line-height: normal;
 }
+
 .info {
   display: flex;
   justify-content: space-between;
@@ -44,38 +69,70 @@
   gap: 16px;
   margin-top: auto;
 }
+
+.infoBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.infoTitle {
+  color: #5e5e5e;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 14.52px;
+}
+
+.infoValue {
+  color: #717171;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 15.73px;
+}
+
 .infoContainer {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
 }
+
 .actionContainer {
-  margin-left: auto;
-  height: 100%;
-  width: 30%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  width: 100%;
   justify-content: space-between;
+  @include tabletAndBeyondView() {
+    margin-left: auto;
+    height: 100%;
+    width: 30%;
+    flex-direction: column;
+  }
 }
+
 .editItem {
+  cursor: pointer;
+  color: #5e5e5e;
   display: flex;
   align-items: center;
-  color: #5e5e5e;
   gap: 4px;
-  transition: all 0.5s ease;
-  cursor: pointer;
   font-weight: 600;
+  transition: all 0.5s ease;
 }
+
 .editItem:hover {
   color: #222;
 }
+
 .titleContainer {
   display: flex;
   gap: 16px;
   align-items: center;
   justify-content: space-between;
+  padding-bottom: 16px;
 }
+
 .titleLeftContainer {
   display: flex;
   align-items: center;
