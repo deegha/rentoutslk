@@ -5,7 +5,7 @@ import 'react-slideshow-image/dist/styles.css';
 import { DescriptionItem } from './descriptionItem';
 import Copy from 'icons/Copy.svg';
 import styles from './propertyDetails.module.scss';
-import Heart from '@/icons/heart_gray_property.svg';
+import { PropertyFavourite } from '@/components';
 import Share from '@/icons/share.svg';
 import Verified from '@/icons/verified.svg';
 import { Tooltip } from 'react-tooltip';
@@ -21,7 +21,15 @@ import Warning from '@/icons/warning.svg';
 import { formatDate } from '@/utils/formateData';
 import { PropertyProps } from '@/interface/property';
 
-export const PropertyDetails = ({ property }: { property: PropertyProps }) => {
+interface PropertyDetailsProps {
+  property: PropertyProps;
+  propertyId: string;
+}
+
+export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
+  property,
+  propertyId,
+}) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
 
   const copyToClipboard = () => {
@@ -143,7 +151,7 @@ export const PropertyDetails = ({ property }: { property: PropertyProps }) => {
             </div>
             <div className={styles.btnBlock}>
               <div className={styles.btn} data-tooltip-id={`tooltip-save`}>
-                <Heart />
+                <PropertyFavourite id={propertyId} />
               </div>
               <Tooltip
                 id={`tooltip-save`}

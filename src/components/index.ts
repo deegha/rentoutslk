@@ -31,6 +31,8 @@ export * from './breadcrumbs';
 export * from './customSelect';
 export * from './rangeSlider';
 export * from './customInput';
+export * from './cardFavourite';
+export * from './propertyFavourite';
 
 //Profile Page
 export * from './profile';

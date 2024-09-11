@@ -8,7 +8,7 @@ import styles from './apartmentsCard.module.scss';
 import Size from '@/icons/size.svg';
 import Bedrooms from '@/icons/bedrooms.svg';
 import Type from '@/icons/type.svg';
-import Fav from '@/icons/heart_gray.svg';
+import { CardFavourite } from '@/components';
 import Arrow from '@/icons/arrow_next.svg';
 
 interface ApartmentsCardProps {
@@ -99,9 +99,7 @@ export const ApartmentsCard: React.FC<ApartmentsCardProp> = ({
             <p>Best offer</p>
           </div>
         )}
-        <div className={styles.fav}>
-          <Fav />
-        </div>
+        <CardFavourite id={id} />
         <Slide
           transitionDuration={500}
           canSwipe={true}

@@ -101,6 +101,7 @@ export const authOptions: NextAuthConfig = {
               uid: newUser.uid,
               createdAt: new Date(),
               lastLogin: new Date(),
+              savedProperties: [],
             });
 
             const customToken = await getCustomToken(newUser.uid);
