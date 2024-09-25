@@ -11,7 +11,7 @@ const CheckListings = React.lazy(
 const CheckListingsPage = async () => {
   const session = (await auth()) as CustomSession;
 
-  if (!session || !session.user || Date.now() >= session.user.exp * 1000) {
+  if (!session || !session.user || Date.now() >= session.user.exp * 1000 * 24) {
     return (
       <>
         <Header />
@@ -58,7 +58,6 @@ const CheckListingsPage = async () => {
           zIndex: 20,
         }}
       >
-        {/* Добавляем Suspense для отложенной загрузки компонента CheckListings */}
         <Suspense fallback={<div>Loading listings...</div>}>
           <CheckListings listings={listings} idToken={session.user.idToken} />
         </Suspense>

@@ -11,6 +11,7 @@ type LinkProps = {
 const links: LinkProps[] = [
   { name: 'My profile', link: '/profile' },
   { name: 'My listings', link: '/profile/my-listings' },
+  { name: 'My favourites', link: '/profile/favourite' },
   { name: 'Tour request', link: '/profile/tour-request' },
 ];
 

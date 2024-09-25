@@ -55,7 +55,7 @@ const PropertyPage = async ({ params }: { params: { id: string } }) => {
           description={`${property.title} in ${property.place}`}
         />
         <Breadcrumbs categories={categories} />
-        <PropertyDetails property={property} />
+        <PropertyDetails property={property} propertyId={params.id} />
         <AboutProperty property={property} />
         <TrendingProperties address={property.address} place={property.place} />
         <LookingForProperty place={property.place} />

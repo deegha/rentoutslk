@@ -6,11 +6,11 @@ import { useSearchContext } from '@/context/searchProvider/searchProvider';
 import { useRouter } from 'next/navigation';
 
 interface LookingForPropertyProps {
-  place: string;
+  place?: string;
 }
 
 export const LookingForProperty: React.FC<LookingForPropertyProps> = ({
-  place,
+  place = 'Colombo',
 }) => {
   const { setSearchQuery: setGlobalSearchQuery } = useSearchContext();
   const router = useRouter();

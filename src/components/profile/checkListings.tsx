@@ -22,6 +22,20 @@ const CheckListings: React.FC<CheckListingsProps> = ({ listings, idToken }) => {
     );
   };
 
+  const handleStatusChange = (id: string, newActiveStatus: boolean) => {
+    setListingsState((prevListings) =>
+      prevListings.map((listing) =>
+        listing.id === id ? { ...listing, active: newActiveStatus } : listing,
+      ),
+    );
+  };
+
+  const filteredListings = listingsState.filter((listing) => {
+    if (activeLink === 'Active') return listing.active === true;
+    if (activeLink === 'Inactive') return listing.active === false;
+    return true;
+  });
+
   return (
     <div className={styles.container}>
       <div className={styles.containerProfile}>
@@ -51,13 +65,14 @@ const CheckListings: React.FC<CheckListingsProps> = ({ listings, idToken }) => {
           )}
         </div>
         <div>
-          {listingsState && listingsState.length > 0 ? (
-            listingsState.map((listing, index) => (
+          {filteredListings && filteredListings.length > 0 ? (
+            filteredListings.map((listing, index) => (
               <MyListCard
                 key={index}
                 listing={listing}
                 idToken={idToken}
                 onDelete={handleDelete}
+                onStatusChange={handleStatusChange}
               />
             ))
           ) : (

@@ -1,17 +1,18 @@
+'use client';
 import React from 'react';
+import styles from './myFavouriteCard.module.scss';
 import Image from 'next/image';
+import { CardFavourite } from '@/components';
 import { Slide } from 'react-slideshow-image';
 import 'react-slideshow-image/dist/styles.css';
-
-import styles from './apartmentsCard.module.scss';
-
 import Size from '@/icons/size.svg';
 import Bedrooms from '@/icons/bedrooms.svg';
 import Type from '@/icons/type.svg';
-import { CardFavourite } from '@/components';
 import Arrow from '@/icons/arrow_next.svg';
 
-interface ApartmentsCardProps {
+interface FavouriteCardProps {
+  active: boolean;
+  status: string;
   id: string;
   address: string;
   place: string;
@@ -32,17 +33,17 @@ interface ApartmentsCardProps {
   image9?: string;
   numberBedrooms: number;
   numberBathrooms: number;
-  createdAt: string;
+  createdAt: { seconds: number; nanoseconds: number };
 }
 
-interface ApartmentsCardProp {
-  showBestOffer: boolean;
-  listing: ApartmentsCardProps;
+interface FavouriteCardProp {
+  listing: FavouriteCardProps;
+  onRemove: (_id: string) => void;
 }
 
-export const ApartmentsCard: React.FC<ApartmentsCardProp> = ({
-  showBestOffer,
+export const MyFavouriteCard: React.FC<FavouriteCardProp> = ({
   listing,
+  onRemove,
 }) => {
   const {
     address,
@@ -62,6 +63,8 @@ export const ApartmentsCard: React.FC<ApartmentsCardProp> = ({
     image7,
     image8,
     image9,
+    active,
+    status,
   } = listing;
 
   const images = [
@@ -91,15 +94,35 @@ export const ApartmentsCard: React.FC<ApartmentsCardProp> = ({
   );
 
   const customIndicators = () => <span className="pagination"></span>;
+
+  const isUnavailable = !active || status === 'not verified';
+
+  const handleDelete = async () => {
+    try {
+      const res = await fetch(`/api/favourite-properties/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (res.ok) {
+        onRemove(id);
+      } else {
+        console.error('Failed to remove property from favourites');
+      }
+    } catch (error) {
+      console.error('Error removing favourite:', error);
+    }
+  };
+
   return (
     <div className={styles.cardBlock}>
+      {isUnavailable && <div className={styles.unavailableOverlay}></div>}
       <div className={styles.cardImageBlock}>
-        {showBestOffer && (
-          <div className={styles.bestOffer}>
-            <p>Best offer</p>
+        {isUnavailable && (
+          <div className={styles.unavailableBlock}>
+            <p>This property is unavailable</p>
           </div>
         )}
-        <CardFavourite id={id} />
+        <CardFavourite isDelete id={id} onDelete={handleDelete} />
         <Slide
           transitionDuration={500}
           canSwipe={true}

@@ -3,7 +3,7 @@ export interface PropertyProps {
   place: string;
   availableFrom?: string;
   deposit?: number;
-  floorArea: string;
+  floorArea: number;
   propertyType: string;
   monthlyRent: number;
   title: string;
@@ -16,8 +16,8 @@ export interface PropertyProps {
   image7?: string;
   image8?: string;
   image9?: string;
-  numberBedrooms: string;
-  numberBathrooms: string;
+  numberBedrooms: number;
+  numberBathrooms: number;
   createdAt: { seconds: number; nanoseconds: number };
   views: number;
   favorite: string;

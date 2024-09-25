@@ -6,12 +6,12 @@ import { SignModal } from '@/components/auth';
 
 import styles from './header.module.scss';
 
-import Favorite from '@/icons/carbon_favorite.svg';
 import BurgerMenu from '@/icons/burger_menu.svg';
 import Close from '@/icons/header_close.svg';
 import VerticalVector from '@/icons/vertical_vector.svg';
 import { useSession, signOut } from 'next-auth/react';
 import { Button } from '../button';
+import { HeaderFavourite } from '@/components';
 
 export const Header = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -33,15 +33,11 @@ export const Header = () => {
           List your property
         </Link>
         <div className={styles.signBlock}>
-          <a className={styles.favorite}>
-            <Favorite />
-          </a>
+          <HeaderFavourite />
           <SignModal />
         </div>
         <div className={styles.mobileSignBlock}>
-          <a className={styles.favorite}>
-            <Favorite />
-          </a>
+          <HeaderFavourite />
           <VerticalVector />
           <SignModal />
           <VerticalVector />
