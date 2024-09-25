@@ -33,6 +33,7 @@ export * from './rangeSlider';
 export * from './customInput';
 export * from './cardFavourite';
 export * from './propertyFavourite';
+export * from './headerFavourite';
 
 //Profile Page
 export * from './profile';

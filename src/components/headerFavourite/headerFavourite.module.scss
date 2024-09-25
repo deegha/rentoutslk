@@ -1,0 +1,16 @@
+.favorite {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background-color: #dddddd;
+  color: #5e5e5e;
+  border-radius: 50%;
+  padding: 1px 4px;
+  font-size: 12px;
+}

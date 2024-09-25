@@ -7,7 +7,6 @@ export async function POST(req: NextRequest) {
     const { listingId } = await req.json();
     const listingRef = doc(db, 'listings', listingId);
 
-    // Get the current document
     const listingDoc = await getDoc(listingRef);
 
     if (!listingDoc.exists()) {
@@ -19,7 +18,6 @@ export async function POST(req: NextRequest) {
 
     const currentActiveStatus = listingDoc.data().active;
 
-    // Update the active status
     await updateDoc(listingRef, {
       active: !currentActiveStatus,
     });

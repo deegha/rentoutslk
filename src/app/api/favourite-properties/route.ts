@@ -38,10 +38,24 @@ export async function POST(request: Request) {
       );
     }
 
+    const propertyDocRef = doc(db, 'listings', id);
+    const propertyDoc = await getDoc(propertyDocRef);
+    if (!propertyDoc.exists()) {
+      return NextResponse.json(
+        { message: 'Property document not found' },
+        { status: 404 },
+      );
+    }
+
     if (action === 'add') {
       await updateDoc(userDocRef, {
         savedProperties: arrayUnion(id),
       });
+
+      await updateDoc(propertyDocRef, {
+        savedUsers: arrayUnion(session.user.id),
+      });
+
       return NextResponse.json(
         { message: 'Property added to favorites' },
         { status: 200 },
@@ -50,6 +64,11 @@ export async function POST(request: Request) {
       await updateDoc(userDocRef, {
         savedProperties: arrayRemove(id),
       });
+
+      await updateDoc(propertyDocRef, {
+        savedUsers: arrayRemove(session.user.id),
+      });
+
       return NextResponse.json(
         { message: 'Property removed from favorites' },
         { status: 200 },

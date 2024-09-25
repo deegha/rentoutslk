@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Fav from '@/icons/heart_gray_property.svg';
 import FavBlack from '@/icons/heart_black_property.svg';
+import { useFavourite } from '@/context/favouriteProvider/favouriteProvider';
 
 interface FavouriteProps {
   id: string;
@@ -10,6 +11,7 @@ interface FavouriteProps {
 export const PropertyFavourite: React.FC<FavouriteProps> = ({ id }) => {
   const [isFavourite, setIsFavourite] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { fetchFavouriteCount } = useFavourite();
 
   useEffect(() => {
     const checkIfFavourite = async () => {
@@ -41,7 +43,9 @@ export const PropertyFavourite: React.FC<FavouriteProps> = ({ id }) => {
         },
         body: JSON.stringify({ id, action }),
       });
-      if (!res.ok) {
+      if (res.ok) {
+        fetchFavouriteCount();
+      } else {
         setIsFavourite(isFavourite);
         console.error('Failed to update favourite status');
       }

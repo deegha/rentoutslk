@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './myListCard.module.scss';
 import Image from 'next/image';
 import Edit from '@/icons/profile/edit.svg';
@@ -14,31 +14,35 @@ interface MyListCardProp {
   listing: PropertyProps;
   idToken: string;
   onDelete: (_id: string) => void;
+  onStatusChange: (_id: string, _newActiveStatus: boolean) => void;
 }
 
 export const MyListCard: React.FC<MyListCardProp> = ({
   listing,
   idToken,
   onDelete,
+  onStatusChange,
 }) => {
-  const {
-    // address,
-    // availableFrom,
-    title,
-    place,
-    // propertyType,
-    // monthlyRent,
-    image1,
-    // floorArea,
-    // numberBedrooms,
-    createdAt,
-    views,
-    favorite,
-    active,
-    id,
-    userId,
-  } = listing;
+  const { title, place, image1, createdAt, views, active, id, userId } =
+    listing;
   const [isActive, setIsActive] = useState(active);
+  const [savedUsersCount, setSavedUsersCount] = useState(0);
+
+  useEffect(() => {
+    const fetchSavedUsersCount = async () => {
+      try {
+        const response = await fetch(
+          `/api/check-listings/saved-users-count?id=${id}`,
+        );
+        const data = await response.json();
+        setSavedUsersCount(data.savedUsersCount);
+      } catch (error) {
+        console.error('Error fetching saved users count:', error);
+      }
+    };
+
+    fetchSavedUsersCount();
+  }, [id]);
 
   const toggleActiveStatus = async () => {
     try {
@@ -53,6 +57,7 @@ export const MyListCard: React.FC<MyListCardProp> = ({
       if (response.ok) {
         const data = await response.json();
         setIsActive(data.newActiveStatus);
+        onStatusChange(id, data.newActiveStatus);
       } else {
         console.error('Failed to update listing status');
       }
@@ -73,7 +78,6 @@ export const MyListCard: React.FC<MyListCardProp> = ({
       });
 
       if (response.ok) {
-        // Notify parent component about deletion
         onDelete(id);
       } else {
         console.error('Failed to delete listing');
@@ -98,19 +102,17 @@ export const MyListCard: React.FC<MyListCardProp> = ({
           height={1080}
         />
       </div>
-      <div className={`${styles.contentContainer} `}>
+      <div className={styles.contentContainer}>
         <div className={styles.infoContainer}>
           <div className={styles.titleContainer}>
             <div className={styles.titleLeftContainer}>
               <h1 className={styles.title}>
                 {title} in {place}
               </h1>
-
               <Link href={`/property/${id}`}>
                 <ArrowLink />
               </Link>
             </div>
-            {/* <p>Approved</p> */}
           </div>
           <div className={styles.info}>
             <div className={styles.infoBlock}>
@@ -119,7 +121,7 @@ export const MyListCard: React.FC<MyListCardProp> = ({
             </div>
             <div className={styles.infoBlock}>
               <h4 className={styles.infoTitle}>Favourites</h4>
-              <p className={styles.infoValue}>{favorite}</p>
+              <p className={styles.infoValue}>{savedUsersCount}</p>
             </div>
             <div className={styles.infoBlock}>
               <h4 className={styles.infoTitle}>Created</h4>
