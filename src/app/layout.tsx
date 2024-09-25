@@ -2,6 +2,7 @@ import './globals.scss';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
+import { FavouriteProvider } from '@/context/favouriteProvider/favouriteProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,7 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className} style={{ margin: 0 }}>
         <div id="main">
-          <SessionProvider>{children}</SessionProvider>
+          <SessionProvider>
+            <FavouriteProvider>{children}</FavouriteProvider>
+          </SessionProvider>
         </div>
       </body>
     </html>

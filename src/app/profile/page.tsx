@@ -5,11 +5,13 @@ import {
   Header,
   RouterProfile,
   Footer,
+  LookingForProperty,
 } from '@/components';
 import BeatLoader from 'react-spinners/BeatLoader';
 import { auth } from '@/auth';
 import { CustomSession } from '@/interface/session';
 import PageTitle from '@/components/nav/pageTitle';
+import { SearchProvider } from '@/context/searchProvider/searchProvider';
 
 const fetchUserData = async (userId: string) => {
   const response = await fetch(
@@ -24,13 +26,16 @@ const fetchUserData = async (userId: string) => {
 const ProfilePage = async () => {
   const session = (await auth()) as CustomSession;
 
-  if (!session || !session.user || Date.now() >= session.user.exp * 1000) {
+  if (!session || !session.user || Date.now() >= session.user.exp * 1000 * 24) {
     return (
       <>
-        <Header />
-        <RouterProfile isAdmin={false} />
-        <InAuthed />
-        <Footer />
+        <SearchProvider>
+          <Header />
+          <RouterProfile isAdmin={false} />
+          <InAuthed />
+          <LookingForProperty />
+          <Footer />
+        </SearchProvider>
       </>
     );
   }
@@ -39,28 +44,21 @@ const ProfilePage = async () => {
 
   return (
     <>
-      <Header />
-      <PageTitle title="rentoutslk | Profile" />
-      <RouterProfile isAdmin={session.user.admin} />
-      <section
-        style={{
-          backgroundColor: '#F7F7F7',
-          width: '100%',
-          minHeight: '68vh',
-          zIndex: 20,
-        }}
-      >
-        {userData ? (
-          <ProfileCard user={userData} userId={session.user.id} />
-        ) : (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: '100vh',
-            }}
-          >
+      <SearchProvider>
+        <Header />
+        <PageTitle title="rentoutslk | Profile" />
+        <RouterProfile isAdmin={session.user.admin} />
+        <section
+          style={{
+            backgroundColor: '#F7F7F7',
+            width: '100%',
+            minHeight: '68vh',
+            zIndex: 20,
+          }}
+        >
+          {userData ? (
+            <ProfileCard user={userData} userId={session.user.id} />
+          ) : (
             <div
               style={{
                 display: 'flex',
@@ -69,12 +67,22 @@ const ProfilePage = async () => {
                 height: '100vh',
               }}
             >
-              <BeatLoader color="#DE225C" />
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: '100vh',
+                }}
+              >
+                <BeatLoader color="#DE225C" />
+              </div>
             </div>
-          </div>
-        )}
-      </section>
-      <Footer />
+          )}
+        </section>
+        <LookingForProperty />
+        <Footer />
+      </SearchProvider>
     </>
   );
 };

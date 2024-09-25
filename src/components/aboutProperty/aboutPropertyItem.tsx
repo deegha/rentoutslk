@@ -4,7 +4,7 @@ import styles from './aboutProperty.module.scss';
 
 interface AboutPropertyItemProps {
   name: string;
-  value: string;
+  value: string | number;
 }
 
 export const AboutPropertyItem: React.FC<AboutPropertyItemProps> = ({
