@@ -161,6 +161,7 @@ export const AddMoreDetails = () => {
             label={'Available from*'}
             name={'availableFrom'}
             fontWeight="400"
+            required
           />
           <SelectInput
             control={control}

@@ -23,7 +23,6 @@ type QuestionsFormValues = z.infer<typeof questionsFormSchema>;
 export const MultiStepFormApparts = () => {
   const { data: sessionData, status } = useSession();
 
-  // Проверяем, аутентифицирован ли пользователь
   const session = sessionData as CustomSession | null;
 
   const [step, setStep] = useState(0);
@@ -49,19 +48,22 @@ export const MultiStepFormApparts = () => {
   const onSubmitDetails: SubmitHandler<PropertyDetailsValues> = async (
     data,
   ) => {
-    console.log('Property Details:', data);
+    console.log('Submitting Property Details:', data);
     nextStep();
   };
 
   const onSubmitImages: SubmitHandler<ImageUploadValues> = async (data) => {
-    console.log('Image Upload:', data);
+    console.log('Submitting Image Upload:', data);
+    if (Object.values(data).some((value) => !value)) {
+      console.warn('Some images are missing');
+    }
     nextStep();
   };
 
   const onSubmitQuestions: SubmitHandler<QuestionsFormValues> = async (
     data,
   ) => {
-    console.log('Questions:', data);
+    console.log('Submitting Questions:', data);
 
     const combinedData = {
       ...methods.getValues(),
@@ -70,19 +72,25 @@ export const MultiStepFormApparts = () => {
       userId: session?.user?.id,
     };
 
-    const response = await fetch('/api/uploadListing', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session?.user?.customToken}`,
-      },
-      body: JSON.stringify(combinedData),
-    });
+    console.log('Combined Data to Submit:', combinedData);
 
-    if (response.ok) {
-      console.log('Listing published successfully', combinedData);
-    } else {
-      console.error('Failed to publish listing');
+    try {
+      const response = await fetch('/api/uploadListing', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session?.user?.customToken}`,
+        },
+        body: JSON.stringify(combinedData),
+      });
+
+      if (response.ok) {
+        console.log('Listing published successfully', combinedData);
+      } else {
+        console.error('Failed to publish listing');
+      }
+    } catch (error) {
+      console.error('Error submitting listing:', error);
     }
   };
 
@@ -171,8 +179,9 @@ export const MultiStepFormApparts = () => {
             />
             <div className={styles.btnBlock}>
               <Button
-                text="Publish listing"
+                text="Continue"
                 type="submit"
+                onClick={() => console.log(`Button clicked for Step: ${step}`)}
                 bgColor="#222"
                 borderRadius="4px"
                 padding="14.5px 28px"

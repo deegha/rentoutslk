@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { UseFormRegister } from 'react-hook-form';
 import styles from './imageUpload.module.scss';
 
@@ -7,6 +7,7 @@ import UploadImgHover from '@/icons/uploadImgHover.svg';
 import DeleteImgIcon from '@/icons/deleteImg.svg';
 import Featured from '@/icons/featured.svg';
 import Unfeatured from '@/icons/unfeatured.svg';
+
 interface ImageUploadLabelProps {
   imageKey: string;
   preview: string;
@@ -31,6 +32,8 @@ export const ImageUploadLabel: React.FC<ImageUploadLabelProps> = ({
   onFeatureClick: _onFeatureClick,
   error,
 }) => {
+  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
+
   const handleRemoveImage = (_event: React.MouseEvent) => {
     _event.stopPropagation();
     setPreview(_imageKey, '');
@@ -45,6 +48,14 @@ export const ImageUploadLabel: React.FC<ImageUploadLabelProps> = ({
     if (preview) {
       _event.preventDefault();
     }
+  };
+
+  const handleMouseEnter = () => {
+    setIsTooltipVisible(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsTooltipVisible(false);
   };
 
   return (
@@ -62,8 +73,18 @@ export const ImageUploadLabel: React.FC<ImageUploadLabelProps> = ({
       {preview && (
         <>
           <div className={styles.deleteImgBlock}>
-            <div className={styles.featuredIcon} onClick={handleFeatureClick}>
+            <div
+              className={styles.featuredIcon}
+              onClick={handleFeatureClick}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
               {isFeatured ? <Featured /> : <Unfeatured />}
+              {isTooltipVisible && (
+                <div className={styles.tooltip}>
+                  By pressing this checkbox you may feature this image
+                </div>
+              )}
             </div>
             <div className={styles.deleteImg} onClick={handleRemoveImage}>
               <DeleteImgIcon className={styles.deleteImgIcon} />

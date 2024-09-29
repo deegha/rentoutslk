@@ -180,3 +180,10 @@
   -webkit-appearance: none;
   margin: 0;
 }
+
+.errorMessage {
+  color: red;
+  .error {
+    text-transform: lowercase;
+  }
+}

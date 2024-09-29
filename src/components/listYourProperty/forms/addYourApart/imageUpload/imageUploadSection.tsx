@@ -22,7 +22,7 @@ export const ImageUploadSection: React.FC = () => {
   const [imagePreviews, setImagePreviews] = useState<{ [key: string]: string }>(
     {},
   );
-  const [featuredImage, setFeaturedImage] = useState<string | null>(null);
+  const [featuredImage, setFeaturedImage] = useState<string | null>('image1');
 
   const handleImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -33,9 +33,8 @@ export const ImageUploadSection: React.FC = () => {
       const previewUrl = URL.createObjectURL(file);
       setPreview(imageKey, previewUrl);
 
-      // Convert the file to a base64 string
       const base64String = await toBase64(file);
-      setValue(imageKey, base64String); // Save the base64 string in form state
+      setValue(imageKey, base64String);
     } else {
       console.log('Input not instance of File');
     }
@@ -46,13 +45,28 @@ export const ImageUploadSection: React.FC = () => {
       ...prev,
       [imageKey]: value,
     }));
-    if (imageKey === featuredImage) {
-      setFeaturedImage(null);
-    }
   };
 
   const handleFeatureClick = (imageKey: string) => {
-    setFeaturedImage(imageKey);
+    if (imageKey === featuredImage) return;
+
+    // Swap the previews between image1 and the selected imageKey
+    setImagePreviews((prev) => {
+      const newPreviews = { ...prev };
+      const featuredImagePreview = newPreviews['image1'];
+      newPreviews['image1'] = newPreviews[imageKey];
+      newPreviews[imageKey] = featuredImagePreview;
+
+      return newPreviews;
+    });
+
+    // Update form context values
+    const currentFeaturedBase64 = imagePreviews['image1'];
+    const newFeaturedBase64 = imagePreviews[imageKey];
+    setValue('image1', newFeaturedBase64);
+    setValue(imageKey, currentFeaturedBase64);
+
+    setFeaturedImage('image1'); // Always set 'image1' as the featured image
   };
 
   return (
@@ -85,10 +99,8 @@ export const ImageUploadSection: React.FC = () => {
           desc={
             <p>
               To delete an image, click on the image you want to remove, and a
-              delete icon will appear. To change the order of your images, click
-              and drag them to the desired position. Changes are saved
-              automatically. Place the best images first to capture the
-              attention of potential renters.
+              delete icon will appear. Place the best images first to capture
+              the attention of potential renters.
             </p>
           }
         />
@@ -127,9 +139,8 @@ export const ImageUploadSection: React.FC = () => {
                 viewers see when they visit your listing.
               </p>
               <p>
-                To set an image as featured, look for the feature icon in the
-                upper right corner of each image. Click on this icon to select
-                the image as your featured photo.
+                To set an image as featured, click on the feature icon in the
+                upper right corner of each image.
               </p>
             </>
           }
@@ -146,7 +157,7 @@ export const ImageUploadSection: React.FC = () => {
               register={register}
               onChange={handleImageChange}
               setPreview={setPreview}
-              isFeatured={featuredImage === imageKey}
+              isFeatured={imageKey === featuredImage}
               onFeatureClick={handleFeatureClick}
               error={errors[imageKey]?.message?.toString()}
             />

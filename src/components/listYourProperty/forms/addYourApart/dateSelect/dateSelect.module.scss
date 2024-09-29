@@ -51,3 +51,10 @@
   padding: 16px;
   margin-top: 8px;
 }
+
+.errorField {
+  color: red;
+  .errorText {
+    text-transform: lowercase;
+  }
+}
