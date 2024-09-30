@@ -47,49 +47,7 @@ export const imageUploadSchema = z.object({
   image2: z
     .string()
     .min(1, 'Image is required')
-    .refine((val) => val.startsWith('data:image'), {
-      message: 'Invalid image format',
-    }),
-  image3: z
-    .string()
-    .optional()
-    .refine((val) => !val || val.startsWith('data:image'), {
-      message: 'Invalid image format',
-    }),
-  image4: z
-    .string()
-    .optional()
-    .refine((val) => !val || val.startsWith('data:image'), {
-      message: 'Invalid image format',
-    }),
-  image5: z
-    .string()
-    .optional()
-    .refine((val) => !val || val.startsWith('data:image'), {
-      message: 'Invalid image format',
-    }),
-  image6: z
-    .string()
-    .optional()
-    .refine((val) => !val || val.startsWith('data:image'), {
-      message: 'Invalid image format',
-    }),
-  image7: z
-    .string()
-    .optional()
-    .refine((val) => !val || val.startsWith('data:image'), {
-      message: 'Invalid image format',
-    }),
-  image8: z
-    .string()
-    .optional()
-    .refine((val) => !val || val.startsWith('data:image'), {
-      message: 'Invalid image format',
-    }),
-  image9: z
-    .string()
-    .optional()
-    .refine((val) => !val || val.startsWith('data:image'), {
+    .refine((val: string) => val.startsWith('data:image'), {
       message: 'Invalid image format',
     }),
 });

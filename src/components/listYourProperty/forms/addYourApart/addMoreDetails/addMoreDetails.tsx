@@ -109,7 +109,6 @@ export const AddMoreDetails = () => {
             errors={errors}
             label={`Rental period`}
             name={`rentalPeriod`}
-            isDefaultOption
           />
           <InputApart
             {...register('monthlyRent')}
@@ -172,7 +171,6 @@ export const AddMoreDetails = () => {
             errors={errors}
             label={`Furnishing`}
             name={`furnishing`}
-            isDefaultOption
           />
         </div>
       </div>

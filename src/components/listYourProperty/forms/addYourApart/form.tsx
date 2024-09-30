@@ -15,6 +15,7 @@ import { PropertyAddImage } from './propertyComponents/propertyAddImage';
 import { z } from 'zod';
 import { useSession } from 'next-auth/react';
 import { CustomSession } from '@/interface/session';
+import BeatLoader from 'react-spinners/BeatLoader';
 
 type PropertyDetailsValues = z.infer<typeof propertyDetailsSchema>;
 type ImageUploadValues = z.infer<typeof imageUploadSchema>;
@@ -56,6 +57,8 @@ export const MultiStepFormApparts = () => {
     console.log('Submitting Image Upload:', data);
     if (Object.values(data).some((value) => !value)) {
       console.warn('Some images are missing');
+    } else {
+      console.log('All images are present');
     }
     nextStep();
   };
@@ -109,11 +112,19 @@ export const MultiStepFormApparts = () => {
   );
 
   if (status === 'loading') {
-    return <div>Loading...</div>;
+    return (
+      <div className={styles.temporaryContainer}>
+        <BeatLoader color="#DE225C" />
+      </div>
+    );
   }
 
   if (!session) {
-    return <div>You need to sign in to list your property.</div>;
+    return (
+      <div className={styles.temporaryContainer}>
+        <p>You need to sign in to list your property.</p>
+      </div>
+    );
   }
 
   return (
@@ -144,7 +155,12 @@ export const MultiStepFormApparts = () => {
       )}
       {step === 1 && (
         <FormProvider {...imageMethods}>
-          <form onSubmit={imageMethods.handleSubmit(onSubmitImages)}>
+          <form
+            onSubmit={(e) => {
+              console.log('Form submitted on step 1');
+              imageMethods.handleSubmit(onSubmitImages)(e);
+            }}
+          >
             <PropertyAddImage
               breadcrumbs={
                 <Breadcrumbs

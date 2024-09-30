@@ -24,22 +24,6 @@ export const ImageUploadSection: React.FC = () => {
   );
   const [featuredImage, setFeaturedImage] = useState<string | null>('image1');
 
-  const handleImageChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-    imageKey: string,
-  ) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const previewUrl = URL.createObjectURL(file);
-      setPreview(imageKey, previewUrl);
-
-      const base64String = await toBase64(file);
-      setValue(imageKey, base64String);
-    } else {
-      console.log('Input not instance of File');
-    }
-  };
-
   const setPreview = (imageKey: string, value: string) => {
     setImagePreviews((prev) => ({
       ...prev,
@@ -47,10 +31,24 @@ export const ImageUploadSection: React.FC = () => {
     }));
   };
 
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+    imageKey: string,
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const base64String = await toBase64(file);
+      setPreview(imageKey, base64String);
+
+      setValue(imageKey, base64String);
+    } else {
+      console.log('Input not instance of File');
+    }
+  };
+
   const handleFeatureClick = (imageKey: string) => {
     if (imageKey === featuredImage) return;
 
-    // Swap the previews between image1 and the selected imageKey
     setImagePreviews((prev) => {
       const newPreviews = { ...prev };
       const featuredImagePreview = newPreviews['image1'];
@@ -60,13 +58,12 @@ export const ImageUploadSection: React.FC = () => {
       return newPreviews;
     });
 
-    // Update form context values
     const currentFeaturedBase64 = imagePreviews['image1'];
     const newFeaturedBase64 = imagePreviews[imageKey];
     setValue('image1', newFeaturedBase64);
     setValue(imageKey, currentFeaturedBase64);
 
-    setFeaturedImage('image1'); // Always set 'image1' as the featured image
+    setFeaturedImage('image1');
   };
 
   return (
