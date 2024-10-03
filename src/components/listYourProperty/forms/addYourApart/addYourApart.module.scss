@@ -180,3 +180,18 @@
   -webkit-appearance: none;
   margin: 0;
 }
+
+.errorMessage {
+  color: red;
+  .error {
+    text-transform: lowercase;
+  }
+}
+
+.temporaryContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  width: 100%;
+}

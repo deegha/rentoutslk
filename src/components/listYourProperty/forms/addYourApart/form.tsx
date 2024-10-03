@@ -15,6 +15,7 @@ import { PropertyAddImage } from './propertyComponents/propertyAddImage';
 import { z } from 'zod';
 import { useSession } from 'next-auth/react';
 import { CustomSession } from '@/interface/session';
+import BeatLoader from 'react-spinners/BeatLoader';
 
 type PropertyDetailsValues = z.infer<typeof propertyDetailsSchema>;
 type ImageUploadValues = z.infer<typeof imageUploadSchema>;
@@ -23,7 +24,6 @@ type QuestionsFormValues = z.infer<typeof questionsFormSchema>;
 export const MultiStepFormApparts = () => {
   const { data: sessionData, status } = useSession();
 
-  // Проверяем, аутентифицирован ли пользователь
   const session = sessionData as CustomSession | null;
 
   const [step, setStep] = useState(0);
@@ -49,19 +49,24 @@ export const MultiStepFormApparts = () => {
   const onSubmitDetails: SubmitHandler<PropertyDetailsValues> = async (
     data,
   ) => {
-    console.log('Property Details:', data);
+    console.log('Submitting Property Details:', data);
     nextStep();
   };
 
   const onSubmitImages: SubmitHandler<ImageUploadValues> = async (data) => {
-    console.log('Image Upload:', data);
+    console.log('Submitting Image Upload:', data);
+    if (Object.values(data).some((value) => !value)) {
+      console.warn('Some images are missing');
+    } else {
+      console.log('All images are present');
+    }
     nextStep();
   };
 
   const onSubmitQuestions: SubmitHandler<QuestionsFormValues> = async (
     data,
   ) => {
-    console.log('Questions:', data);
+    console.log('Submitting Questions:', data);
 
     const combinedData = {
       ...methods.getValues(),
@@ -70,19 +75,25 @@ export const MultiStepFormApparts = () => {
       userId: session?.user?.id,
     };
 
-    const response = await fetch('/api/uploadListing', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session?.user?.customToken}`,
-      },
-      body: JSON.stringify(combinedData),
-    });
+    console.log('Combined Data to Submit:', combinedData);
 
-    if (response.ok) {
-      console.log('Listing published successfully', combinedData);
-    } else {
-      console.error('Failed to publish listing');
+    try {
+      const response = await fetch('/api/uploadListing', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session?.user?.customToken}`,
+        },
+        body: JSON.stringify(combinedData),
+      });
+
+      if (response.ok) {
+        console.log('Listing published successfully', combinedData);
+      } else {
+        console.error('Failed to publish listing');
+      }
+    } catch (error) {
+      console.error('Error submitting listing:', error);
     }
   };
 
@@ -101,11 +112,19 @@ export const MultiStepFormApparts = () => {
   );
 
   if (status === 'loading') {
-    return <div>Loading...</div>;
+    return (
+      <div className={styles.temporaryContainer}>
+        <BeatLoader color="#DE225C" />
+      </div>
+    );
   }
 
   if (!session) {
-    return <div>You need to sign in to list your property.</div>;
+    return (
+      <div className={styles.temporaryContainer}>
+        <p>You need to sign in to list your property.</p>
+      </div>
+    );
   }
 
   return (
@@ -136,7 +155,12 @@ export const MultiStepFormApparts = () => {
       )}
       {step === 1 && (
         <FormProvider {...imageMethods}>
-          <form onSubmit={imageMethods.handleSubmit(onSubmitImages)}>
+          <form
+            onSubmit={(e) => {
+              console.log('Form submitted on step 1');
+              imageMethods.handleSubmit(onSubmitImages)(e);
+            }}
+          >
             <PropertyAddImage
               breadcrumbs={
                 <Breadcrumbs
@@ -171,8 +195,9 @@ export const MultiStepFormApparts = () => {
             />
             <div className={styles.btnBlock}>
               <Button
-                text="Publish listing"
+                text="Continue"
                 type="submit"
+                onClick={() => console.log(`Button clicked for Step: ${step}`)}
                 bgColor="#222"
                 borderRadius="4px"
                 padding="14.5px 28px"
