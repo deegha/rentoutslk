@@ -75,7 +75,6 @@ const MultiStepForm = ({
   const onSubmitPassword = async () => {
     await passwordMethods.handleSubmit(async (data) => {
       if (forgotPassword) {
-        // Implement your password reset logic here
         onRequestClose();
       } else {
         const { password, confirmPassword } = data as NewUserFormValues;

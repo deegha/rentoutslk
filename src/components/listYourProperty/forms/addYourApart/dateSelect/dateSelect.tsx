@@ -10,6 +10,7 @@ interface DateSelectProps {
   fontWeight: string;
   name: string;
   onDateChange?: (_date: string) => void;
+  required?: boolean;
 }
 
 export const DateSelect: React.FC<DateSelectProps> = ({
@@ -17,8 +18,12 @@ export const DateSelect: React.FC<DateSelectProps> = ({
   fontWeight,
   name,
   onDateChange,
+  required = false,
 }) => {
-  const { control } = useFormContext(); // Получаем control из useFormContext
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
   const calendarRef = useRef<HTMLDivElement>(null);
@@ -54,8 +59,9 @@ export const DateSelect: React.FC<DateSelectProps> = ({
         {label}
       </label>
       <Controller
-        control={control} // Используем control из контекста
+        control={control}
         name={name}
+        rules={{ required: required && 'Date select is required' }}
         render={({ field }) => (
           <>
             <input
@@ -66,6 +72,7 @@ export const DateSelect: React.FC<DateSelectProps> = ({
               onClick={() => setShowCalendar(true)}
               readOnly
               placeholder="dd/mm/yyyy"
+              required={required}
             />
             {showCalendar && (
               <div className={styles.calendarOverlay} ref={calendarRef}>
@@ -85,6 +92,14 @@ export const DateSelect: React.FC<DateSelectProps> = ({
                   }}
                 />
               </div>
+            )}
+            {errors[name] && (
+              <p className={styles.errorField}>
+                Available from is{' '}
+                <span className={styles.errorText}>
+                  {errors[name]?.message as string}
+                </span>
+              </p>
             )}
           </>
         )}

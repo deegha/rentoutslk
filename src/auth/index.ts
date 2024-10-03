@@ -172,6 +172,7 @@ export const authOptions: NextAuthConfig = {
     },
   },
   trustHost: true,
+  debug: process.env.NODE_ENV === 'development',
 };
 
 const nextAuthInstance = NextAuth(authOptions);
