@@ -33,8 +33,6 @@ export const CardFavourite: React.FC<FavouriteProps> = ({
           const data = await res.json();
           setIsFavourite(data.isFavourite);
         }
-      } catch (error) {
-        console.error('Error fetching favourite status:', error);
       } finally {
         setLoading(false);
       }
@@ -64,11 +62,9 @@ export const CardFavourite: React.FC<FavouriteProps> = ({
         fetchFavouriteCount();
       } else {
         setIsFavourite(isFavourite);
-        console.error('Failed to update favourite status');
       }
-    } catch (error) {
+    } catch {
       setIsFavourite(isFavourite);
-      console.error('Error updating favourite:', error);
     }
   };
 

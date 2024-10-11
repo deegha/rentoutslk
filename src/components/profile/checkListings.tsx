@@ -1,20 +1,49 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MyListCard } from './myListCard';
 import styles from './checkListings.module.scss';
 import { PropertyProps } from '@/interface/property';
+import BeatLoader from 'react-spinners/BeatLoader';
 
 interface CheckListingsProps {
-  listings: PropertyProps[];
+  _userData: any;
   idToken: string;
 }
 
 type ActiveLink = 'All listings' | 'Active' | 'Inactive';
 
-const CheckListings: React.FC<CheckListingsProps> = ({ listings, idToken }) => {
-  const [listingsState, setListingsState] = useState(listings);
+const CheckListings: React.FC<CheckListingsProps> = ({
+  _userData,
+  idToken,
+}) => {
+  const [listingsState, setListingsState] = useState<PropertyProps[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeLink, setActiveLink] = useState<ActiveLink>('All listings');
+
+  useEffect(() => {
+    const fetchListings = async () => {
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_NEXTAUTH_URL;
+        const response = await fetch(`${baseUrl}/api/check-listings`, {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch listings');
+        }
+
+        const data = await response.json();
+        setListingsState(data.listings || []);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchListings();
+  }, [idToken]);
 
   const handleDelete = (id: string) => {
     setListingsState((prevListings) =>
@@ -41,7 +70,7 @@ const CheckListings: React.FC<CheckListingsProps> = ({ listings, idToken }) => {
       <div className={styles.containerProfile}>
         <div className={styles.cardHeader}>
           <h2 className={styles.titleHeader}>My Listings</h2>
-          {listingsState && listingsState.length > 0 && (
+          {listingsState.length > 0 && (
             <div className={styles.typeOfListings}>
               <p
                 className={`${activeLink === 'All listings' ? styles.activeLink : styles.link}`}
@@ -65,7 +94,11 @@ const CheckListings: React.FC<CheckListingsProps> = ({ listings, idToken }) => {
           )}
         </div>
         <div>
-          {filteredListings && filteredListings.length > 0 ? (
+          {loading ? (
+            <div style={{ textAlign: 'center', marginTop: '25vh' }}>
+              <BeatLoader color="#DE225C" />
+            </div>
+          ) : filteredListings && filteredListings.length > 0 ? (
             filteredListings.map((listing, index) => (
               <MyListCard
                 key={index}
@@ -73,6 +106,7 @@ const CheckListings: React.FC<CheckListingsProps> = ({ listings, idToken }) => {
                 idToken={idToken}
                 onDelete={handleDelete}
                 onStatusChange={handleStatusChange}
+                isInactive={!listing.active}
               />
             ))
           ) : (

@@ -8,18 +8,19 @@ import {
   InAuthed,
   LookingForProperty,
 } from '@/components';
-import { PropertyProps } from '@/interface/property';
-import FavouriteListings from '@/components/profile/favoutiteListings/favouriteListings';
 import { SearchProvider } from '@/context/searchProvider/searchProvider';
+import PageTitle from '@/components/nav/pageTitle';
+import FavouriteListings from '@/components/profile/favoutiteListings/favouriteListings';
 
 const FavouritePage = async () => {
   const session = (await auth()) as CustomSession;
 
-  if (!session || !session.user || Date.now() >= session.user.exp * 1000 * 24) {
+  if (!session || !session.user || Date.now() >= session.user.exp * 1000) {
     return (
       <>
         <SearchProvider>
           <Header />
+          <PageTitle title="rentoutslk | Favourite" />
           <RouterProfile isAdmin={false} />
           <InAuthed />
           <LookingForProperty />
@@ -29,36 +30,11 @@ const FavouritePage = async () => {
     );
   }
 
-  const response = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/favourite-properties/profile`,
-    {
-      headers: {
-        Authorization: `Bearer ${session.user.idToken}`,
-      },
-    },
-  );
-
-  if (!response.ok) {
-    return (
-      <>
-        <SearchProvider>
-          <Header />
-          <RouterProfile isAdmin={false} />
-          <p>Failed to fetch favourite properties.</p>
-          <LookingForProperty />
-          <Footer />
-        </SearchProvider>
-      </>
-    );
-  }
-
-  const data = await response.json();
-  const savedProperties: PropertyProps[] = data.savedProperties;
-
   return (
     <>
       <SearchProvider>
         <Header />
+        <PageTitle title="rentoutslk | Favourite" />
         <RouterProfile isAdmin={session.user.admin} />
         <div
           style={{
@@ -68,7 +44,7 @@ const FavouritePage = async () => {
             zIndex: 20,
           }}
         >
-          <FavouriteListings listings={savedProperties} />
+          <FavouriteListings idToken={session.user.idToken} />
         </div>
         <LookingForProperty />
         <Footer />

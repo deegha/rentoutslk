@@ -25,8 +25,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       message: 'Listing deleted successfully',
     });
-  } catch (error) {
-    console.error('Error deleting listing:', error);
+  } catch {
     return NextResponse.json(
       { message: 'Failed to delete listing' },
       { status: 500 },

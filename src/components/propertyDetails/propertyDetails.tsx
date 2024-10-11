@@ -124,8 +124,12 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
                   spaceBetween: 10,
                 },
                 1024: {
-                  slidesPerView: 5,
-                  spaceBetween: 10,
+                  slidesPerView: 3,
+                  spaceBetween: 30,
+                },
+                1440: {
+                  slidesPerView: 4,
+                  spaceBetween: 20,
                 },
               }}
             >

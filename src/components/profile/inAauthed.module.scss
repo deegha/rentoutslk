@@ -1,0 +1,28 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.lockContainer {
+  display: flex;
+  width: 100%;
+  padding: 0 0px 40vh 0;
+  background: #f7f7f7;
+  justify-content: center;
+  text-align: center;
+  z-index: 40;
+}
+
+.lockBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.lockText {
+  color: #5e5e5e;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 19.36px;
+  text-align: center;
+}
