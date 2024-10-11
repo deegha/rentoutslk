@@ -5,13 +5,13 @@
 }
 
 @mixin desktopAndBeyondView() {
-  @media (min-width: 1440px) {
+  @media (min-width: 1280px) {
     @content;
   }
 }
 
 @mixin largeDesktopAndBeyondView() {
-  @media (min-width: 1920px) {
+  @media (min-width: 1440px) {
     @content;
   }
 }

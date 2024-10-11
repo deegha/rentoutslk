@@ -3,6 +3,11 @@ import { doc, getDoc, updateDoc, arrayRemove } from 'firebase/firestore';
 import { auth } from '@/auth';
 import { NextResponse } from 'next/server';
 
+// Вспомогательная функция для унификации ответа
+const jsonResponse = (message: string, status: number, data?: any) => {
+  return NextResponse.json({ message, ...data }, { status });
+};
+
 export async function GET(
   request: Request,
   { params }: { params: { id: string } },
@@ -11,34 +16,27 @@ export async function GET(
     const session = await auth();
 
     if (!session || !session.user) {
-      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+      return jsonResponse('Unauthorized', 401);
     }
 
     const { id } = params;
-    if (!id) {
-      return NextResponse.json(
-        { message: 'Property ID is required' },
-        { status: 400 },
-      );
+    if (!id || typeof id !== 'string') {
+      return jsonResponse('Invalid Property ID', 400);
     }
 
     const userDocRef = doc(db, 'users', session.user.id as string);
     const userDoc = await getDoc(userDocRef);
 
     if (!userDoc.exists()) {
-      return NextResponse.json({ message: 'User not found' }, { status: 404 });
+      return jsonResponse('User not found', 404);
     }
 
     const userData = userDoc.data();
     const isFavourite = userData?.savedProperties?.includes(id);
 
-    return NextResponse.json({ isFavourite }, { status: 200 });
-  } catch (error) {
-    console.error('Error checking favourite properties:', error);
-    return NextResponse.json(
-      { message: 'Failed to check favourite status' },
-      { status: 500 },
-    );
+    return jsonResponse('Success', 200, { isFavourite });
+  } catch {
+    return jsonResponse('Failed to check favourite status', 500);
   }
 }
 
@@ -50,37 +48,27 @@ export async function DELETE(
     const session = await auth();
 
     if (!session || !session.user) {
-      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+      return jsonResponse('Unauthorized', 401);
     }
 
     const { id } = params;
-    if (!id) {
-      return NextResponse.json(
-        { message: 'Property ID is required' },
-        { status: 400 },
-      );
+    if (!id || typeof id !== 'string') {
+      return jsonResponse('Invalid Property ID', 400);
     }
 
     const userDocRef = doc(db, 'users', session.user.id as string);
     const userDoc = await getDoc(userDocRef);
 
     if (!userDoc.exists()) {
-      return NextResponse.json({ message: 'User not found' }, { status: 404 });
+      return jsonResponse('User not found', 404);
     }
 
     await updateDoc(userDocRef, {
       savedProperties: arrayRemove(id),
     });
 
-    return NextResponse.json(
-      { message: 'Property removed from favourites' },
-      { status: 200 },
-    );
-  } catch (error) {
-    console.error('Error removing favourite property:', error);
-    return NextResponse.json(
-      { message: 'Failed to remove favourite property' },
-      { status: 500 },
-    );
+    return jsonResponse('Property removed from favourites', 200);
+  } catch {
+    return jsonResponse('Failed to remove favourite property', 500);
   }
 }

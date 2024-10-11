@@ -12,13 +12,16 @@
     padding: 64px 0px;
   }
 }
+
 .containerProfile {
   width: 90%;
   background: white;
   border-radius: 24px;
   margin: 0 auto;
   height: auto;
+  min-height: 60vh;
 }
+
 .cardHeader {
   display: flex;
   flex-direction: row;
@@ -54,13 +57,25 @@
   @include desktopAndBeyondView() {
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
-    width: 100%;
   }
 
   @include largeDesktopAndBeyondView() {
     grid-template-columns: repeat(4, 1fr);
     gap: 24px;
-    width: 100%;
-    justify-content: space-between;
   }
+
+  &.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+  }
+}
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }

@@ -85,8 +85,6 @@ export const ApartmentsHome = () => {
           .sort((a: Apartment, b: Apartment) => b.views - a.views);
 
         setApartments(filteredData);
-      } catch (error) {
-        console.error('Error fetching listings:', error);
       } finally {
         setLoading(false);
       }

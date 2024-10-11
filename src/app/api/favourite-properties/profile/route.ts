@@ -42,8 +42,7 @@ export async function GET(req: Request) {
     }
 
     return NextResponse.json({ savedProperties }, { status: 200 });
-  } catch (error) {
-    console.error('Error fetching saved properties:', error);
+  } catch {
     return NextResponse.json(
       { message: 'Failed to fetch saved properties' },
       { status: 500 },
