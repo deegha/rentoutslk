@@ -15,6 +15,7 @@ interface MyListCardProp {
   idToken: string;
   onDelete: (_id: string) => void;
   onStatusChange: (_id: string, _newActiveStatus: boolean) => void;
+  isInactive: boolean;
 }
 
 export const MyListCard: React.FC<MyListCardProp> = ({
@@ -22,6 +23,7 @@ export const MyListCard: React.FC<MyListCardProp> = ({
   idToken,
   onDelete,
   onStatusChange,
+  isInactive,
 }) => {
   const { title, place, image1, createdAt, views, active, id, userId } =
     listing;
@@ -91,13 +93,13 @@ export const MyListCard: React.FC<MyListCardProp> = ({
 
   return (
     <div
-      className={`${styles.mainContainer} ${!isActive && styles.inActiveContainer}`}
+      className={`${styles.mainContainer} ${isInactive ? styles.inActiveContainer : ''}`}
     >
       <div className={styles.imageContainer}>
         <Image
           className={styles.image}
           src={`${image1}`}
-          alt={''}
+          alt={title}
           width={1920}
           height={1080}
         />

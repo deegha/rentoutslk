@@ -2,15 +2,14 @@ import NextAuth from 'next-auth';
 import type { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
-import FacebookProvider from 'next-auth/providers/facebook';
 import { authFirebase, db } from '@/firebase/config';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
   getIdToken,
-  onAuthStateChanged,
-  User,
+  GoogleAuthProvider,
+  signInWithCredential,
 } from 'firebase/auth';
 import {
   collection,
@@ -24,16 +23,6 @@ import {
 import { getCustomToken } from '@/firebase/firebaseAdmin';
 import { UserRent } from '@/interface/session';
 
-const checkFirebaseAuth = async (): Promise<User | null> => {
-  return new Promise((resolve) => {
-    onAuthStateChanged(authFirebase, (user) => resolve(user || null));
-  });
-};
-
-const refreshFirebaseToken = async (user: User) => {
-  return user ? await user.getIdToken(true) : null;
-};
-
 export const authOptions: NextAuthConfig = {
   providers: [
     CredentialsProvider({
@@ -46,13 +35,7 @@ export const authOptions: NextAuthConfig = {
         const email = credentials?.email as string | undefined;
         const password = credentials?.password as string | undefined;
 
-        if (
-          !email ||
-          typeof email !== 'string' ||
-          !password ||
-          typeof password !== 'string'
-        ) {
-          console.error('Email or password is missing or not a string');
+        if (!email || !password) {
           return null;
         }
 
@@ -113,8 +96,7 @@ export const authOptions: NextAuthConfig = {
               idToken,
             };
           }
-        } catch (error) {
-          console.error('Error during authorization:', error);
+        } catch {
           return null;
         }
       },
@@ -123,56 +105,101 @@ export const authOptions: NextAuthConfig = {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
-    FacebookProvider({
-      clientId: process.env.FACEBOOK_CLIENT_ID!,
-      clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
-    }),
   ],
   callbacks: {
-    async jwt({ token, user, ..._rest }) {
-      if (user) {
-        const customUser = user as unknown as UserRent;
-        token.id = customUser.id;
-        token.customToken = customUser.customToken;
+    async signIn({ user, account }) {
+      if (account?.provider === 'google' && account.id_token) {
+        try {
+          const credential = GoogleAuthProvider.credential(account.id_token);
+          const userCredential = await signInWithCredential(
+            authFirebase,
+            credential,
+          );
+          const googleUser = userCredential.user;
+          const idToken = await getIdToken(googleUser, true);
+
+          const userQuery = query(
+            collection(db, 'users'),
+            where('uid', '==', googleUser.uid),
+          );
+          const userDocs = await getDocs(userQuery);
+
+          if (userDocs.empty) {
+            const newUserRef = await addDoc(collection(db, 'users'), {
+              email: googleUser.email,
+              uid: googleUser.uid,
+              createdAt: new Date(),
+              lastLogin: new Date(),
+              savedProperties: [],
+            });
+
+            (user as UserRent).id = newUserRef.id;
+          } else {
+            const userDoc = userDocs.docs[0];
+            await updateDoc(doc(db, 'users', userDoc.id), {
+              lastLogin: new Date(),
+            });
+
+            (user as UserRent).id = userDoc.id;
+          }
+
+          (user as UserRent).uid = googleUser.uid;
+          (user as UserRent).email = googleUser.email!;
+          (user as UserRent).idToken = idToken;
+          (user as UserRent).exp =
+            Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 2;
+
+          return true;
+        } catch {
+          return false;
+        }
+      }
+      return true;
+    },
+
+    async jwt({ token, user, account }) {
+      if (account?.provider === 'google' && user) {
+        const customUser = user as UserRent;
         token.idToken = customUser.idToken;
-        token.admin = customUser.admin || false;
-        token.exp = Math.floor(Date.now() / 1000) + 60 * 60 * 2;
+        token.uid = customUser.uid;
+        token.exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 2;
       }
 
-      if (
-        token.idTokenExpires &&
-        typeof token.idTokenExpires === 'number' &&
-        Math.floor(Date.now() / 1000) > token.idTokenExpires
-      ) {
-        const firebaseUser = await checkFirebaseAuth();
-        if (firebaseUser) {
-          token.idToken = await refreshFirebaseToken(firebaseUser);
-          token.idTokenExpires = Math.floor(Date.now() / 1000) + 60 * 60;
-        }
+      if (user) {
+        const customUser = user as UserRent;
+        token.id = customUser.id;
+        token.email = customUser.email || token.email || '';
+        token.uid = customUser.uid;
+        token.exp = customUser.exp;
+        token.idToken = customUser.idToken || token.idToken;
       }
 
       return token;
     },
 
     async session({ session, token }) {
-      const customUser = session.user as unknown as UserRent;
-      if (session.user) {
-        customUser.id = token.id as string;
-        customUser.customToken = token.customToken as string;
-        customUser.idToken = token.idToken as string;
-        customUser.admin = token.admin as boolean;
-        customUser.exp = token.exp as number;
+      if (token.exp && Math.floor(Date.now() / 1000) > token.exp) {
+        return { ...session, user: undefined };
       }
+
+      session.user = {
+        id: token.id as string,
+        email: token.email || '',
+        uid: token.uid as string,
+        exp: token.exp as number,
+        idToken: (token.idToken as string) || null,
+      } as UserRent;
+
       return session;
     },
   },
+
   events: {
     async signOut() {
       await firebaseSignOut(authFirebase);
     },
   },
   trustHost: true,
-  debug: process.env.NODE_ENV === 'development',
 };
 
 const nextAuthInstance = NextAuth(authOptions);

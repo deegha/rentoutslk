@@ -65,7 +65,7 @@ const MultiStepForm = ({
 
         handleNextStep();
       } catch (error) {
-        console.error('Error checking email:', error);
+        null;
       }
     })();
   };
@@ -74,34 +74,29 @@ const MultiStepForm = ({
 
   const onSubmitPassword = async () => {
     await passwordMethods.handleSubmit(async (data) => {
-      if (forgotPassword) {
-        onRequestClose();
-      } else {
-        const { password, confirmPassword } = data as NewUserFormValues;
+      if (!emailExists) {
+        const { password } = data as NewUserFormValues;
+        const confirmPassword = passwordMethods.getValues('confirmPassword');
 
-        if (!emailExists && password !== confirmPassword) {
-          console.error('Passwords do not match');
+        if (password !== confirmPassword) {
           return;
         }
+      }
 
-        try {
-          const result = await signIn('credentials', {
-            redirect: false,
-            email,
-            password,
-          });
+      try {
+        const result = await signIn('credentials', {
+          redirect: false,
+          email,
+          password: data.password,
+        });
 
-          if (result?.error) {
-            console.error(
-              'Error signing in or creating account:',
-              result.error,
-            );
-          } else {
-            onRequestClose();
-          }
-        } catch (error) {
-          console.error('Error signing in or creating account:', error);
+        if (result?.error) {
+          null;
+        } else {
+          null;
         }
+      } catch (error) {
+        null;
       }
     })();
   };

@@ -50,7 +50,7 @@ const PasswordStep: React.FC<PasswordStepProps> = ({
             </span>
           </p>
         </div>
-        <label>Password</label>
+        <label className={styles.label}>Password</label>
         <input
           className={styles.input}
           placeholder="Enter a password"
@@ -67,18 +67,20 @@ const PasswordStep: React.FC<PasswordStepProps> = ({
         )}
         {!emailExists && (
           <>
-            <label>Confirm Password</label>
+            <label className={styles.confirmPasswordLabel}>
+              Confirm Password
+            </label>
             <input
               className={styles.input}
               placeholder="Confirm your password"
               {...register('confirmPassword')}
               type="password"
             />
-            {'confirmPassword' in errors && (
+            {(errors as any).confirmPassword && (
               <div className={styles.errorContainer}>
                 <Warning />
                 <p className={styles.errorPasswordMessage}>
-                  {errors.confirmPassword?.message}
+                  {(errors as any).confirmPassword?.message}
                 </p>
               </div>
             )}

@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import styles from './profileCard.module.scss';
 import { Modal } from '@mui/material';
+import BeatLoader from 'react-spinners/BeatLoader';
 
 const UserSchema = z.object({
   email: z.string().email(),
@@ -61,7 +62,11 @@ export const ProfileCard = ({
   });
 
   if (status === 'loading') {
-    return <div>Loading...</div>;
+    return (
+      <div className={styles.loading}>
+        <BeatLoader color="#DE225C" />
+      </div>
+    );
   }
 
   if (!session) {

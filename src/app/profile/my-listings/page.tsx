@@ -1,20 +1,40 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { auth } from '@/auth';
 import { CustomSession } from '@/interface/session';
 import { Header, RouterProfile, Footer, InAuthed } from '@/components';
-import { PropertyProps } from '@/interface/property';
+import PageTitle from '@/components/nav/pageTitle';
+import CheckListings from '@/components/profile/checkListings';
 
-const CheckListings = React.lazy(
-  () => import('@/components/profile/checkListings'),
-);
+const fetchUserData = async (userId: string, idToken: string) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXTAUTH_URL}/api/get-user?id=${userId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch user data');
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw new Error('Error fetching user data');
+  }
+};
 
 const CheckListingsPage = async () => {
   const session = (await auth()) as CustomSession;
 
-  if (!session || !session.user || Date.now() >= session.user.exp * 1000 * 24) {
+  if (!session || !session.user || Date.now() >= session.user.exp * 1000) {
     return (
       <>
         <Header />
+        <PageTitle title="rentoutslk | My listings" />
         <RouterProfile isAdmin={false} />
         <InAuthed />
         <Footer />
@@ -22,49 +42,42 @@ const CheckListingsPage = async () => {
     );
   }
 
-  const response = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/check-listings`,
-    {
-      headers: {
-        Authorization: `Bearer ${session.user.idToken}`,
-      },
-    },
-  );
+  if (!session.user.idToken) {
+    return;
+  }
 
-  if (!response.ok) {
-    console.error('Failed to fetch listings');
+  try {
+    const userData = await fetchUserData(session.user.id, session.user.idToken);
+
     return (
       <>
         <Header />
+        <PageTitle title="rentoutslk | My listings" />
+        <RouterProfile isAdmin={session.user.admin} />
+        <div
+          style={{
+            backgroundColor: '#F7F7F7',
+            width: '100%',
+            minHeight: '70vh',
+            zIndex: 20,
+          }}
+        >
+          <CheckListings _userData={userData} idToken={session.user.idToken} />
+        </div>
+        <Footer />
+      </>
+    );
+  } catch (error) {
+    return (
+      <>
+        <Header />
+        <PageTitle title="rentoutslk | My listings" />
         <RouterProfile isAdmin={false} />
-        <p>Failed to fetch listings.</p>
+        <InAuthed />
         <Footer />
       </>
     );
   }
-
-  const data = await response.json();
-  const listings: PropertyProps[] = data.listings;
-
-  return (
-    <>
-      <Header />
-      <RouterProfile isAdmin={session.user.admin} />
-      <div
-        style={{
-          backgroundColor: '#F7F7F7',
-          width: '100%',
-          minHeight: '70vh',
-          zIndex: 20,
-        }}
-      >
-        <Suspense fallback={<div>Loading listings...</div>}>
-          <CheckListings listings={listings} idToken={session.user.idToken} />
-        </Suspense>
-      </div>
-      <Footer />
-    </>
-  );
 };
 
 export default CheckListingsPage;

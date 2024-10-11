@@ -65,7 +65,7 @@
   border-radius: 4px;
   padding: 14px 16px;
   width: 100%;
-  min-width: 270px;
+  min-width: 250px;
 
   @include tabletAndBeyondView() {
     max-width: 280px;

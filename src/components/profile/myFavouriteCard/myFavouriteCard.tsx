@@ -134,12 +134,14 @@ export const MyFavouriteCard: React.FC<FavouriteCardProp> = ({
           nextArrow={NextArrow}
         >
           {images.map((image, index) => (
-            <div key={index}>
+            <div key={index} className={styles.imageWrapper}>
               <Image
                 src={image}
+                layout="contain"
                 width={412}
-                height={216}
+                height={320}
                 alt={`Apartment image ${index + 1}`}
+                className={styles.cardImage}
               />
             </div>
           ))}

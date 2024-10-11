@@ -96,15 +96,10 @@ const FormContent: React.FC<FormContentProps> = ({ handleCloseModal }) => {
 
   const nextStep = () => setStep((prev) => prev + 1);
 
-  const onSubmit = async (data: any) => {
-    try {
-      console.log('Form Data:', data);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+  const onSubmit = async (_data: any) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      nextStep();
-    } catch (error) {
-      console.error('Form submission error:', error);
-    }
+    nextStep();
   };
 
   return (

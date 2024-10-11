@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
 import { FavouriteProvider } from '@/context/favouriteProvider/favouriteProvider';
+import { SessionTimeoutProvider } from '@/context/sessionTimeout/SessionTimeoutProvider'; // Импортируйте созданный контекст
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,7 +23,9 @@ export default function RootLayout({
       <body className={inter.className} style={{ margin: 0 }}>
         <div id="main">
           <SessionProvider>
-            <FavouriteProvider>{children}</FavouriteProvider>
+            <SessionTimeoutProvider>
+              <FavouriteProvider>{children}</FavouriteProvider>
+            </SessionTimeoutProvider>
           </SessionProvider>
         </div>
       </body>
