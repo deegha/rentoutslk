@@ -3,13 +3,13 @@ import styles from './policy.module.scss';
 import { PolicyBlock } from './policyBlock';
 
 interface PolicyBlockProps {
-  TITLE: string;
+  TITLE?: string;
   SUBTITLE?: string;
-  DESC: string;
+  DESC?: string[];
 }
 
 interface HeaderProps {
-  HEADER: string;
+  HEADER?: string;
 }
 
 interface PolicySectionProps {

@@ -2,7 +2,7 @@ import React from 'react';
 import { Footer, Header, PolicySection } from '@/components';
 import privacyPolicyData from '@/../public/policies/privacy-policy/common.json';
 
-export const PrivacyPolicy = () => {
+const PrivacyPolicy = () => {
   const { header, blocks } = privacyPolicyData;
 
   return (
