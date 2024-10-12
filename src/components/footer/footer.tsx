@@ -16,8 +16,12 @@ export const Footer = () => {
           <div className={styles.navBlock}>
             <h4 className={styles.navTitle}>About</h4>
             <div className={styles.navLinkBlock}>
-              <a className={styles.navLink}>Privacy policy</a>
-              <a className={styles.navLink}>Terms and conditions</a>
+              <a className={styles.navLink} href="/privacy-policy">
+                Privacy policy
+              </a>
+              <a className={styles.navLink} href="/terms-of-service">
+                Terms and conditions
+              </a>
               <a className={styles.navLink}>Blog</a>
             </div>
           </div>
@@ -26,13 +30,17 @@ export const Footer = () => {
             <div className={styles.navLinkBlock}>
               <a className={styles.navLink}>FAQs</a>
               <a className={styles.navLink}>Articles</a>
-              <a className={styles.navLink}>Search</a>
+              <a className={styles.navLink} href="/rentals">
+                Search
+              </a>
             </div>
           </div>
           <div className={styles.navBlock}>
             <h4 className={styles.navTitle}>For landlords</h4>
             <div className={styles.navLinkBlock}>
-              <a className={styles.navLink}>List your property</a>
+              <a className={styles.navLink} href="/add-your-apartment">
+                List your property
+              </a>
               <a className={styles.navLink}>FAQs</a>
               <a className={styles.navLink}>Articles</a>
             </div>

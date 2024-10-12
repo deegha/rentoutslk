@@ -3,7 +3,6 @@ import { doc, getDoc, updateDoc, arrayRemove } from 'firebase/firestore';
 import { auth } from '@/auth';
 import { NextResponse } from 'next/server';
 
-// Вспомогательная функция для унификации ответа
 const jsonResponse = (message: string, status: number, data?: any) => {
   return NextResponse.json({ message, ...data }, { status });
 };

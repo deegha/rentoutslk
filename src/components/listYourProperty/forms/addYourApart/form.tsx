@@ -16,6 +16,7 @@ import { z } from 'zod';
 import { useSession } from 'next-auth/react';
 import { CustomSession } from '@/interface/session';
 import BeatLoader from 'react-spinners/BeatLoader';
+import { useRouter } from 'next/navigation';
 
 type PropertyDetailsValues = z.infer<typeof propertyDetailsSchema>;
 type ImageUploadValues = z.infer<typeof imageUploadSchema>;
@@ -23,10 +24,12 @@ type QuestionsFormValues = z.infer<typeof questionsFormSchema>;
 
 export const MultiStepFormApparts = () => {
   const { data: sessionData, status } = useSession();
-
+  const router = useRouter();
   const session = sessionData as CustomSession | null;
 
   const [step, setStep] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+
   const methods = useForm<PropertyDetailsValues>({
     resolver: zodResolver(propertyDetailsSchema),
     mode: 'onChange',
@@ -47,27 +50,19 @@ export const MultiStepFormApparts = () => {
   }, [step]);
 
   const onSubmitDetails: SubmitHandler<PropertyDetailsValues> = async (
-    data,
+    _data,
   ) => {
-    console.log('Submitting Property Details:', data);
     nextStep();
   };
 
-  const onSubmitImages: SubmitHandler<ImageUploadValues> = async (data) => {
-    console.log('Submitting Image Upload:', data);
-    if (Object.values(data).some((value) => !value)) {
-      console.warn('Some images are missing');
-    } else {
-      console.log('All images are present');
-    }
+  const onSubmitImages: SubmitHandler<ImageUploadValues> = async (_data) => {
     nextStep();
   };
 
   const onSubmitQuestions: SubmitHandler<QuestionsFormValues> = async (
     data,
   ) => {
-    console.log('Submitting Questions:', data);
-
+    setIsLoading(true);
     const combinedData = {
       ...methods.getValues(),
       ...imageMethods.getValues(),
@@ -75,25 +70,26 @@ export const MultiStepFormApparts = () => {
       userId: session?.user?.id,
     };
 
-    console.log('Combined Data to Submit:', combinedData);
+    const response = await fetch('/api/uploadListing', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session?.user?.customToken}`,
+      },
+      body: JSON.stringify(combinedData),
+    });
 
-    try {
-      const response = await fetch('/api/uploadListing', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session?.user?.customToken}`,
-        },
-        body: JSON.stringify(combinedData),
-      });
+    if (response.ok) {
+      const responseData = await response.json();
+      const listingId = responseData?.listingId;
 
-      if (response.ok) {
-        console.log('Listing published successfully', combinedData);
-      } else {
-        console.error('Failed to publish listing');
+      if (listingId) {
+        setIsLoading(false);
+        router.push(`/property/${listingId}`);
       }
-    } catch (error) {
-      console.error('Error submitting listing:', error);
+    } else {
+      console.error('Failed to create listing');
+      setIsLoading(false);
     }
   };
 
@@ -129,83 +125,89 @@ export const MultiStepFormApparts = () => {
 
   return (
     <div className={styles.form}>
-      {step === 0 && (
-        <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onSubmitDetails)}>
-            <PropertyLayout
-              breadcrumbs={
-                <Breadcrumbs
-                  categories={filteredCategories}
-                  onClick={setStep}
+      {isLoading ? (
+        <div className={styles.temporaryContainer}>
+          <BeatLoader color="#DE225C" />
+        </div>
+      ) : (
+        <>
+          {step === 0 && (
+            <FormProvider {...methods}>
+              <form onSubmit={methods.handleSubmit(onSubmitDetails)}>
+                <PropertyLayout
+                  breadcrumbs={
+                    <Breadcrumbs
+                      categories={filteredCategories}
+                      onClick={setStep}
+                    />
+                  }
                 />
-              }
-            />
-            <div className={styles.btnBlock}>
-              <Button
-                text="Continue"
-                type="submit"
-                bgColor="#222"
-                borderRadius="4px"
-                padding="14.5px 28px"
-                fontWeight="600"
-              />
-            </div>
-          </form>
-        </FormProvider>
-      )}
-      {step === 1 && (
-        <FormProvider {...imageMethods}>
-          <form
-            onSubmit={(e) => {
-              console.log('Form submitted on step 1');
-              imageMethods.handleSubmit(onSubmitImages)(e);
-            }}
-          >
-            <PropertyAddImage
-              breadcrumbs={
-                <Breadcrumbs
-                  categories={filteredCategories}
-                  onClick={setStep}
+                <div className={styles.btnBlock}>
+                  <Button
+                    text="Continue"
+                    type="submit"
+                    bgColor="#222"
+                    borderRadius="4px"
+                    padding="14.5px 28px"
+                    fontWeight="600"
+                  />
+                </div>
+              </form>
+            </FormProvider>
+          )}
+          {step === 1 && (
+            <FormProvider {...imageMethods}>
+              <form
+                onSubmit={(e) => {
+                  imageMethods.handleSubmit(onSubmitImages)(e);
+                }}
+              >
+                <PropertyAddImage
+                  breadcrumbs={
+                    <Breadcrumbs
+                      categories={filteredCategories}
+                      onClick={setStep}
+                    />
+                  }
                 />
-              }
-            />
-            <div className={styles.btnBlock}>
-              <Button
-                text="Continue"
-                type="submit"
-                bgColor="#222"
-                borderRadius="4px"
-                padding="14.5px 28px"
-                fontWeight="600"
-              />
-            </div>
-          </form>
-        </FormProvider>
-      )}
-      {step === 2 && (
-        <FormProvider {...questionsMethods}>
-          <form onSubmit={questionsMethods.handleSubmit(onSubmitQuestions)}>
-            <PropertyAddQuestions
-              breadcrumbs={
-                <Breadcrumbs
-                  categories={filteredCategories}
-                  onClick={setStep}
+                <div className={styles.btnBlock}>
+                  <Button
+                    text="Continue"
+                    type="submit"
+                    bgColor="#222"
+                    borderRadius="4px"
+                    padding="14.5px 28px"
+                    fontWeight="600"
+                  />
+                </div>
+              </form>
+            </FormProvider>
+          )}
+          {step === 2 && (
+            <FormProvider {...questionsMethods}>
+              <form onSubmit={questionsMethods.handleSubmit(onSubmitQuestions)}>
+                <PropertyAddQuestions
+                  breadcrumbs={
+                    <Breadcrumbs
+                      categories={filteredCategories}
+                      onClick={setStep}
+                    />
+                  }
                 />
-              }
-            />
-            <div className={styles.btnBlock}>
-              <Button
-                text="Continue"
-                type="submit"
-                onClick={() => console.log(`Button clicked for Step: ${step}`)}
-                bgColor="#222"
-                borderRadius="4px"
-                padding="14.5px 28px"
-                fontWeight="600"
-              />
-            </div>
-          </form>
-        </FormProvider>
+                <div className={styles.btnBlock}>
+                  <Button
+                    text="Continue"
+                    type="submit"
+                    bgColor="#222"
+                    borderRadius="4px"
+                    padding="14.5px 28px"
+                    fontWeight="600"
+                  />
+                </div>
+              </form>
+            </FormProvider>
+          )}
+        </>
       )}
     </div>
   );

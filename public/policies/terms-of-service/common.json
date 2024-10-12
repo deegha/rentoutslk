@@ -1,0 +1,48 @@
+{
+    "header": {
+      "HEADER": "Terms of Service"
+    },
+    "blocks": [
+      {
+        "TITLE": "Introduction",
+        "SUBTITLE": "Welcome to our Terms of Service",
+        "DESC": "These terms govern your use of our website and services. By accessing or using our services, you agree to comply with these terms."
+      },
+      {
+        "TITLE": "Eligibility",
+        "SUBTITLE": "Who can use our services",
+        "DESC": "You must be at least 18 years old to use our services. By agreeing to these terms, you represent that you meet this age requirement."
+      },
+      {
+        "TITLE": "User Responsibilities",
+        "SUBTITLE": "What we expect from users",
+        "DESC": "Users are responsible for keeping their account information secure. You are responsible for all activity that occurs under your account."
+      },
+      {
+        "TITLE": "Prohibited Activities",
+        "SUBTITLE": "What you are not allowed to do",
+        "DESC": "You agree not to engage in any activities that violate the law, infringe on the rights of others, or interfere with our services."
+      },
+      {
+        "TITLE": "Termination of Services",
+        "SUBTITLE": "When we can terminate access",
+        "DESC": "We reserve the right to terminate or suspend your access to our services if you violate any of these terms or engage in prohibited activities."
+      },
+      {
+        "TITLE": "Changes to Terms",
+        "SUBTITLE": "When terms can be updated",
+        "DESC": "We may update these terms from time to time. We will notify you of any significant changes by posting the updated terms on our website."
+      },
+      {
+        "TITLE": "Governing Law",
+        "SUBTITLE": "Which laws apply",
+        "DESC": "These terms are governed by the laws of [Your Country]. Any disputes arising from these terms will be resolved in the courts of [Your Country]."
+      },
+      {
+        "TITLE": "Contact Information",
+        "SUBTITLE": "How to contact us",
+        "DESC": "If you have any questions or concerns about these terms, please contact us at support@yourdomain.com."
+      }
+    ]
+  }
+  
