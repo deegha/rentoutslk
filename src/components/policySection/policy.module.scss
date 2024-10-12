@@ -1,0 +1,63 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.section {
+  display: flex;
+  width: 100vw;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  gap: 24px;
+  align-items: start;
+  justify-content: start;
+  padding: 24px 13px;
+
+  @include tabletAndBeyondView() {
+    padding: 24px 72px;
+  }
+
+  @include desktopAndBeyondView() {
+    padding: 24px 80px;
+  }
+}
+
+.sectionHeader {
+  margin: 0 auto;
+}
+
+.headerText {
+  color: $font-color-one;
+  font-weight: 800;
+  font-size: 28px;
+}
+
+.policyBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.title {
+  margin-bottom: 6px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.descList {
+  margin-left: 20px;
+}
+
+.descItem {
+  line-height: 24px;
+  font-weight: 300;
+font-size: 16px;
+}

@@ -1,0 +1,77 @@
+{
+  "header": {
+    "HEADER": "Privacy policy"
+  },
+  "blocks": [
+    {"TITLE": "Effective Date: 12.10.2024"},
+    {
+      "TITLE": "Introduction",
+      "DESC": [
+        "At RentOutSLK, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy outlines how we collect, use, and safeguard your information when you interact with our website, including when you create accounts, log in, or use any of our services."
+      ]
+    },
+    {
+      "TITLE": "1. Information We Collect",
+      "SUBTITLE": "We collect the following types of information to provide and improve our services:",
+      "DESC": [
+        "Personal Information: When you create an account or log in, we collect details such as your name, email address, contact information, and other relevant information needed to create your user profile.",
+        "Property Listings Information: We collect and store data related to the rental properties you list or interact with, including property descriptions, photos, pricing, and availability.",
+        "Usage Data: We collect data on how users interact with our website using Google Analytics. This includes information such as pages visited, time spent on the site, and interactions with content.",
+        "Cookies: We use cookies and similar tracking technologies to enhance user experience and for analytical purposes. You may choose to disable cookies, but doing so might affect your ability to use certain features of the site."
+      ]
+    },
+    {
+      "TITLE": "2. How We Use Your Information",
+      "SUBTITLE": "We use your personal information for the following purposes:",
+      "DESC": [
+        "To Provide Services: We use your information to manage user accounts, facilitate property listings, and process communications between users.",
+        "Marketing and Advertising: We use Google Ads and other third-party marketing tools to reach potential customers. This may include targeted advertising based on your interactions with our site.",
+        "Analytics and Improvements: We use Google Analytics to monitor site traffic and user behavior to improve our services and website functionality."
+      ]
+    },
+    {
+      "TITLE": "3. Sharing Your Information",
+      "SUBTITLE": "We respect your privacy and will not share your personal information with third parties except in the following cases:",
+      "DESC": [
+        "Service Providers: We may share information with trusted service providers who assist us in operating our website (e.g., hosting providers, email services).",
+        "Advertising Partners: We share limited information (such as cookies or anonymized data) with Google Ads to deliver targeted advertising.",
+        "Legal Requirements: We may disclose your information if required by law or to protect our rights and the safety of others."
+      ]
+    },
+    {
+      "TITLE": "4. Data Security",
+      "DESC": [
+        "We implement various security measures to protect your personal data from unauthorized access, disclosure, or loss. However, no method of transmission over the Internet or method of electronic storage is 100% secure, and we cannot guarantee absolute security."
+      ]
+    },
+    {
+      "TITLE": "5. Your Rights",
+      "SUBTITLE": "As a user, you have the following rights regarding your personal data:",
+      "DESC": [
+        "Access & Correction: You can request access to or correction of your personal information.",
+        "Opt-out: You can opt-out of certain data collection processes (e.g., cookies or targeted advertising).",
+        "Account Deletion: You may request the deletion of your account and associated data at any time."
+      ]
+    },
+    {
+      "TITLE": "6. Third-Party Links",
+      "DESC": [
+        "Our website may contain links to third-party websites. We are not responsible for the privacy practices of those sites and encourage you to review their privacy policies before providing any personal information."
+      ]
+    },
+    {
+      "TITLE": "7. Updates to This Policy",
+      "DESC": [
+        "We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated effective date. Continued use of the website after changes are made will constitute your acceptance of the updated policy."
+      ]
+    },    {
+      "TITLE": "8. Contact Us",
+      "SUBTITLE": "If you have any questions or concerns about this Privacy Policy, please contact us at",
+      "DESC": [
+        "RentOutSLK",
+        "Email: hello@rentoutslk",
+        "Phone: 0715443652"
+      ]
+    }
+  ]
+}

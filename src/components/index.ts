@@ -38,3 +38,6 @@ export * from './headerFavourite';
 //Profile Page
 export * from './profile';
 export * from './propertyComponent';
+
+//Privacy Policy and Terms of Service
+export * from './policySection';

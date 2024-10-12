@@ -1,0 +1,41 @@
+{
+  "header": {
+    "HEADER": "Privacy policy"
+  },
+  "blocks": [
+    {
+      "TITLE": "Introduction",
+      "DESC": [
+        "At RentOutSLK, we are committed to protecting your privacy and ensuring the security of your personal information.",
+        "This Privacy Policy outlines how we collect, use, and safeguard your information when you interact with our website, including when you create accounts, log in, or use any of our services."
+      ]
+    },
+    {
+      "TITLE": "1. Information We Collect",
+      "SUBTITLE": "We collect the following types of information to provide and improve our services:",
+      "DESC": [
+        "Personal Information: When you create an account or log in, we collect details such as your name, email address, contact information, and other relevant information needed to create your user profile.",
+        "Property Listings Information: We collect and store data related to the rental properties you list or interact with, including property descriptions, photos, pricing, and availability.",
+        "Usage Data: We collect data on how users interact with our website using Google Analytics. This includes information such as pages visited, time spent on the site, and interactions with content."
+      ]
+    },
+    {
+      "TITLE": "How We Use Data",
+      "SUBTITLE": "Ways we use your information",
+      "DESC": [
+        "To Provide Services: We use your information to manage user accounts and facilitate property listings.",
+        "Marketing and Advertising: We use Google Ads and third-party tools to reach potential customers.",
+        "Analytics and Improvements: We use Google Analytics to monitor site traffic and user behavior."
+      ]
+    },
+    {
+      "TITLE": "Your Rights",
+      "SUBTITLE": "Your data protection rights",
+      "DESC": [
+        "Access & Correction: You can request access to or correction of your personal information.",
+        "Opt-out: You can opt-out of certain data collection processes (e.g., cookies or targeted advertising).",
+        "Account Deletion: You may request the deletion of your account and associated data at any time."
+      ]
+    }
+  ]
+}
