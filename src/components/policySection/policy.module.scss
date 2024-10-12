@@ -31,22 +31,33 @@
 .headerText {
   color: $font-color-one;
   font-weight: 800;
-  font-size: 24px;
+  font-size: 28px;
 }
 
 .policyBlock {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  margin-bottom: 12px;
 }
 
 .title {
   margin-bottom: 6px;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 600;
 }
 
 .subtitle {
   font-size: 20px;
   font-weight: 500;
+}
+
+.descList {
+  margin-left: 20px;
+}
+
+.descItem {
+  line-height: 24px;
+  font-weight: 300;
+font-size: 16px;
 }

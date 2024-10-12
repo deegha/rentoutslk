@@ -1,48 +1,41 @@
 {
-    "header": {
-      "HEADER": "Terms of Service"
+  "header": {
+    "HEADER": "Privacy policy"
+  },
+  "blocks": [
+    {
+      "TITLE": "Introduction",
+      "DESC": [
+        "At RentOutSLK, we are committed to protecting your privacy and ensuring the security of your personal information.",
+        "This Privacy Policy outlines how we collect, use, and safeguard your information when you interact with our website, including when you create accounts, log in, or use any of our services."
+      ]
     },
-    "blocks": [
-      {
-        "TITLE": "Introduction",
-        "SUBTITLE": "Welcome to our Terms of Service",
-        "DESC": "These terms govern your use of our website and services. By accessing or using our services, you agree to comply with these terms."
-      },
-      {
-        "TITLE": "Eligibility",
-        "SUBTITLE": "Who can use our services",
-        "DESC": "You must be at least 18 years old to use our services. By agreeing to these terms, you represent that you meet this age requirement."
-      },
-      {
-        "TITLE": "User Responsibilities",
-        "SUBTITLE": "What we expect from users",
-        "DESC": "Users are responsible for keeping their account information secure. You are responsible for all activity that occurs under your account."
-      },
-      {
-        "TITLE": "Prohibited Activities",
-        "SUBTITLE": "What you are not allowed to do",
-        "DESC": "You agree not to engage in any activities that violate the law, infringe on the rights of others, or interfere with our services."
-      },
-      {
-        "TITLE": "Termination of Services",
-        "SUBTITLE": "When we can terminate access",
-        "DESC": "We reserve the right to terminate or suspend your access to our services if you violate any of these terms or engage in prohibited activities."
-      },
-      {
-        "TITLE": "Changes to Terms",
-        "SUBTITLE": "When terms can be updated",
-        "DESC": "We may update these terms from time to time. We will notify you of any significant changes by posting the updated terms on our website."
-      },
-      {
-        "TITLE": "Governing Law",
-        "SUBTITLE": "Which laws apply",
-        "DESC": "These terms are governed by the laws of [Your Country]. Any disputes arising from these terms will be resolved in the courts of [Your Country]."
-      },
-      {
-        "TITLE": "Contact Information",
-        "SUBTITLE": "How to contact us",
-        "DESC": "If you have any questions or concerns about these terms, please contact us at support@yourdomain.com."
-      }
-    ]
-  }
-  
+    {
+      "TITLE": "1. Information We Collect",
+      "SUBTITLE": "We collect the following types of information to provide and improve our services:",
+      "DESC": [
+        "Personal Information: When you create an account or log in, we collect details such as your name, email address, contact information, and other relevant information needed to create your user profile.",
+        "Property Listings Information: We collect and store data related to the rental properties you list or interact with, including property descriptions, photos, pricing, and availability.",
+        "Usage Data: We collect data on how users interact with our website using Google Analytics. This includes information such as pages visited, time spent on the site, and interactions with content."
+      ]
+    },
+    {
+      "TITLE": "How We Use Data",
+      "SUBTITLE": "Ways we use your information",
+      "DESC": [
+        "To Provide Services: We use your information to manage user accounts and facilitate property listings.",
+        "Marketing and Advertising: We use Google Ads and third-party tools to reach potential customers.",
+        "Analytics and Improvements: We use Google Analytics to monitor site traffic and user behavior."
+      ]
+    },
+    {
+      "TITLE": "Your Rights",
+      "SUBTITLE": "Your data protection rights",
+      "DESC": [
+        "Access & Correction: You can request access to or correction of your personal information.",
+        "Opt-out: You can opt-out of certain data collection processes (e.g., cookies or targeted advertising).",
+        "Account Deletion: You may request the deletion of your account and associated data at any time."
+      ]
+    }
+  ]
+}
