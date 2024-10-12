@@ -18,18 +18,15 @@ cloudinary.v2.config({
 
 export async function POST(req: NextRequest) {
   try {
-    const data = await req.json(); // Extract data from the request
+    const data = await req.json();
     const userId = data.userId;
 
-    // Extract image keys from the data
     const imageKeys = Object.keys(data).filter((key) =>
       key.startsWith('image'),
     );
 
-    // Upload images to Cloudinary
     const uploadPromises = imageKeys.map(async (imageKey) => {
       const base64String = data[imageKey];
-      console.log(`Type of base64String for ${imageKey}:`, typeof base64String);
 
       if (
         typeof base64String === 'string' &&
@@ -41,7 +38,7 @@ export async function POST(req: NextRequest) {
             upload_preset: process.env.CLOUDINARY_UPLOAD_PRESET,
           },
         );
-        return { [imageKey]: uploadResponse.secure_url }; // Return the image URL
+        return { [imageKey]: uploadResponse.secure_url };
       }
       return null;
     });
@@ -52,20 +49,17 @@ export async function POST(req: NextRequest) {
       {},
     );
 
-    // Combine the data with the uploaded image URLs
     const listingData = {
-      ...data, // Original data
-      ...imageUrls, // Cloudinary URLs
+      ...data,
+      ...imageUrls,
       status: 'not verified',
       active: true,
       createdAt: serverTimestamp(),
       views: 0,
     };
 
-    // Save listing to Firestore
     const docRef = await addDoc(collection(db, 'listings'), listingData);
 
-    // Update user's listings array in Firestore
     const userRef = doc(db, 'users', userId);
     await updateDoc(userRef, {
       listings: arrayUnion(docRef.id),
@@ -73,9 +67,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       message: 'Listing published successfully',
+      listingId: docRef.id,
     });
   } catch (error) {
-    console.error('Error publishing listing:', error);
     return NextResponse.json(
       { message: 'Failed to publish listing' },
       { status: 500 },

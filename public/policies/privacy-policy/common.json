@@ -1,0 +1,28 @@
+{
+    "header": {
+      "HEADER": "Privacy policy"
+    },
+    "blocks": [
+      {
+        "TITLE": "Introduction",
+        "SUBTITLE": "Welcome to our privacy policy",
+        "DESC": "We are committed to protecting your privacy."
+      },
+      {
+        "TITLE": "Data Collection",
+        "SUBTITLE": "What data we collect",
+        "DESC": "We collect personal information that you provide to us."
+      },
+      {
+        "TITLE": "How We Use Data",
+        "SUBTITLE": "Ways we use your information",
+        "DESC": "We use the information to provide better services."
+      },
+      {
+        "TITLE": "Your Rights",
+        "SUBTITLE": "Your data protection rights",
+        "DESC": "You have the right to request access to your personal data."
+      }
+    ]
+  }
+  

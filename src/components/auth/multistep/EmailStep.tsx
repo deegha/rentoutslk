@@ -5,7 +5,7 @@ import { EmailFormValues } from './types';
 import styles from './multistep-form.module.scss';
 import Close from 'icons/Close_MD.svg';
 import Google from 'icons/auth/google.svg';
-// import Facebook from 'icons/auth/facebook.svg';
+import Facebook from 'icons/auth/facebook.svg';
 import Warning from '@/icons/Circle_Warning.svg';
 import { signIn } from 'next-auth/react';
 
@@ -64,7 +64,7 @@ const EmailStep: React.FC<EmailStepProps> = ({ onSubmit, onRequestClose }) => {
               Sign up with Google
             </button>
           </div>
-          {/* <div
+          <div
             className={styles.button__container__icon}
             onClick={() => signIn(`facebook`)}
           >
@@ -74,18 +74,18 @@ const EmailStep: React.FC<EmailStepProps> = ({ onSubmit, onRequestClose }) => {
             <button className={`${styles.button__OAuth}`} type="button">
               <span>Sign up with Facebook</span>
             </button>
-          </div> */}
+          </div>
         </div>
         <div className={styles.formTextContainer}>
           <p className={styles.formText}>
             By signing in or creating an account, you agree
             <br />
             with Rentout&apos;s{' '}
-            <a className={styles.formLinks} href="">
+            <a className={styles.formLinks} href="/terms-of-service">
               Terms of Service
             </a>{' '}
             and{' '}
-            <a className={styles.formLinks} href="">
+            <a className={styles.formLinks} href="/privacy-policy">
               Privacy Policy
             </a>
           </p>

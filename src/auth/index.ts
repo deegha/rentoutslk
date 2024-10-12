@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import type { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
+import FacebookProvider from 'next-auth/providers/facebook';
 import { authFirebase, db } from '@/firebase/config';
 import {
   createUserWithEmailAndPassword,
@@ -10,6 +11,7 @@ import {
   getIdToken,
   GoogleAuthProvider,
   signInWithCredential,
+  FacebookAuthProvider,
 } from 'firebase/auth';
 import {
   collection,
@@ -105,6 +107,10 @@ export const authOptions: NextAuthConfig = {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_CLIENT_ID!,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
+    }),
   ],
   callbacks: {
     async signIn({ user, account }) {
@@ -154,11 +160,60 @@ export const authOptions: NextAuthConfig = {
           return false;
         }
       }
+      if (account?.provider === 'facebook' && account.access_token) {
+        try {
+          const credential = FacebookAuthProvider.credential(
+            account.access_token,
+          );
+          const userCredential = await signInWithCredential(
+            authFirebase,
+            credential,
+          );
+          const facebookUser = userCredential.user;
+          const idToken = await getIdToken(facebookUser, true);
+
+          const userQuery = query(
+            collection(db, 'users'),
+            where('uid', '==', facebookUser.uid),
+          );
+          const userDocs = await getDocs(userQuery);
+
+          if (userDocs.empty) {
+            const newUserRef = await addDoc(collection(db, 'users'), {
+              email: facebookUser.email,
+              uid: facebookUser.uid,
+              createdAt: new Date(),
+              lastLogin: new Date(),
+              savedProperties: [],
+            });
+
+            (user as UserRent).id = newUserRef.id;
+          } else {
+            const userDoc = userDocs.docs[0];
+            await updateDoc(doc(db, 'users', userDoc.id), {
+              lastLogin: new Date(),
+            });
+
+            (user as UserRent).id = userDoc.id;
+          }
+
+          (user as UserRent).uid = facebookUser.uid;
+          (user as UserRent).email = facebookUser.email!;
+          (user as UserRent).idToken = idToken;
+          (user as UserRent).exp =
+            Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 2;
+
+          return true;
+        } catch (error) {
+          console.error('Facebook sign-in error', error);
+          return false;
+        }
+      }
       return true;
     },
 
     async jwt({ token, user, account }) {
-      if (account?.provider === 'google' && user) {
+      if (account?.provider === 'facebook' && user) {
         const customUser = user as UserRent;
         token.idToken = customUser.idToken;
         token.uid = customUser.uid;
