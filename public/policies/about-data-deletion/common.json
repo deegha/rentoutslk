@@ -1,0 +1,19 @@
+{
+    "header": {
+      "HEADER": "Data Deletion"
+    },
+    "blocks": [
+      {
+        "TITLE": "Instructions",
+        "SUBTITLE": "How to delete your account and all associated data? To permanently delete your account and personal information, follow these steps:",
+        "DESC": [
+          "1. Log in to your account and go to your profile page by clicking on your profile icon in the top right corner or by visiting https://rentoutslk.vercel.app/profile.",
+          "2. On the profile page, scroll down and find the 'Delete Account' button.",
+          "3. Click on the 'Delete Account' button. You will be asked to confirm your decision. This action is irreversible, and all your personal data, including your profile information, saved properties, and listings, will be permanently deleted.",
+          "4. After confirmation, your account and all associated data will be removed from our systems, and you will be logged out.",
+          "Please note that once your account is deleted, it cannot be recovered. If you have any issues or questions, feel free to contact our support team at hello@rentoutslk."
+        ]
+      }
+    ]
+  }
+  
