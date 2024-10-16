@@ -20,6 +20,9 @@ import { Swiper as SwiperType } from 'swiper';
 import Warning from '@/icons/warning.svg';
 import { formatDate } from '@/utils/formateData';
 import { PropertyProps } from '@/interface/property';
+import EditIcon from '@/icons/edit.svg';
+import Map from '@/components/map/map';
+import { useSession } from 'next-auth/react';
 
 interface PropertyDetailsProps {
   property: PropertyProps;
@@ -31,6 +34,8 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   propertyId,
 }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
+
+  const { data: session } = useSession();
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.toString());
@@ -57,6 +62,7 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
     image8,
     image9,
     status,
+    ownerId,
   } = property;
 
   const images = [
@@ -74,7 +80,8 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   );
 
   const formattedDate = formatDate(createdAt);
-  const encodedAddress = encodeURIComponent(address);
+
+  const isOwner = session?.user?.id === ownerId;
 
   return (
     <section className={styles.container}>
@@ -128,8 +135,8 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
                   spaceBetween: 30,
                 },
                 1440: {
-                  slidesPerView: 4,
-                  spaceBetween: 20,
+                  slidesPerView: 3,
+                  spaceBetween: 10,
                 },
               }}
             >
@@ -206,7 +213,7 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
               </Tooltip>
             </div>
             <ul className={styles.descList}>
-              <DescriptionItem name="Price:" value={`${monthlyRent} Re/mo`} />
+              <DescriptionItem name="Price:" value={`${monthlyRent} LKR/mo`} />
               <DescriptionItem name="Floor area:" value={`${floorArea} m2`} />
               <DescriptionItem name="Available from:" value={formattedDate} />
               <DescriptionItem name="Property type:" value={propertyType} />
@@ -224,18 +231,16 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
                 value={status !== 'not verified' ? <Verified /> : <Warning />}
               />
             </ul>
+            {isOwner && (
+              <div className={styles.editBlock}>
+                <EditIcon />
+                <p>Edit</p>
+              </div>
+            )}
           </div>
         </div>
         <div className={styles.mapBlock}>
-          <iframe
-            src={`https://www.google.com/maps?q=${encodedAddress}&output=embed`}
-            width="100%"
-            height="280px"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
+          <Map address={address} place={place} />
         </div>
       </div>
     </section>

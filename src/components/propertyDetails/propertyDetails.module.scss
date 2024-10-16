@@ -210,3 +210,19 @@
   border-radius: 12px;
   cursor: pointer;
 }
+
+.editBlock {
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+  margin-top: 40px;
+  align-items: center;
+  cursor: pointer;
+  p {
+    color: #5e5e5e;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 16.94px;
+    text-align: left;
+  }
+}
