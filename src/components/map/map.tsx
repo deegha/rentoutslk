@@ -10,11 +10,15 @@ const Map = ({ address, place }: { address: string; place?: string }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    loader.load().then(() => {
+    Promise.all([
+      loader.importLibrary('maps'),
+      loader.importLibrary('marker'),
+    ]).then(() => {
       if (mapRef.current && window.google) {
         const map = new window.google.maps.Map(mapRef.current, {
           zoom: 15,
           center: { lat: 0, lng: 0 },
+          mapId: process.env.NEXT_PUBLIC_GOOGLE_MAP_ID,
         });
 
         const geocoder = new window.google.maps.Geocoder();
@@ -23,10 +27,17 @@ const Map = ({ address, place }: { address: string; place?: string }) => {
           (results, status) => {
             if (status === 'OK' && results && results[0]) {
               map.setCenter(results[0].geometry.location);
-              new window.google.maps.Marker({
+
+              new window.google.maps.marker.AdvancedMarkerElement({
                 map,
                 position: results[0].geometry.location,
+                title: 'Property Location',
               });
+            } else {
+              console.error(
+                'Geocode was not successful for the following reason:',
+                status,
+              );
             }
           },
         );

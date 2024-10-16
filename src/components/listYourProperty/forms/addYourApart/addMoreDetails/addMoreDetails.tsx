@@ -112,7 +112,7 @@ export const AddMoreDetails = () => {
           />
           <InputApart
             {...register('monthlyRent')}
-            placeholder={'54 244'}
+            placeholder={'54244'}
             label={'Monthly rent'}
             name={'monthlyRent'}
             type="number"
@@ -124,7 +124,7 @@ export const AddMoreDetails = () => {
         <div className={styles.generalInfoContainer}>
           <InputApart
             {...register('deposit')}
-            placeholder={'80 000 Re'}
+            placeholder={'80000'}
             label={'Deposit'}
             name={'deposit'}
             classNameContainer={styles.apartTitleContainer}
