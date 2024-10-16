@@ -24,11 +24,11 @@ export const AboutProperty = ({ property }: { property: PropertyProps }) => {
           <AboutPropertyItem name="Bedrooms:" value={numberBedrooms} />
           <AboutPropertyItem name="Bathrooms:" value={numberBathrooms} />
           <AboutPropertyItem name="Furniture:" value="Yes" />
-          <AboutPropertyItem name="Price:" value={`${monthlyRent} Re`} />
+          <AboutPropertyItem name="Price:" value={`${monthlyRent} LKR`} />
           <AboutPropertyItem name="Elevator:" value="Yes" />
           <AboutPropertyItem name="Gym:" value="Yes" />
           <AboutPropertyItem name="Floor area:" value={`${floorArea} m2`} />
-          <AboutPropertyItem name="Deposit:" value={`${deposit} Re`} />
+          <AboutPropertyItem name="Deposit:" value={`${deposit} LKR`} />
           <AboutPropertyItem name="Pool:" value="No" />
           <AboutPropertyItem name="Parking:" value="Yes" />
           <AboutPropertyItem name="Balcony:" value="Yes" />
