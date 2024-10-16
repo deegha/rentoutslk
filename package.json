@@ -9,15 +9,16 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "lint:strict": "next lint '*/**/*.{js,jsx,ts,tsx}'",
-    "prettier": "prettier --write */**/*.{js,jsx,json,ts,tsx,scss,css,md}",
-    "prepare": "husky install",
-    "build:scss": "sass styles/scss -o styles/css"
+    "prettier": "prettier --write '*/**/*.{js,jsx,json,ts,tsx,scss,css,md}'",
+    "build:scss": "sass styles/scss -o styles/css",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@auth/core": "^0.34.2",
     "@auth/firebase-adapter": "^2.4.1",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@googlemaps/js-api-loader": "^1.16.8",
     "@hookform/resolvers": "^3.7.0",
     "@mui/material": "^5.16.4",
     "@mui/x-date-pickers": "^7.10.0",
@@ -70,5 +71,14 @@
     "husky": "^9.1.6",
     "prettier": "^3.3.3",
     "typescript": "^5"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{scss,css,json,md}": [
+      "prettier --write"
+    ]
   }
 }
