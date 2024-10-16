@@ -99,6 +99,20 @@ const PasswordStep: React.FC<PasswordStepProps> = ({
           Forgot your password?
         </button>
       </div>
+      <div className={styles.formTextContainer}>
+        <p className={styles.formText}>
+          By signing in or creating an account, you agree
+          <br />
+          with Rentout&apos;s{' '}
+          <a className={styles.formLinks} href="/terms-of-service">
+            Terms of Service
+          </a>{' '}
+          and{' '}
+          <a className={styles.formLinks} href="/privacy-policy">
+            Privacy Policy
+          </a>
+        </p>
+      </div>
     </form>
   );
 };

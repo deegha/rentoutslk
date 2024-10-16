@@ -27,4 +27,5 @@ export interface PropertyProps {
   furnishing: string;
   customQuestion?: string;
   status: string;
+  ownerId: string;
 }

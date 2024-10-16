@@ -59,7 +59,7 @@ const PropertyPage = async ({ params }: { params: { id: string } }) => {
         <AboutProperty property={property} />
         <TrendingProperties address={property.address} place={property.place} />
         <LookingForProperty place={property.place} />
-        <PropertyComponent />
+        <PropertyComponent ownerId={property.ownerId} propertyId={params.id} />
         <ViewTracker propertyId={params.id} />
       </main>
       <Footer />

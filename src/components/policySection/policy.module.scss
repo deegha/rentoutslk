@@ -12,8 +12,8 @@
   flex-direction: column;
   width: 100vw;
   gap: 24px;
-  align-items: start;
-  justify-content: start;
+  align-items: flex-start;
+  justify-content: flex-start;
   padding: 24px 13px;
 
   @include tabletAndBeyondView() {

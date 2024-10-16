@@ -15,17 +15,21 @@ import { tourRequestSchema } from '@/schema';
 
 interface TourRequestProps {
   handleCloseModal: () => void;
+  propertyId: string;
+  ownerId: string;
 }
 
 export const TourRequestForm: React.FC<TourRequestProps> = ({
   handleCloseModal,
+  propertyId,
+  ownerId,
 }) => {
   const { data: session } = useSession();
   const methods = useForm({
     resolver: zodResolver(tourRequestSchema),
     defaultValues: {
-      name: '',
-      email: '',
+      name: session?.user?.name || '',
+      email: session?.user?.email || '',
       phone: '',
       monthlyHousehold: '',
       howLongStay: '',
@@ -44,11 +48,39 @@ export const TourRequestForm: React.FC<TourRequestProps> = ({
     setIsAuthModalOpen(false);
   };
 
+  const onSubmit = async (data: any) => {
+    try {
+      const response = await fetch('/api/send-tour-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...data,
+          propertyId,
+          ownerId,
+          userId: session?.user?.id,
+        }),
+      });
+
+      if (response.ok) {
+        console.log('Request sent successfully');
+      } else {
+        console.error('Failed to send request111');
+      }
+    } catch (error) {
+      console.error('Error submitting tour request:', error);
+    }
+  };
+
   return (
     <div className={styles.container} onClick={handleCloseModal}>
       {session ? (
         <FormProvider {...methods}>
-          <FormContent handleCloseModal={handleCloseModal} />
+          <FormContent
+            handleCloseModal={handleCloseModal}
+            onSubmit={onSubmit}
+          />
         </FormProvider>
       ) : (
         <div
@@ -82,9 +114,13 @@ export const TourRequestForm: React.FC<TourRequestProps> = ({
 
 interface FormContentProps {
   handleCloseModal: () => void;
+  onSubmit: (_data: any) => Promise<void>;
 }
 
-const FormContent: React.FC<FormContentProps> = ({ handleCloseModal }) => {
+const FormContent: React.FC<FormContentProps> = ({
+  handleCloseModal,
+  onSubmit,
+}) => {
   const {
     register,
     control,
@@ -96,9 +132,8 @@ const FormContent: React.FC<FormContentProps> = ({ handleCloseModal }) => {
 
   const nextStep = () => setStep((prev) => prev + 1);
 
-  const onSubmit = async (_data: any) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
+  const submitForm = async (data: any) => {
+    await onSubmit(data);
     nextStep();
   };
 
@@ -110,14 +145,14 @@ const FormContent: React.FC<FormContentProps> = ({ handleCloseModal }) => {
           onClick={(e) => e.stopPropagation()}
         >
           <div className={styles.formTitleBlock}>
-            <h2 className={styles.formTitle}>A tour request </h2>
+            <h2 className={styles.formTitle}>A tour request</h2>
             <p className={styles.formSubtitle}>
-              A property owner will contact you to arrange a tour{' '}
+              A property owner will contact you to arrange a tour
             </p>
             <Close onClick={handleCloseModal} className={styles.closeButton} />
           </div>
 
-          <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          <form className={styles.form} onSubmit={handleSubmit(submitForm)}>
             <div className={styles.inputsList}>
               <CustomInput
                 control={control}
@@ -143,7 +178,7 @@ const FormContent: React.FC<FormContentProps> = ({ handleCloseModal }) => {
             </div>
             <p className={styles.formDesc}>
               Answer these optional questions to get owner to know you better
-              and increase your chances to be selected.{' '}
+              and increase your chances to be selected.
             </p>
             <TourTextarea
               name="monthlyHousehold"
@@ -183,12 +218,12 @@ const FormContent: React.FC<FormContentProps> = ({ handleCloseModal }) => {
             </div>
             <div className={styles.privacyBlock}>
               <p className={styles.privacyText}>
-                By signing in or creating an account, you agree with{' '}
-                <a className={styles.privacyLink} href="">
+                By sending a request, you agree with{' '}
+                <a className={styles.privacyLink} href="/terms-of-service">
                   Rentout&apos;s Terms of Service
                 </a>{' '}
                 and{' '}
-                <a className={styles.privacyLink} href="">
+                <a className={styles.privacyLink} href="/privacy-policy">
                   Privacy Policy
                 </a>
               </p>
