@@ -28,4 +28,16 @@ export interface PropertyProps {
   customQuestion?: string;
   status: string;
   ownerId: string;
+  gym: boolean;
+  pool: boolean;
+  parking: boolean;
+  playground: boolean;
+  elevator: boolean;
+  charger: boolean;
+  hotWater: boolean;
+  microwave: boolean;
+  washingMachine: boolean;
+  tv: boolean;
+  conditioner: boolean;
+  culteries: boolean;
 }
