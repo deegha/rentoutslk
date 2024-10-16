@@ -81,11 +81,11 @@ export const MultiStepFormApparts = () => {
 
     if (response.ok) {
       const responseData = await response.json();
-      const listingId = responseData?.listingId;
+      const listingSlug = responseData?.listingSlug;
 
-      if (listingId) {
+      if (listingSlug) {
         setIsLoading(false);
-        router.push(`/property/${listingId}`);
+        router.push(`/property/${listingSlug}`);
       }
     } else {
       console.error('Failed to create listing');
