@@ -44,8 +44,8 @@ interface TrendingPropertiesProps {
 }
 
 const getInitialCardCount = (width: number) => {
-  if (width >= 1920) return 4;
-  if (width >= 1440) return 3;
+  if (width >= 1600) return 4;
+  if (width >= 1280) return 3;
   if (width > 812) return 4;
   return 3;
 };

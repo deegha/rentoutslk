@@ -7,6 +7,10 @@
   width: 100%;
   gap: 12px;
   min-width: 200px;
+
+  @include tabletAndBeyondView() {
+    max-width: 200px;
+  }
 }
 
 .label {

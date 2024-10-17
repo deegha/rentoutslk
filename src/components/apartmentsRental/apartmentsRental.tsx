@@ -4,6 +4,13 @@ import styles from './apartmentsRental.module.scss';
 import { ApartmentsList, TagsList } from '@/components';
 import BeatLoader from 'react-spinners/BeatLoader';
 
+const getInitialCardCount = (width: number) => {
+  if (width >= 1600) return 8;
+  if (width >= 1280) return 6;
+  if (width > 812) return 4;
+  return 3;
+};
+
 interface ApartmentsRentalProps {
   filters: {
     address: string;
@@ -60,7 +67,7 @@ export const ApartmentsRental: React.FC<ApartmentsRentalProps> = ({
 }) => {
   const [apartments, setApartments] = useState<Apartment[]>([]);
   const [filteredApartments, setFilteredApartments] = useState<Apartment[]>([]);
-  const [cardCount, setCardCount] = useState(8);
+  const [cardCount, setCardCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
   const applyFilters = useCallback(
@@ -185,8 +192,31 @@ export const ApartmentsRental: React.FC<ApartmentsRentalProps> = ({
     applyFilters(apartments);
   }, [filters, apartments, applyFilters]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setCardCount(getInitialCardCount(window.innerWidth));
+    };
+
+    if (typeof window !== 'undefined') {
+      setCardCount(getInitialCardCount(window.innerWidth));
+      window.addEventListener('resize', handleResize);
+    }
+
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', handleResize);
+      }
+    };
+  }, []);
+
   const handleShowMore = () => {
-    setCardCount((prevCount) => prevCount + 8);
+    if (typeof window !== 'undefined') {
+      setCardCount((prevCount) =>
+        prevCount !== null
+          ? prevCount + getInitialCardCount(window.innerWidth)
+          : getInitialCardCount(window.innerWidth),
+      );
+    }
   };
 
   const removeFilter = (filterName: string) => {
@@ -262,7 +292,7 @@ export const ApartmentsRental: React.FC<ApartmentsRentalProps> = ({
         ) : (
           <ApartmentsList
             apartments={filteredApartments}
-            cardCount={cardCount}
+            cardCount={cardCount || 0}
             showBestOffer={false}
             buttonText="Show more"
             buttonTextColor="#222222"

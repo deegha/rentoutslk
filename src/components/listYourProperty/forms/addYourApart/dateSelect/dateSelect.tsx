@@ -25,6 +25,7 @@ export const DateSelect: React.FC<DateSelectProps> = ({
     formState: { errors },
   } = useFormContext();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [inputValue, setInputValue] = useState<string>('');
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
   const calendarRef = useRef<HTMLDivElement>(null);
 
@@ -53,6 +54,41 @@ export const DateSelect: React.FC<DateSelectProps> = ({
     };
   }, [showCalendar]);
 
+  const formatDateInput = (value: string) => {
+    const cleanedValue = value.replace(/\D/g, '');
+    const dayMonthPattern =
+      cleanedValue.slice(0, 2) +
+      (cleanedValue.length > 2 ? '/' : '') +
+      cleanedValue.slice(2, 4) +
+      (cleanedValue.length > 4 ? '/' : '') +
+      cleanedValue.slice(4, 8);
+
+    return dayMonthPattern;
+  };
+
+  const handleManualInputChange = (value: string) => {
+    const formattedValue = formatDateInput(value);
+    setInputValue(formattedValue);
+
+    const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
+    if (formattedValue.match(datePattern)) {
+      const [day, month, year] = formattedValue.split('/');
+      const parsedDate = new Date(Number(year), Number(month) - 1, Number(day));
+
+      if (!isNaN(parsedDate.getTime())) {
+        setSelectedDate(parsedDate);
+        if (onDateChange) {
+          onDateChange(parsedDate.toISOString());
+        }
+      }
+    } else if (!formattedValue) {
+      setSelectedDate(undefined);
+      if (onDateChange) {
+        onDateChange('');
+      }
+    }
+  };
+
   return (
     <div className={styles.datePickerContainer}>
       <label className={styles.label} style={labelStyle}>
@@ -66,13 +102,12 @@ export const DateSelect: React.FC<DateSelectProps> = ({
           <>
             <input
               className={styles.datePicker}
-              value={
-                field.value ? new Date(field.value).toLocaleDateString() : ''
-              }
+              value={inputValue}
               onClick={() => setShowCalendar(true)}
-              readOnly
+              onChange={(e) => handleManualInputChange(e.target.value)}
               placeholder="dd/mm/yyyy"
               required={required}
+              maxLength={10}
             />
             {showCalendar && (
               <div className={styles.calendarOverlay} ref={calendarRef}>
@@ -83,6 +118,7 @@ export const DateSelect: React.FC<DateSelectProps> = ({
                     if (_date) {
                       const formattedDate = _date.toISOString();
                       setSelectedDate(_date);
+                      setInputValue(_date.toLocaleDateString());
                       field.onChange(formattedDate);
                       if (onDateChange) {
                         onDateChange(formattedDate);
