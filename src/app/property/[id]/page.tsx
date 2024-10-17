@@ -38,8 +38,7 @@ const PropertyPage = async ({ params }: { params: { id: string } }) => {
   const categories = [
     { name: 'Rentouts', href: '/' },
     { name: 'Rentals', href: '/rentals' },
-    { name: `${property.address}`, href: '' },
-    { name: `${property.propertyType}`, href: '' },
+    { name: `${property.propertyType}`, href: '/rentals' },
     {
       name: `${property.title} in ${property.place}`,
       href: `/property/${params.id}`,
