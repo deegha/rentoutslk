@@ -37,7 +37,6 @@
   max-width: 800px;
   //   height: 350px;
   //   max-height: 450px;
-  border-radius: 4px;
   overflow: hidden;
   position: relative;
   @include tabletAndBeyondView() {
@@ -80,6 +79,14 @@
       background: rgba(0, 0, 0, 0.8);
     }
   }
+}
+
+.swiperSlide {
+  border-radius: 12px;
+}
+
+.swiperImage {
+  border-radius: 12px;
 }
 
 .textBlock {
