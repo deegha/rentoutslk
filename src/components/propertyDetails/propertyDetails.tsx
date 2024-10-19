@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import 'react-slideshow-image/dist/styles.css';
 import { DescriptionItem } from './descriptionItem';
@@ -34,12 +34,26 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   propertyId,
 }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   const { data: session } = useSession();
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.toString());
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 400);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const {
     title,
@@ -102,12 +116,14 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
               className="mySwiper2"
             >
               {images.map((image, index) => (
-                <SwiperSlide key={index}>
+                <SwiperSlide className={styles.swiperSlide} key={index}>
                   <Image
                     src={image}
-                    width={800}
-                    height={500}
+                    width={isMobile ? 400 : 800}
+                    height={isMobile ? 300 : 500}
                     alt={`Property image ${index + 1}`}
+                    style={{ objectFit: 'cover' }}
+                    className={styles.swiperImage}
                   />
                 </SwiperSlide>
               ))}
@@ -116,7 +132,6 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
               onSwiper={setThumbsSwiper}
               loop={true}
               slidesPerView={2}
-              spaceBetween={10}
               freeMode={true}
               watchSlidesProgress={true}
               modules={[FreeMode, Navigation, Thumbs]}
@@ -124,19 +139,18 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
               breakpoints={{
                 400: {
                   slidesPerView: 2,
-                  spaceBetween: 20,
                 },
                 768: {
-                  slidesPerView: 3,
-                  spaceBetween: 10,
+                  slidesPerView: 2,
                 },
                 1024: {
                   slidesPerView: 3,
-                  spaceBetween: 30,
                 },
                 1440: {
-                  slidesPerView: 3,
-                  spaceBetween: 10,
+                  slidesPerView: 4,
+                },
+                1920: {
+                  slidesPerView: 5,
                 },
               }}
             >
@@ -144,8 +158,8 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
                 <SwiperSlide key={index}>
                   <Image
                     src={image}
-                    width={150}
-                    height={100}
+                    width={isMobile ? 125 : 150}
+                    height={isMobile ? 75 : 100}
                     alt={`Property thumbnail ${index + 1}`}
                     className={styles.thumbImage}
                   />
