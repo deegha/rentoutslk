@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import {
   RentalFilters,
   Breadcrumbs,
@@ -50,7 +50,9 @@ export default function RentalsClient() {
 
   return (
     <>
-      <RentalFilters filters={filters} onFilterChange={handleFilterChange} />
+      <Suspense fallback={<div>Loading filters...</div>}>
+        <RentalFilters filters={filters} onFilterChange={handleFilterChange} />
+      </Suspense>
       <Breadcrumbs categories={categories} />
       <ApartmentsRental filters={filters} onFilterChange={handleFilterChange} />
       <YouCanRent />
