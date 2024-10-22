@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Header,
   Footer,
@@ -10,7 +9,6 @@ import {
   PropertyComponent,
 } from '@/components';
 import { PropertyProps } from '@/interface/property';
-import PageTitle from '@/components/nav/pageTitle';
 import { SearchProvider } from '@/context/searchProvider/searchProvider';
 import ViewTracker from '@/components/viewTracker/viewTracker';
 
@@ -32,7 +30,38 @@ async function fetchProperty(id: string): Promise<PropertyProps> {
   return property;
 }
 
-const PropertyPage = async ({ params }: { params: { id: string } }) => {
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const property = await fetchProperty(params.id);
+
+  return {
+    title: `rentoutslk | ${property.title} in ${property.place}`,
+    description: `${property.title} in ${property.place}`,
+    openGraph: {
+      title: `rentoutslk | ${property.title} in ${property.place}`,
+      description: `${property.title} in ${property.place}`,
+      url: `https://rentoutslk.vercel.app/property/${params.id}`,
+      images: [
+        {
+          url: property.image1 || '/og.png',
+          alt: `${property.title} in ${property.place}`,
+        },
+      ],
+      siteName: 'RentoutSLK',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `rentoutslk | ${property.title} in ${property.place}`,
+      description: `${property.title} in ${property.place}`,
+      images: [property.image1 || '/og.png'],
+    },
+  };
+}
+
+export default async function PropertyPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const property = await fetchProperty(params.id);
 
   const categories = [
@@ -49,10 +78,6 @@ const PropertyPage = async ({ params }: { params: { id: string } }) => {
     <SearchProvider>
       <Header />
       <main>
-        <PageTitle
-          title={`rentoutslk | ${property.title} in ${property.place}`}
-          description={`${property.title} in ${property.place}`}
-        />
         <Breadcrumbs categories={categories} />
         <PropertyDetails property={property} propertyId={params.id} />
         <AboutProperty property={property} />
@@ -64,6 +89,4 @@ const PropertyPage = async ({ params }: { params: { id: string } }) => {
       <Footer />
     </SearchProvider>
   );
-};
-
-export default PropertyPage;
+}

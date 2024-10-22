@@ -107,14 +107,16 @@ export const MyListCard: React.FC<MyListCardProp> = ({
       <div className={styles.contentContainer}>
         <div className={styles.infoContainer}>
           <div className={styles.titleContainer}>
-            <div className={styles.titleLeftContainer}>
+            <Link
+              href={`/property/${id}`}
+              target="_blank"
+              className={styles.titleLeftContainer}
+            >
               <h1 className={styles.title}>
                 {title} in {place}
               </h1>
-              <Link href={`/property/${id}`}>
-                <ArrowLink />
-              </Link>
-            </div>
+              <ArrowLink />
+            </Link>
           </div>
           <div className={styles.info}>
             <div className={styles.infoBlock}>
