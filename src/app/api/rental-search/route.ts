@@ -25,18 +25,18 @@ export async function GET(request: Request) {
         const data = doc.data();
         return {
           address: typeof data.address === 'string' ? data.address : '',
-          place: typeof data.place === 'string' ? data.place : '',
+          city: typeof data.city === 'string' ? data.city : '',
         };
       })
       .filter(
         (result) =>
           result.address.toLowerCase().includes(searchQuery) ||
-          result.place.toLowerCase().includes(searchQuery),
+          result.city.toLowerCase().includes(searchQuery),
       );
 
     return NextResponse.json({
       results: Array.from(new Set(results.map((item) => JSON.stringify(item))))
-        .slice(0, 3)
+        .slice(0, 1)
         .map((item) => JSON.parse(item)),
     });
   } catch (error) {

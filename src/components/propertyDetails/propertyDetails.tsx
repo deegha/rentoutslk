@@ -58,7 +58,7 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   const {
     title,
     address,
-    place,
+    city,
     floorArea,
     numberBedrooms,
     numberBathrooms,
@@ -66,35 +66,12 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
     createdAt,
     propertyType,
     monthlyRent,
-    image1,
-    image2,
-    image3,
-    image4,
-    image5,
-    image6,
-    image7,
-    image8,
-    image9,
+    images = [],
     status,
     ownerId,
   } = property;
 
-  const images = [
-    image1,
-    image2,
-    image3,
-    image4,
-    image5,
-    image6,
-    image7,
-    image8,
-    image9,
-  ].filter(
-    (img): img is string => typeof img === 'string' && img.trim() !== '',
-  );
-
   const formattedDate = formatDate(createdAt);
-
   const isOwner = session?.user?.id === ownerId;
 
   return (
@@ -170,7 +147,7 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
           <div className={styles.textBlock}>
             <div className={styles.titleBlock}>
               <h1 className={styles.title}>
-                {title} in {place}
+                {title} in {city}
               </h1>
               <p className={styles.subtitle}>{address}</p>
             </div>
@@ -254,7 +231,7 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
           </div>
         </div>
         <div className={styles.mapBlock}>
-          <Map address={address} place={place} />
+          <Map address={address} city={city} />
         </div>
       </div>
     </section>

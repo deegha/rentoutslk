@@ -6,27 +6,27 @@ import { useSearchContext } from '@/context/searchProvider/searchProvider';
 import { useRouter } from 'next/navigation';
 
 interface LookingForPropertyProps {
-  place?: string;
+  city?: string;
 }
 
 export const LookingForProperty: React.FC<LookingForPropertyProps> = ({
-  place = 'Colombo',
+  city = 'Colombo',
 }) => {
   const { setSearchQuery: setGlobalSearchQuery } = useSearchContext();
   const router = useRouter();
 
   const handleSearchClick = () => {
-    if (place && place.trim()) {
-      setGlobalSearchQuery(place);
-      router.push(`/rentals?combined=${encodeURIComponent(place)}`);
+    if (city && city.trim()) {
+      setGlobalSearchQuery(city);
+      router.push(`/rentals?combined=${encodeURIComponent(city)}`);
     } else {
-      console.error('Place is not defined or empty');
+      console.error('City is not defined or empty');
     }
   };
 
   return (
     <section className={styles.container}>
-      <p className={styles.text}>Looking for apartment in {place}?</p>
+      <p className={styles.text}>Looking for apartment in {city}?</p>
       <Button
         text="Search"
         bgColor="#222222"

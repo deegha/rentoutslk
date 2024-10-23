@@ -13,7 +13,7 @@ export const RegisterSchema = z.object({
 export const propertyDetailsSchema = z.object({
   address: z.string().min(1, 'Address is required'),
   title: z.string().min(1, 'Title is required'),
-  place: z.string().min(1, 'Place is required'),
+  city: z.string().min(1, 'City is required'),
   propertyType: z.string().min(1, 'Property type is required'),
   rentalPeriod: z.string().min(1, 'Rental period is required'),
   monthlyRent: z.number().min(1, 'Monthly rent is required'),
@@ -38,18 +38,16 @@ export const propertyDetailsSchema = z.object({
 });
 
 export const imageUploadSchema = z.object({
-  image1: z
-    .string()
-    .min(1, 'Image is required')
-    .refine((val) => val.startsWith('data:image'), {
-      message: 'Invalid image format',
-    }),
-  image2: z
-    .string()
-    .min(1, 'Image is required')
-    .refine((val: string) => val.startsWith('data:image'), {
-      message: 'Invalid image format',
-    }),
+  images: z
+    .array(
+      z
+        .string()
+        .min(1, 'Image is required')
+        .refine((val) => val.startsWith('data:image'), {
+          message: 'Invalid image format',
+        }),
+    )
+    .min(1, 'At least one image is required'),
 });
 
 export const questionsFormSchema = z.object({

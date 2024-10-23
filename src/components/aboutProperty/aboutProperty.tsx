@@ -6,7 +6,7 @@ import { PropertyProps } from '@/interface/property';
 
 export const AboutProperty = ({ property }: { property: PropertyProps }) => {
   const {
-    place,
+    city,
     floorArea,
     numberBedrooms,
     propertyType,
@@ -28,7 +28,7 @@ export const AboutProperty = ({ property }: { property: PropertyProps }) => {
         <h3 className={styles.title}>About this property</h3>
         <div className={styles.itemsBlock}>
           <AboutPropertyItem name="Property type:" value={propertyType} />
-          <AboutPropertyItem name="City:" value={place} />
+          <AboutPropertyItem name="City:" value={city} />
           <AboutPropertyItem name="Bedrooms:" value={numberBedrooms} />
           <AboutPropertyItem name="Bathrooms:" value={numberBathrooms} />
           <AboutPropertyItem name="Furniture:" value={furnishing} />
