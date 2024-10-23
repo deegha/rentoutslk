@@ -6,7 +6,7 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const address = searchParams.get('address') || '';
-    const place = searchParams.get('place') || '';
+    const city = searchParams.get('city') || '';
 
     const listingsRef = collection(db, 'listings');
     const querySnapshot = await getDocs(listingsRef);
@@ -21,16 +21,8 @@ export async function GET(req: Request) {
         propertyType: doc.data().propertyType,
         monthlyRent: Number(doc.data().monthlyRent),
         title: doc.data().title,
-        place: doc.data().place,
-        image1: doc.data().image1,
-        image2: doc.data().image2,
-        image3: doc.data().image3,
-        image4: doc.data().image4,
-        image5: doc.data().image5,
-        image6: doc.data().image6,
-        image7: doc.data().image7,
-        image8: doc.data().image8,
-        image9: doc.data().image9,
+        city: doc.data().city,
+        images: doc.data().images || [],
         numberBedrooms: Number(doc.data().numberBedrooms),
         numberBathrooms: Number(doc.data().numberBathrooms),
         furnishing: doc.data().furnishing,
@@ -49,12 +41,12 @@ export async function GET(req: Request) {
         const matchesAddress = listing.address
           .toLowerCase()
           .includes(address.toLowerCase());
-        const matchesPlace = listing.place
+        const matchesCity = listing.city
           .toLowerCase()
-          .includes(place.toLowerCase());
-        return (matchesAddress || matchesPlace) && listing.active === true;
+          .includes(city.toLowerCase());
+        return (matchesAddress || matchesCity) && listing.active === true;
       })
-      .sort((a, b) => b.views - a.views); // Сортируем по количеству просмотров
+      .sort((a, b) => b.views - a.views);
 
     return NextResponse.json(listings, { status: 200 });
   } catch (error) {

@@ -89,7 +89,7 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
       maxBathrooms: tempBathrooms.max,
       availableFrom: tempAvailableFrom,
       address: data.combined,
-      place: data.combined,
+      city: data.combined,
     };
     onFilterChange(adjustedFilters);
     setMobileFilters(false);

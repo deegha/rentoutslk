@@ -13,57 +13,49 @@ const toBase64 = (file: File) =>
   });
 
 export const ImageUploadSection: React.FC = () => {
-  const {
-    register,
-    formState: { errors },
-    setValue,
-  } = useFormContext();
-
-  const [imagePreviews, setImagePreviews] = useState<{ [key: string]: string }>(
-    {},
-  );
-  const [featuredImage, setFeaturedImage] = useState<string | null>('image1');
-
-  const setPreview = (imageKey: string, value: string) => {
-    setImagePreviews((prev) => ({
-      ...prev,
-      [imageKey]: value,
-    }));
-  };
+  const { register, setValue } = useFormContext();
+  const [images, setImages] = useState<string[]>([]);
 
   const handleImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
-    imageKey: string,
+    imageIndex: number,
   ) => {
     const file = event.target.files?.[0];
     if (file) {
       const base64String = await toBase64(file);
-      setPreview(imageKey, base64String);
 
-      setValue(imageKey, base64String);
+      setImages((prevImages) => {
+        const newImages = [...prevImages];
+        newImages[imageIndex] = base64String;
+        setValue('images', newImages);
+        return newImages;
+      });
     } else {
       console.log('Input not instance of File');
     }
   };
 
-  const handleFeatureClick = (imageKey: string) => {
-    if (imageKey === featuredImage) return;
-
-    setImagePreviews((prev) => {
-      const newPreviews = { ...prev };
-      const featuredImagePreview = newPreviews['image1'];
-      newPreviews['image1'] = newPreviews[imageKey];
-      newPreviews[imageKey] = featuredImagePreview;
-
-      return newPreviews;
+  const handleDeleteImage = (imageIndex: number) => {
+    setImages((prevImages) => {
+      const newImages = [...prevImages];
+      newImages.splice(imageIndex, 1);
+      setValue('images', newImages);
+      return newImages;
     });
+  };
 
-    const currentFeaturedBase64 = imagePreviews['image1'];
-    const newFeaturedBase64 = imagePreviews[imageKey];
-    setValue('image1', newFeaturedBase64);
-    setValue(imageKey, currentFeaturedBase64);
+  const handleFeatureClick = (imageIndex: number) => {
+    if (imageIndex === 0) return;
 
-    setFeaturedImage('image1');
+    setImages((prevImages) => {
+      const newImages = [...prevImages];
+      [newImages[0], newImages[imageIndex]] = [
+        newImages[imageIndex],
+        newImages[0],
+      ];
+      setValue('images', newImages);
+      return newImages;
+    });
   };
 
   return (
@@ -145,18 +137,16 @@ export const ImageUploadSection: React.FC = () => {
       </div>
       <div className={styles.imgList}>
         {Array.from({ length: 9 }, (_, index) => {
-          const imageKey = `image${index + 1}`;
           return (
             <ImageUploadLabel
-              key={imageKey}
-              imageKey={imageKey}
-              preview={imagePreviews[imageKey] || ''}
+              key={index}
+              imageIndex={index}
+              preview={images[index] || ''}
               register={register}
               onChange={handleImageChange}
-              setPreview={setPreview}
-              isFeatured={imageKey === featuredImage}
+              onDelete={handleDeleteImage}
+              isFeatured={index === 0}
               onFeatureClick={handleFeatureClick}
-              error={errors[imageKey]?.message?.toString()}
             />
           );
         })}

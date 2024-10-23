@@ -12,7 +12,7 @@ export default function RentalsClient() {
   const [filters, setFilters] = useState({
     address: '',
     propertyType: '',
-    place: '',
+    city: '',
     maxRent: '',
     monthlyRent: 0,
     minBedrooms: 1,

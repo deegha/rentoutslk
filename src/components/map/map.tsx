@@ -6,7 +6,7 @@ const loader = new Loader({
   version: 'weekly',
 });
 
-const Map = ({ address, place }: { address: string; place?: string }) => {
+const Map = ({ address, city }: { address: string; city?: string }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const Map = ({ address, place }: { address: string; place?: string }) => {
 
         const geocoder = new window.google.maps.Geocoder();
         geocoder.geocode(
-          { address: `${address}, ${place}` },
+          { address: `${address}, ${city}` },
           (results, status) => {
             if (status === 'OK' && results && results[0]) {
               map.setCenter(results[0].geometry.location);
@@ -43,7 +43,7 @@ const Map = ({ address, place }: { address: string; place?: string }) => {
         );
       }
     });
-  }, [address, place]);
+  }, [address, city]);
 
   return <div ref={mapRef} style={{ width: '100%', height: '400px' }} />;
 };

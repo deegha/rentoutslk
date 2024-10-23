@@ -15,22 +15,14 @@ interface FavouriteCardProps {
   status: string;
   id: string;
   address: string;
-  place: string;
+  city: string;
   availableFrom?: string;
   deposit?: number;
   floorArea: number;
   propertyType: string;
   monthlyRent: number;
   title: string;
-  image1?: string;
-  image2?: string;
-  image3?: string;
-  image4?: string;
-  image5?: string;
-  image6?: string;
-  image7?: string;
-  image8?: string;
-  image9?: string;
+  images: string[];
   numberBedrooms: number;
   numberBathrooms: number;
   createdAt: { seconds: number; nanoseconds: number };
@@ -49,37 +41,15 @@ export const MyFavouriteCard: React.FC<FavouriteCardProp> = ({
     address,
     id,
     title,
-    place,
+    city,
     propertyType,
     monthlyRent,
     floorArea,
     numberBedrooms,
-    image1,
-    image2,
-    image3,
-    image4,
-    image5,
-    image6,
-    image7,
-    image8,
-    image9,
+    images,
     active,
     status,
   } = listing;
-
-  const images = [
-    image1,
-    image2,
-    image3,
-    image4,
-    image5,
-    image6,
-    image7,
-    image8,
-    image9,
-  ].filter(
-    (img): img is string => typeof img === 'string' && img.trim() !== '',
-  );
 
   const PrevArrow = (
     <div className="prevArrowBlock">
@@ -151,7 +121,7 @@ export const MyFavouriteCard: React.FC<FavouriteCardProp> = ({
         <a href={`/property/${id}`} className={styles.cardDescBlock}>
           <p className={styles.cardPrice}>{monthlyRent} Re</p>
           <p className={styles.cardTitle}>
-            {title} in {place}
+            {title} in {city}
           </p>
           <p className={styles.cardLocation}>{address}</p>
         </a>

@@ -25,8 +25,7 @@ export const MyListCard: React.FC<MyListCardProp> = ({
   onStatusChange,
   isInactive,
 }) => {
-  const { title, place, image1, createdAt, views, active, id, userId } =
-    listing;
+  const { title, city, images, createdAt, views, active, id, userId } = listing; // Изменение: используем массив images
   const [isActive, setIsActive] = useState(active);
   const [savedUsersCount, setSavedUsersCount] = useState(0);
 
@@ -96,13 +95,17 @@ export const MyListCard: React.FC<MyListCardProp> = ({
       className={`${styles.mainContainer} ${isInactive ? styles.inActiveContainer : ''}`}
     >
       <div className={styles.imageContainer}>
-        <Image
-          className={styles.image}
-          src={`${image1}`}
-          alt={title}
-          width={1920}
-          height={1080}
-        />
+        {images.length > 0 ? (
+          <Image
+            className={styles.image}
+            src={images[0]} // Изменение: используем первый элемент из массива images
+            alt={title}
+            width={1920}
+            height={1080}
+          />
+        ) : (
+          <p>No image available</p> // Можем добавить сообщение, если изображений нет
+        )}
       </div>
       <div className={styles.contentContainer}>
         <div className={styles.infoContainer}>
@@ -113,7 +116,7 @@ export const MyListCard: React.FC<MyListCardProp> = ({
               className={styles.titleLeftContainer}
             >
               <h1 className={styles.title}>
-                {title} in {place}
+                {title} in {city}
               </h1>
               <ArrowLink />
             </Link>

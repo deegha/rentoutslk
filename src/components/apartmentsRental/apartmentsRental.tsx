@@ -14,7 +14,7 @@ const getInitialCardCount = (width: number) => {
 interface ApartmentsRentalProps {
   filters: {
     address: string;
-    place: string;
+    city: string;
     monthlyRent: number;
     propertyType: string;
     maxRent: string;
@@ -39,15 +39,14 @@ interface ApartmentsRentalProps {
 interface Apartment {
   id: string;
   address: string;
-  place: string;
+  city: string;
   availableFrom: string;
   deposit: number;
   floorArea: number;
   propertyType: string;
   monthlyRent: number;
   title: string;
-  image1: string;
-  image2: string;
+  images: string[];
   numberBedrooms: number;
   numberBathrooms: number;
   furnishing: string;
@@ -74,7 +73,7 @@ export const ApartmentsRental: React.FC<ApartmentsRentalProps> = ({
     (data: Apartment[]) => {
       let filteredData = data;
 
-      if (filters.address || filters.place) {
+      if (filters.address || filters.city) {
         filteredData = filteredData.filter(
           (apartment) =>
             (filters.address &&
@@ -82,11 +81,11 @@ export const ApartmentsRental: React.FC<ApartmentsRentalProps> = ({
               apartment.address
                 .toLowerCase()
                 .includes(filters.address.toLowerCase())) ||
-            (filters.place &&
-              apartment.place &&
-              apartment.place
+            (filters.city &&
+              apartment.city &&
+              apartment.city
                 .toLowerCase()
-                .includes(filters.place.toLowerCase())),
+                .includes(filters.city.toLowerCase())),
         );
       }
 
@@ -170,7 +169,7 @@ export const ApartmentsRental: React.FC<ApartmentsRentalProps> = ({
             (apartment: Apartment) => ({
               ...apartment,
               address: apartment.address || '',
-              place: apartment.place || '',
+              city: apartment.city || '',
             }),
           );
           setApartments(apartmentsWithDefaultValues);
@@ -268,12 +267,12 @@ export const ApartmentsRental: React.FC<ApartmentsRentalProps> = ({
     <section className={styles.container}>
       <div className={styles.wrapper}>
         <div className={styles.availableRents}>
-          {filters.address || filters.place ? (
+          {filters.address || filters.city ? (
             <p>
               <span className={styles.availableCount}>
                 {filteredApartments.length}
               </span>{' '}
-              available rentals in {filters.address || filters.place}
+              available rentals in {filters.address || filters.city}
             </p>
           ) : (
             <p>

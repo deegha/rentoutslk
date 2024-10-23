@@ -23,8 +23,8 @@ function generateRandomDigits(length: number): string {
     .slice(2, 2 + length);
 }
 
-async function createUniqueSlug(title: string, place: string) {
-  const baseSlug = slugify(`${title}-${place}`, { lower: true, strict: true });
+async function createUniqueSlug(title: string, city: string) {
+  const baseSlug = slugify(`${title}-${city}`, { lower: true, strict: true });
   let uniqueSlug = baseSlug;
   let isUnique = false;
 
@@ -47,39 +47,28 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
     const userId = data.userId;
 
-    const slug = await createUniqueSlug(data.title, data.place);
+    const slug = await createUniqueSlug(data.title, data.city);
 
-    const imageKeys = Object.keys(data).filter((key) =>
-      key.startsWith('image'),
-    );
-
-    const uploadPromises = imageKeys.map(async (imageKey) => {
-      const base64String = data[imageKey];
-
-      if (
-        typeof base64String === 'string' &&
-        base64String.startsWith('data:image')
-      ) {
+    const images = data.images || [];
+    const uploadPromises = images.map(async (imageBase64: string) => {
+      if (imageBase64.startsWith('data:image')) {
         const uploadResponse = await cloudinary.v2.uploader.upload(
-          base64String,
+          imageBase64,
           {
             upload_preset: process.env.CLOUDINARY_UPLOAD_PRESET,
           },
         );
-        return { [imageKey]: uploadResponse.secure_url };
+        return uploadResponse.secure_url;
       }
       return null;
     });
 
     const uploadedImages = await Promise.all(uploadPromises);
-    const imageUrls = uploadedImages.reduce(
-      (acc, curr) => ({ ...acc, ...curr }),
-      {},
-    );
+    const filteredImageUrls = uploadedImages.filter(Boolean);
 
     const listingData = {
       ...data,
-      ...imageUrls,
+      images: filteredImageUrls,
       status: 'not verified',
       active: true,
       createdAt: serverTimestamp(),

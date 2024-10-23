@@ -84,10 +84,10 @@ export const AddMoreDetails = () => {
             required
           />
           <InputApart
-            {...register('place')}
+            {...register('city')}
             placeholder={'e. g. Havelock city'}
-            label={'Place'}
-            name={'place'}
+            label={'City'}
+            name={'city'}
             classNameContainer={styles.apartTitleContainer}
             required
           />
