@@ -1,14 +1,19 @@
 @import '@/styles/_mixins.scss';
 @import '@/styles/_colors.scss';
 
-.fixedBlock {
+.container {
+  min-height: 64px;
+
+  @include tabletAndBeyondView() {
+    min-height: 126px;
+  }
+}
+
+.fixedBlock,
+.relativeBlock {
   display: flex;
-  position: fixed;
   align-items: center;
   justify-content: center;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
   width: 100%;
   max-width: 1920px;
   height: 64px;
@@ -21,6 +26,18 @@
     padding: 0 110px;
     height: 126px;
   }
+}
+
+.fixedBlock {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.relativeBlock {
+  position: relative;
+  transform: translateX(0);
 }
 
 .fixedContainer {
@@ -53,6 +70,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 28px;
+
   @include tabletAndBeyondView() {
     width: 350px;
   }
@@ -62,6 +80,7 @@
   color: $font-color-one;
   font-size: 16px;
   font-weight: 600;
+
   @include tabletAndBeyondView() {
     font-size: 24px;
     font-weight: 600;

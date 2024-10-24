@@ -17,6 +17,8 @@ export interface PropertyProps {
   id: string;
   userId: string;
   furnishing: string;
+  firstQuestion?: string;
+  secondQuestion: string;
   customQuestion?: string;
   status: string;
   ownerId: string;
