@@ -9,11 +9,11 @@
   min-width: 200px;
 
   @include tabletAndBeyondView() {
-    max-width: 200px;
+    max-width: 400px;
   }
 
   @include desktopAndBeyondView() {
-    max-width: 300px;
+    max-width: 400px;
   }
   @include largeDesktopAndBeyondView() {
     max-width: 500px;

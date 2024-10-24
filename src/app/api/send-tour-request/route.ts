@@ -126,7 +126,7 @@ export async function POST(req: NextRequest) {
         <p><strong>First Question:</strong> ${firstQuestion || 'N/A'}</p>
         <p><strong>Second Question:</strong> ${secondQuestion || 'N/A'}</p>
         <p><strong>Custom Question:</strong> ${customQuestion || 'N/A'}</p>
-        <p><strong>Property ID:</strong> ${propertyId}</p>
+        <p><strong>Property:</strong> <a href="https://rentoutslk.vercel.app/${propertyId}">https://rentoutslk.vercel.app/${propertyId}</a> </p>
       `,
     };
 

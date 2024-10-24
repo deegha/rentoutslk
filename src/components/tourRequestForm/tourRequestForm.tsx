@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useForm, FormProvider, useFormContext } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { BeatLoader } from 'react-spinners';
 
 import styles from './tourRequestForm.module.scss';
 
@@ -17,7 +18,6 @@ import { PropertyProps } from '@/interface/property';
 interface TourRequestProps {
   property: PropertyProps;
   handleCloseModal: () => void;
-
   propertyId: string;
   ownerId: string;
 }
@@ -136,11 +136,14 @@ const FormContent: React.FC<FormContentProps> = ({
   } = useFormContext();
   const { firstQuestion, secondQuestion, customQuestion } = property;
   const [step, setStep] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const nextStep = () => setStep((prev) => prev + 1);
 
   const submitForm = async (data: any) => {
+    setIsSubmitting(true);
     await onSubmit(data);
+    setIsSubmitting(false);
     nextStep();
   };
 
@@ -224,12 +227,16 @@ const FormContent: React.FC<FormContentProps> = ({
               register={register}
             />
             <div className={styles.btnBlock}>
-              <Button
-                text="Send request"
-                padding="14.5px 28px"
-                fontWeight="600"
-                type="submit"
-              />
+              {isSubmitting ? (
+                <BeatLoader color="#DE225C" />
+              ) : (
+                <Button
+                  text="Send request"
+                  padding="14.5px 28px"
+                  fontWeight="600"
+                  type="submit"
+                />
+              )}
             </div>
             <div className={styles.privacyBlock}>
               <p className={styles.privacyText}>
