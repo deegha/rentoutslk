@@ -83,8 +83,13 @@ export default async function PropertyPage({
         <PropertyDetails property={property} propertyId={params.id} />
         <AboutProperty property={property} />
         <TrendingProperties address={property.address} city={property.city} />
+        <PropertyComponent
+          ownerId={property.ownerId}
+          property={property}
+          propertyId={params.id}
+        />
         <LookingForProperty city={property.city} />
-        <PropertyComponent ownerId={property.ownerId} propertyId={params.id} />
+
         <ViewTracker propertyId={params.id} />
       </main>
       <Footer />

@@ -1,18 +1,23 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { PropertyFixedBlock } from '../propertyFixedBlock';
 import { TourRequestForm } from '../tourRequestForm';
+import { PropertyProps } from '@/interface/property';
+import styles from '../propertyFixedBlock/propertyFixedBlock.module.scss';
 
 interface PropertyComponentProps {
+  property: PropertyProps;
   propertyId: string;
   ownerId: string;
 }
 
 export const PropertyComponent: React.FC<PropertyComponentProps> = ({
+  property,
   propertyId,
   ownerId,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const targetRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (isModalOpen) {
@@ -37,8 +42,12 @@ export const PropertyComponent: React.FC<PropertyComponentProps> = ({
   };
 
   return (
-    <div>
-      <PropertyFixedBlock setIsModalOpen={setIsModalOpen} />
+    <div className={styles.container} ref={targetRef}>
+      <PropertyFixedBlock
+        property={property}
+        setIsModalOpen={setIsModalOpen}
+        targetRef={targetRef}
+      />
       {isModalOpen && (
         <div
           style={{
@@ -55,6 +64,7 @@ export const PropertyComponent: React.FC<PropertyComponentProps> = ({
             handleCloseModal={handleCloseModal}
             propertyId={propertyId}
             ownerId={ownerId}
+            property={property}
           />
         </div>
       )}

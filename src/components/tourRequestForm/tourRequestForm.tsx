@@ -12,9 +12,12 @@ import { CustomInput } from '../customInput';
 import { TourTextarea } from './tourTextarea/tourTextarea';
 import { Button } from '../button';
 import { tourRequestSchema } from '@/schema';
+import { PropertyProps } from '@/interface/property';
 
 interface TourRequestProps {
+  property: PropertyProps;
   handleCloseModal: () => void;
+
   propertyId: string;
   ownerId: string;
 }
@@ -23,17 +26,18 @@ export const TourRequestForm: React.FC<TourRequestProps> = ({
   handleCloseModal,
   propertyId,
   ownerId,
+  property,
 }) => {
   const { data: session } = useSession();
   const methods = useForm({
     resolver: zodResolver(tourRequestSchema),
     defaultValues: {
-      name: session?.user?.name || '',
+      name: '',
       email: session?.user?.email || '',
       phone: '',
-      monthlyHousehold: '',
-      howLongStay: '',
-      bidHigher: '',
+      firstQuestion: '',
+      secondQuestion: '',
+      customQuestion: '',
       message: '',
     },
   });
@@ -66,7 +70,7 @@ export const TourRequestForm: React.FC<TourRequestProps> = ({
       if (response.ok) {
         console.log('Request sent successfully');
       } else {
-        console.error('Failed to send request111');
+        console.error('Failed to send request');
       }
     } catch (error) {
       console.error('Error submitting tour request:', error);
@@ -78,6 +82,7 @@ export const TourRequestForm: React.FC<TourRequestProps> = ({
       {session ? (
         <FormProvider {...methods}>
           <FormContent
+            property={property}
             handleCloseModal={handleCloseModal}
             onSubmit={onSubmit}
           />
@@ -113,6 +118,7 @@ export const TourRequestForm: React.FC<TourRequestProps> = ({
 };
 
 interface FormContentProps {
+  property: PropertyProps;
   handleCloseModal: () => void;
   onSubmit: (_data: any) => Promise<void>;
 }
@@ -120,6 +126,7 @@ interface FormContentProps {
 const FormContent: React.FC<FormContentProps> = ({
   handleCloseModal,
   onSubmit,
+  property,
 }) => {
   const {
     register,
@@ -127,7 +134,7 @@ const FormContent: React.FC<FormContentProps> = ({
     formState: { errors },
     handleSubmit,
   } = useFormContext();
-
+  const { firstQuestion, secondQuestion, customQuestion } = property;
   const [step, setStep] = useState(0);
 
   const nextStep = () => setStep((prev) => prev + 1);
@@ -180,27 +187,35 @@ const FormContent: React.FC<FormContentProps> = ({
               Answer these optional questions to get owner to know you better
               and increase your chances to be selected.
             </p>
-            <TourTextarea
-              name="monthlyHousehold"
-              label="What is your monthly household income after taxes?"
-              maxLength={80}
-              placeholder="|Type here"
-              register={register}
-            />
-            <TourTextarea
-              name="howLongStay"
-              label="How long are you planning to stay?"
-              maxLength={80}
-              placeholder="|Type here"
-              register={register}
-            />
-            <TourTextarea
-              name="bidHigher"
-              label="Can you bid a higher rent?"
-              maxLength={80}
-              placeholder="|Type here"
-              register={register}
-            />
+            {firstQuestion &&
+              firstQuestion !== 'I do not want to ask or do it later' && (
+                <TourTextarea
+                  name="firstQuestion"
+                  label={`${firstQuestion}`}
+                  maxLength={80}
+                  placeholder="|Type here"
+                  register={register}
+                />
+              )}
+            {secondQuestion &&
+              secondQuestion !== 'I do not want to ask or do it later' && (
+                <TourTextarea
+                  name="secondQuestion"
+                  label={`${secondQuestion}`}
+                  maxLength={80}
+                  placeholder="|Type here"
+                  register={register}
+                />
+              )}
+            {customQuestion && (
+              <TourTextarea
+                name="customQuestion"
+                label={`${customQuestion}`}
+                maxLength={80}
+                placeholder="|Type here"
+                register={register}
+              />
+            )}
             <TourTextarea
               name="message"
               label="Your message (optional)"

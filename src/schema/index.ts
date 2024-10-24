@@ -42,17 +42,17 @@ export const imageUploadSchema = z.object({
     .array(
       z
         .string()
-        .min(1, 'Image is required')
+        .min(2, 'Image is required')
         .refine((val) => val.startsWith('data:image'), {
           message: 'Invalid image format',
         }),
     )
-    .min(1, 'At least one image is required'),
+    .min(2, 'At least two images are required'),
 });
 
 export const questionsFormSchema = z.object({
-  question1: z.string().optional(),
-  question2: z.string().optional(),
+  firstQuestion: z.string().optional(),
+  secondQuestion: z.string().optional(),
   customQuestion: z.string().optional(),
 });
 
@@ -66,9 +66,9 @@ export const tourRequestSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   email: z.string().email('Invalid email address').min(1, 'Email is required'),
   phone: z.string().min(1, 'Phone number is required'),
-  monthlyHousehold: z.string().optional(),
-  howLongStay: z.string().optional(),
-  bidHigher: z.string().optional(),
+  firstQuestion: z.string().optional(),
+  secondQuestion: z.string().optional(),
+  customQuestion: z.string().optional(),
   message: z.string().optional(),
 });
 export type TourRequestFormData = z.infer<typeof tourRequestSchema>;

@@ -11,6 +11,13 @@
   @include tabletAndBeyondView() {
     max-width: 200px;
   }
+
+  @include desktopAndBeyondView() {
+    max-width: 300px;
+  }
+  @include largeDesktopAndBeyondView() {
+    max-width: 500px;
+  }
 }
 
 .label {
