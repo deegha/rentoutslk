@@ -1,10 +1,28 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import Image from 'next/image';
-
 import styles from './youCanRent.module.scss';
 import { Button } from '../button';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import MultiStepForm from '../auth/multistep/multistep-form';
 
 export const YouCanRent = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleListPropertyClick = () => {
+    if (session) {
+      router.push('/add-your-apartment');
+    } else {
+      setIsModalOpen(true);
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   return (
     <section className={styles.container}>
       <h2 className={styles.title}>
@@ -64,8 +82,9 @@ export const YouCanRent = () => {
         fontWeight="600"
         padding="14.5px 28px"
         borderRadius="4px"
-        link="/add-your-apartment"
+        onClick={handleListPropertyClick}
       />
+      <MultiStepForm isOpen={isModalOpen} onRequestClose={closeModal} />
     </section>
   );
 };
