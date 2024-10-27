@@ -4,10 +4,8 @@ import {
   collection,
   addDoc,
   serverTimestamp,
-  Timestamp,
   updateDoc,
   doc,
-  arrayUnion,
   getDoc,
 } from 'firebase/firestore';
 import sgMail from '@sendgrid/mail';
@@ -74,36 +72,36 @@ export async function POST(req: NextRequest) {
 
     const tourRequestId = tourRequestRef.id;
 
-    const timestamp = Timestamp.now();
+    // const timestamp = Timestamp.now();
 
     await updateDoc(ownerRef, {
-      receivedTourRequests: arrayUnion({
+      receivedTourRequests: {
         tourRequestId,
-        propertyId,
-        userId,
-        name,
-        email,
-        phone,
-        message,
-        firstQuestion,
-        secondQuestion,
-        customQuestion,
-        createdAt: timestamp,
-      }),
+        // propertyId,
+        // userId,
+        // name,
+        // email,
+        // phone,
+        // message,
+        // firstQuestion,
+        // secondQuestion,
+        // customQuestion,
+        // createdAt: timestamp,
+      },
     });
 
     const userRef = doc(db, 'users', userId);
     await updateDoc(userRef, {
-      sentTourRequests: arrayUnion({
+      sentTourRequests: {
         tourRequestId,
-        propertyId,
-        ownerId,
-        message,
-        firstQuestion,
-        secondQuestion,
-        customQuestion,
-        createdAt: timestamp,
-      }),
+        // propertyId,
+        // ownerId,
+        // message,
+        // firstQuestion,
+        // secondQuestion,
+        // customQuestion,
+        // createdAt: timestamp,
+      },
     });
 
     const ownerEmail = ownerData.email;

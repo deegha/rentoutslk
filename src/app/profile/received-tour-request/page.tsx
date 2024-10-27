@@ -4,6 +4,7 @@ import { auth } from '@/auth';
 // import { InAuthed } from '@/components';
 import { Header, RouterProfile, Footer, InAuthed } from '@/components';
 import { CustomSession } from '@/interface/session';
+import ReceivedTourRequestSection from '@/components/profile/receivedTourRequest/RecievedTourRequestSection';
 
 export async function generateMetadata() {
   return {
@@ -23,27 +24,27 @@ export async function generateMetadata() {
   };
 }
 
-// const fetchUserData = async (userId: string, idToken: string) => {
-//   try {
-//     const response = await fetch(
-//       `${process.env.NEXTAUTH_URL}/api/get-user?id=${userId}`,
-//       {
-//         headers: {
-//           'Content-Type': 'application/json',
-//           Authorization: `Bearer ${idToken}`,
-//         },
-//       },
-//     );
+const fetchUserData = async (userId: string, idToken: string) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXTAUTH_URL}/api/get-user?id=${userId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
 
-//     if (!response.ok) {
-//       throw new Error('Failed to fetch user data');
-//     }
+    if (!response.ok) {
+      throw new Error('Failed to fetch user data');
+    }
 
-//     return await response.json();
-//   } catch (error) {
-//     throw new Error('Error fetching user data');
-//   }
-// };
+    return await response.json();
+  } catch (error) {
+    throw new Error('Error fetching user data');
+  }
+};
 
 const TourRequest: React.FC = async () => {
   const session = (await auth()) as CustomSession | null;
@@ -64,20 +65,25 @@ const TourRequest: React.FC = async () => {
   }
 
   try {
-    // const userData = await fetchUserData(session.user.id, session.user.idToken);
+    const userData = await fetchUserData(session.user.id, session.user.idToken);
 
     return (
       <>
         <Header />
-        <RouterProfile isAdmin={session.user.admin} />
-        <div
+        <RouterProfile isAdmin={userData.admin} />
+        <section
           style={{
             backgroundColor: '#F7F7F7',
             width: '100%',
             minHeight: '70vh',
             zIndex: 20,
           }}
-        ></div>
+        >
+          <ReceivedTourRequestSection
+            _userData={userData}
+            idToken={session.user.idToken}
+          />
+        </section>
         <Footer />
       </>
     );

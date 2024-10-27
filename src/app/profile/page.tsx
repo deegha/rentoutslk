@@ -85,7 +85,7 @@ const ProfilePage = async () => {
         <SearchProvider>
           <Header />
 
-          <RouterProfile isAdmin={session.user.admin} />
+          <RouterProfile isAdmin={userData.admin} />
           <section
             style={{
               backgroundColor: '#F7F7F7',

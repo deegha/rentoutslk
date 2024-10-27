@@ -68,7 +68,7 @@ const CheckListingsPage = async () => {
     return (
       <>
         <Header />
-        <RouterProfile isAdmin={session.user.admin} />
+        <RouterProfile isAdmin={userData.admin} />
         <div
           style={{
             backgroundColor: '#F7F7F7',
