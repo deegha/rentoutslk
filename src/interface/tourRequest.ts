@@ -1,13 +1,20 @@
 export interface TourRequestProps {
-  createdAt: { seconds: number; nanoseconds: number };
-  customQuestion: string;
-  email: string;
-  firstQuestion: string;
-  message: string;
+  id?: string;
   name: string;
-  ownerId: string;
+  email: string;
   phone: string;
-  propertyId: string;
+  title: string;
+  city: string;
+  firstQuestion: string;
   secondQuestion: string;
+  customQuestion: string;
+  firstAnswer: string;
+  secondAnswer: string;
+  customAnswer: string;
+  message: string;
   userId: string;
+  status: 'accepted' | 'declined' | 'pending' | 'deleted';
+  createdAt: { seconds: number; nanoseconds: number };
+  ownerId: string;
+  propertyId: string;
 }

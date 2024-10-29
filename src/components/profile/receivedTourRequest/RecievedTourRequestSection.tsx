@@ -2,24 +2,23 @@
 
 import React, { useEffect, useState } from 'react';
 import styles from './receivedTourRequest.module.scss';
-// import BeatLoader from 'react-spinners/BeatLoader';
+import BeatLoader from 'react-spinners/BeatLoader';
 import { TourRequestProps } from '@/interface/tourRequest';
+import RecievedTourRequestCard from './tourRequestCard/RecievedTourRequestCard';
 
-interface ReceivedTourRequestProps {
+interface ReceivedTourRequestSectionProps {
   _userData: any;
   idToken: string;
 }
 
 type ActiveLink = 'All requests' | 'Accepted' | 'Declined';
 
-const ReceivedTourRequestSection: React.FC<ReceivedTourRequestProps> = ({
+const ReceivedTourRequestSection: React.FC<ReceivedTourRequestSectionProps> = ({
   _userData,
   idToken,
 }) => {
-  const [recievedTourRequestsState, setRecievedTourRequestsState] = useState<
-    TourRequestProps[]
-  >([]);
-  // const [loading, setLoading] = useState(true);
+  const [requests, setRequests] = useState<TourRequestProps[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeLink, setActiveLink] = useState<ActiveLink>('All requests');
 
   useEffect(() => {
@@ -36,12 +35,11 @@ const ReceivedTourRequestSection: React.FC<ReceivedTourRequestProps> = ({
         );
 
         if (!response.ok) {
-          throw new Error('Failed to fetch listings');
+          throw new Error('Failed to fetch tour requests');
         }
 
         const data = await response.json();
-
-        setRecievedTourRequestsState(data.recievedTourRequests || []);
+        setRequests(data.receivedTourRequests || []);
       } finally {
         setLoading(false);
       }
@@ -50,36 +48,65 @@ const ReceivedTourRequestSection: React.FC<ReceivedTourRequestProps> = ({
     fetchRecievedTourRequests();
   }, [idToken]);
 
-  console.log('recievedTourRequestsState', recievedTourRequestsState);
+  const filteredTourRequests = requests.filter((request) => {
+    if (activeLink === 'All requests') return true;
+    if (activeLink === 'Accepted') return request.status === 'accepted';
+    if (activeLink === 'Declined') return request.status === 'declined';
+    return false;
+  });
+
+  const handleDeleteRequest = (requestId: string) => {
+    setRequests((prevRequests) =>
+      prevRequests.filter((request) => request.id !== requestId),
+    );
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.containerProfile}>
         <div className={styles.cardHeader}>
-          <h2 className={styles.titleHeader}>Recieved tour requests</h2>
-          {recievedTourRequestsState.length > 0 && (
+          <h2 className={styles.titleHeader}>Received tour requests</h2>
+          {requests.length > 0 && (
             <div className={styles.typeOfListings}>
               <p
                 className={`${activeLink === 'All requests' ? styles.activeLink : styles.link}`}
                 onClick={() => setActiveLink('All requests')}
               >
-                All listings
+                All requests
               </p>
               <p
                 className={`${activeLink === 'Accepted' ? styles.activeLink : styles.link}`}
                 onClick={() => setActiveLink('Accepted')}
               >
-                Active
+                Accepted
               </p>
               <p
                 className={`${activeLink === 'Declined' ? styles.activeLink : styles.link}`}
                 onClick={() => setActiveLink('Declined')}
               >
-                Inactive
+                Declined
               </p>
             </div>
           )}
         </div>
+        {loading ? (
+          <div style={{ textAlign: 'center', marginTop: '25vh' }}>
+            <BeatLoader color="#DE225C" />
+          </div>
+        ) : filteredTourRequests && filteredTourRequests.length > 0 ? (
+          <div className={styles.tourRequestsList}>
+            {filteredTourRequests.map((tourRequest) => (
+              <RecievedTourRequestCard
+                key={tourRequest.id}
+                tourRequest={tourRequest}
+                idToken={idToken}
+                onDelete={handleDeleteRequest}
+              />
+            ))}
+          </div>
+        ) : (
+          <p>No tour requests found for {activeLink.toLowerCase()}.</p>
+        )}
       </div>
     </div>
   );

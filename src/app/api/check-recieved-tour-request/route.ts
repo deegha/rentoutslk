@@ -5,8 +5,8 @@ import {
   query,
   where,
   getDocs,
-  doc,
   getDoc,
+  doc,
 } from 'firebase/firestore';
 import { verifyIdToken } from '@/firebase/firebaseAdmin';
 
@@ -30,26 +30,27 @@ export async function GET(req: Request) {
 
     const userDoc = querySnapshot.docs[0];
     const userData = userDoc.data();
-    const userTourRequestsIds =
-      userData?.receivedTourRequests?.tourRequestId || []; // Ожидаем массив
-    const recievedTourRequests = [];
+    const userTourRequestsArray = userData?.receivedTourRequests || [];
+    const receivedTourRequests = [];
 
-    // Проверяем, что userTourRequestsIds это массив
-    if (Array.isArray(userTourRequestsIds) && userTourRequestsIds.length > 0) {
-      for (const tourRequestId of userTourRequestsIds) {
+    if (
+      Array.isArray(userTourRequestsArray) &&
+      userTourRequestsArray.length > 0
+    ) {
+      for (const tourRequestId of userTourRequestsArray) {
         const tourRequestDocRef = doc(db, 'tourRequests', tourRequestId);
         const tourRequestDoc = await getDoc(tourRequestDocRef);
 
         if (tourRequestDoc.exists()) {
           const listingData = tourRequestDoc.data();
-          recievedTourRequests.push({ id: tourRequestDoc.id, ...listingData });
+          receivedTourRequests.push({ id: tourRequestDoc.id, ...listingData });
         }
       }
     }
 
-    return NextResponse.json({ recievedTourRequests }, { status: 200 });
+    return NextResponse.json({ receivedTourRequests }, { status: 200 });
   } catch (error) {
-    console.error('Error fetching listings:', error);
+    console.error('Error fetching tour requests:', error);
     return NextResponse.json(
       { message: 'Internal server error' },
       { status: 500 },

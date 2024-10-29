@@ -1,0 +1,32 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.chipBlock {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19.6px;
+  text-align: left;
+  cursor: text;
+}
+
+.pending {
+  background-color: #c2c2c2;
+  color: #fff;
+}
+
+.accepted {
+  background-color: #058c84;
+  color: #fff;
+}
+
+.declined {
+  background-color: #f7f7f7;
+  color: #b0b0b0;
+}
+
+.deleted {
+  background-color: #f7f7f7;
+  color: #b0b0b0;
+}
