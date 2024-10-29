@@ -1,23 +1,25 @@
 import React from 'react';
+// import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
-import { CustomSession } from '@/interface/session';
+// import { InAuthed } from '@/components';
 import { Header, RouterProfile, Footer, InAuthed } from '@/components';
-import CheckListings from '@/components/profile/checkListings';
+import { CustomSession } from '@/interface/session';
+import ReceivedTourRequestSection from '@/components/profile/receivedTourRequest/RecievedTourRequestSection';
 
 export async function generateMetadata() {
   return {
-    title: 'rentoutslk | My listings',
-    description: 'View and manage all your property listings on rentoutslk.',
+    title: 'rentoutslk | Received tour requests',
+    description: 'View and manage all your tour requests on rentoutslk.',
     openGraph: {
-      title: 'rentoutslk | My listings',
-      description: 'View and manage all your property listings on rentoutslk.',
-      url: 'https://rentoutslk.vercel.app/profile/my-listings',
+      title: 'rentoutslk | Received tour requests',
+      description: 'View and manage all your tour requests on rentoutslk.',
+      url: 'https://rentoutslk.vercel.app/profile/received-tour-request',
       siteName: 'RentoutSLK',
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'rentoutslk | My listings',
-      description: 'View and manage all your property listings on rentoutslk.',
+      title: 'rentoutslk | Received tour requests',
+      description: 'View and manage all your tour requests on rentoutslk.',
     },
   };
 }
@@ -44,8 +46,8 @@ const fetchUserData = async (userId: string, idToken: string) => {
   }
 };
 
-const CheckListingsPage = async () => {
-  const session = (await auth()) as CustomSession;
+const TourRequest: React.FC = async () => {
+  const session = (await auth()) as CustomSession | null;
 
   if (!session || !session.user || Date.now() >= session.user.exp * 1000) {
     return (
@@ -69,7 +71,7 @@ const CheckListingsPage = async () => {
       <>
         <Header />
         <RouterProfile isAdmin={userData.admin} />
-        <div
+        <section
           style={{
             backgroundColor: '#F7F7F7',
             width: '100%',
@@ -77,8 +79,11 @@ const CheckListingsPage = async () => {
             zIndex: 20,
           }}
         >
-          <CheckListings _userData={userData} idToken={session.user.idToken} />
-        </div>
+          <ReceivedTourRequestSection
+            _userData={userData}
+            idToken={session.user.idToken}
+          />
+        </section>
         <Footer />
       </>
     );
@@ -94,4 +99,4 @@ const CheckListingsPage = async () => {
   }
 };
 
-export default CheckListingsPage;
+export default TourRequest;

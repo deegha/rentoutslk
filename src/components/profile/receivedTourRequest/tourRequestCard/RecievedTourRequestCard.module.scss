@@ -1,0 +1,145 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.cardContainer {
+  border-bottom: 1px solid #ddd;
+  overflow: hidden;
+}
+
+.mainContainer {
+  display: flex;
+  cursor: pointer;
+  padding: 16px 36px;
+  align-items: center;
+  border-bottom: #d3d3d3 1px solid;
+  background-color: #fff;
+}
+
+.expanded {
+  background-color: #ebebeb;
+}
+
+.contentContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.detailsBlock {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+}
+
+.from {
+  color: #717171;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.name {
+  color: #5e5e5e;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.requestBlock {
+  width: 300px;
+}
+
+.requestTitle {
+  color: #222222;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.actionsBlock {
+  display: flex;
+  gap: 12px;
+}
+
+.additionalInfo {
+  padding: 16px 36px;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.emailAndTimeBlock {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #5e5e5e;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19.36px;
+  text-align: left;
+}
+
+.value {
+  color: #222222;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19.36px;
+  text-align: left;
+}
+
+.time {
+  color: #717171;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14.52px;
+  text-align: left;
+}
+
+.messages {
+  display: flex;
+  flex-direction: row;
+  margin-top: 8px;
+  gap: 20px;
+}
+
+.messageBox {
+  padding: 24px;
+  border: 1px solid #d3d3d3;
+  border-radius: 8px;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.question {
+  color: #222222;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 16.94px;
+  text-align: left;
+}
+
+.questionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #222222;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19.6px;
+  text-align: left;
+  margin-left: 28px;
+}
+
+.optionalMessage {
+  margin-top: 4px;
+}

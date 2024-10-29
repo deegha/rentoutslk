@@ -29,15 +29,16 @@ export const TourRequestForm: React.FC<TourRequestProps> = ({
   property,
 }) => {
   const { data: session } = useSession();
+  const { firstQuestion, secondQuestion, customQuestion } = property;
   const methods = useForm({
     resolver: zodResolver(tourRequestSchema),
     defaultValues: {
       name: '',
       email: session?.user?.email || '',
       phone: '',
-      firstQuestion: '',
-      secondQuestion: '',
-      customQuestion: '',
+      firstAnswer: '',
+      secondAnswer: '',
+      customAnswer: '',
       message: '',
     },
   });
@@ -53,18 +54,25 @@ export const TourRequestForm: React.FC<TourRequestProps> = ({
   };
 
   const onSubmit = async (data: any) => {
+    const sanitizedData = {
+      ...data,
+      propertyId,
+      ownerId,
+      userId: session?.user?.id,
+      title: property.title,
+      city: property.city,
+      ...(firstQuestion ? { firstQuestion } : {}),
+      ...(secondQuestion ? { secondQuestion } : {}),
+      ...(customQuestion ? { customQuestion } : {}),
+    };
+
     try {
       const response = await fetch('/api/send-tour-request', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...data,
-          propertyId,
-          ownerId,
-          userId: session?.user?.id,
-        }),
+        body: JSON.stringify(sanitizedData),
       });
 
       if (response.ok) {
@@ -193,7 +201,7 @@ const FormContent: React.FC<FormContentProps> = ({
             {firstQuestion &&
               firstQuestion !== 'I do not want to ask or do it later' && (
                 <TourTextarea
-                  name="firstQuestion"
+                  name="firstAnswer"
                   label={`${firstQuestion}`}
                   maxLength={80}
                   placeholder="|Type here"
@@ -203,7 +211,7 @@ const FormContent: React.FC<FormContentProps> = ({
             {secondQuestion &&
               secondQuestion !== 'I do not want to ask or do it later' && (
                 <TourTextarea
-                  name="secondQuestion"
+                  name="secondAnswer"
                   label={`${secondQuestion}`}
                   maxLength={80}
                   placeholder="|Type here"
@@ -212,7 +220,7 @@ const FormContent: React.FC<FormContentProps> = ({
               )}
             {customQuestion && (
               <TourTextarea
-                name="customQuestion"
+                name="customAnswer"
                 label={`${customQuestion}`}
                 maxLength={80}
                 placeholder="|Type here"

@@ -4,11 +4,10 @@ import {
   collection,
   addDoc,
   serverTimestamp,
-  Timestamp,
   updateDoc,
   doc,
-  arrayUnion,
   getDoc,
+  arrayUnion,
 } from 'firebase/firestore';
 import sgMail from '@sendgrid/mail';
 
@@ -33,6 +32,11 @@ export async function POST(req: NextRequest) {
       email,
       phone,
       message,
+      firstAnswer,
+      secondAnswer,
+      customAnswer,
+      title,
+      city,
       firstQuestion,
       secondQuestion,
       customQuestion,
@@ -58,7 +62,7 @@ export async function POST(req: NextRequest) {
       throw new Error('Owner email is missing');
     }
 
-    const tourRequestRef = await addDoc(collection(db, 'tourRequests'), {
+    const tourRequestData = {
       propertyId,
       ownerId,
       userId,
@@ -66,44 +70,31 @@ export async function POST(req: NextRequest) {
       email,
       phone,
       message,
-      firstQuestion,
-      secondQuestion,
-      customQuestion,
+      firstAnswer,
+      secondAnswer,
+      customAnswer,
       createdAt: serverTimestamp(),
-    });
+      status: 'pending',
+      title,
+      city,
+      ...(firstQuestion && { firstQuestion }),
+      ...(secondQuestion && { secondQuestion }),
+      ...(customQuestion && { customQuestion }),
+    };
 
+    const tourRequestRef = await addDoc(
+      collection(db, 'tourRequests'),
+      tourRequestData,
+    );
     const tourRequestId = tourRequestRef.id;
 
-    const timestamp = Timestamp.now();
-
     await updateDoc(ownerRef, {
-      receivedTourRequests: arrayUnion({
-        tourRequestId,
-        propertyId,
-        userId,
-        name,
-        email,
-        phone,
-        message,
-        firstQuestion,
-        secondQuestion,
-        customQuestion,
-        createdAt: timestamp,
-      }),
+      receivedTourRequests: arrayUnion(tourRequestId),
     });
 
     const userRef = doc(db, 'users', userId);
     await updateDoc(userRef, {
-      sentTourRequests: arrayUnion({
-        tourRequestId,
-        propertyId,
-        ownerId,
-        message,
-        firstQuestion,
-        secondQuestion,
-        customQuestion,
-        createdAt: timestamp,
-      }),
+      sentTourRequests: arrayUnion(tourRequestId),
     });
 
     const ownerEmail = ownerData.email;
@@ -112,22 +103,24 @@ export async function POST(req: NextRequest) {
       throw new Error('SendGrid "from" email is missing');
     }
 
+    const msgHtml = `
+      <h3>New Tour Request</h3>
+      <p><strong>Name:</strong> ${name || 'N/A'}</p>
+      <p><strong>Email:</strong> ${email || 'N/A'}</p>
+      <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
+      <p><strong>Message:</strong> ${message || 'N/A'}</p>
+      ${firstQuestion ? `<p><strong>${firstQuestion}:</strong> ${firstAnswer || 'N/A'}</p>` : ''}
+      ${secondQuestion ? `<p><strong>${secondQuestion}:</strong> ${secondAnswer || 'N/A'}</p>` : ''}
+      ${customQuestion ? `<p><strong>${customQuestion}:</strong> ${customAnswer || 'N/A'}</p>` : ''}
+      <p><strong>Property:</strong> <a href="https://rentoutslk.vercel.app/${propertyId}">https://rentoutslk.vercel.app/${propertyId}</a> </p>
+    `;
+
     const msg = {
       to: ownerEmail,
       from: sendGridFromEmail,
       subject: 'New Tour Request Received',
       text: `You have received a new tour request for your property.`,
-      html: `
-        <h3>New Tour Request</h3>
-        <p><strong>Name:</strong> ${name || 'N/A'}</p>
-        <p><strong>Email:</strong> ${email || 'N/A'}</p>
-        <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
-        <p><strong>Message:</strong> ${message || 'N/A'}</p>
-        <p><strong>First Question:</strong> ${firstQuestion || 'N/A'}</p>
-        <p><strong>Second Question:</strong> ${secondQuestion || 'N/A'}</p>
-        <p><strong>Custom Question:</strong> ${customQuestion || 'N/A'}</p>
-        <p><strong>Property:</strong> <a href="https://rentoutslk.vercel.app/${propertyId}">https://rentoutslk.vercel.app/${propertyId}</a> </p>
-      `,
+      html: msgHtml,
     };
 
     await sgMail.send(msg);

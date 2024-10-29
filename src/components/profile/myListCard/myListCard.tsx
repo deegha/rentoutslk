@@ -25,7 +25,7 @@ export const MyListCard: React.FC<MyListCardProp> = ({
   onStatusChange,
   isInactive,
 }) => {
-  const { title, city, images, createdAt, views, active, id, userId } = listing; // Изменение: используем массив images
+  const { title, city, images, createdAt, views, active, id, userId } = listing;
   const [isActive, setIsActive] = useState(active);
   const [savedUsersCount, setSavedUsersCount] = useState(0);
 
@@ -98,13 +98,13 @@ export const MyListCard: React.FC<MyListCardProp> = ({
         {images.length > 0 ? (
           <Image
             className={styles.image}
-            src={images[0]} // Изменение: используем первый элемент из массива images
+            src={images[0]}
             alt={title}
             width={1920}
             height={1080}
           />
         ) : (
-          <p>No image available</p> // Можем добавить сообщение, если изображений нет
+          <p>No image available</p>
         )}
       </div>
       <div className={styles.contentContainer}>

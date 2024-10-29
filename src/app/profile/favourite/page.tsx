@@ -29,6 +29,28 @@ export async function generateMetadata() {
   };
 }
 
+const fetchUserData = async (userId: string, idToken: string) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXTAUTH_URL}/api/get-user?id=${userId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch user data');
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw new Error('Error fetching user data');
+  }
+};
+
 const FavouritePage = async () => {
   const session = (await auth()) as CustomSession;
 
@@ -44,24 +66,41 @@ const FavouritePage = async () => {
     );
   }
 
-  return (
-    <SearchProvider>
-      <Header />
-      <RouterProfile isAdmin={session.user.admin} />
-      <div
-        style={{
-          backgroundColor: '#F7F7F7',
-          width: '100%',
-          minHeight: '70vh',
-          zIndex: 20,
-        }}
-      >
-        <FavouriteListings idToken={session.user.idToken} />
-      </div>
-      <LookingForProperty />
-      <Footer />
-    </SearchProvider>
-  );
+  if (!session.user.idToken) {
+    return;
+  }
+
+  try {
+    const userData = await fetchUserData(session.user.id, session.user.idToken);
+
+    return (
+      <SearchProvider>
+        <Header />
+        <RouterProfile isAdmin={userData.admin || false} />
+        <div
+          style={{
+            backgroundColor: '#F7F7F7',
+            width: '100%',
+            minHeight: '70vh',
+            zIndex: 20,
+          }}
+        >
+          <FavouriteListings idToken={session.user.idToken} />
+        </div>
+        <LookingForProperty />
+        <Footer />
+      </SearchProvider>
+    );
+  } catch (error) {
+    return (
+      <>
+        <Header />
+        <RouterProfile isAdmin={false} />
+        <InAuthed />
+        <Footer />
+      </>
+    );
+  }
 };
 
 export default FavouritePage;

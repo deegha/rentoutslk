@@ -97,7 +97,7 @@ export const Header = () => {
               </Link>
               <Link
                 className={styles.mobileMenuLink}
-                href={'/profile/tour-request'}
+                href={'/profile/received-tour-request'}
               >
                 My requests
               </Link>

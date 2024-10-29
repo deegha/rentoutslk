@@ -66,9 +66,9 @@ export const tourRequestSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   email: z.string().email('Invalid email address').min(1, 'Email is required'),
   phone: z.string().min(1, 'Phone number is required'),
-  firstQuestion: z.string().optional(),
-  secondQuestion: z.string().optional(),
-  customQuestion: z.string().optional(),
+  firstAnswer: z.string().optional(),
+  secondAnswer: z.string().optional(),
+  customAnswer: z.string().optional(),
   message: z.string().optional(),
 });
 export type TourRequestFormData = z.infer<typeof tourRequestSchema>;
