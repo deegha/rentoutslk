@@ -76,7 +76,7 @@ export const TourRequestForm: React.FC<TourRequestProps> = ({
       });
 
       if (response.ok) {
-        console.log('Request sent successfully');
+        console.log('Tour request sent successfully');
       } else {
         console.error('Failed to send request');
       }

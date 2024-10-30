@@ -56,13 +56,21 @@ export const SignModal = () => {
               fontWeight="600"
               onClick={openModal}
             />
-            <MultiStepForm isOpen={isModalOpen} onRequestClose={closeModal} />
+            <MultiStepForm
+              isOpen={isModalOpen}
+              onRequestClose={closeModal}
+              callbackUrl="/profile"
+            />
           </div>
           <div className={styles.mobileSignUp}>
             <button className={styles.mobileSignButton} onClick={openModal}>
               Log in
             </button>
-            <MultiStepForm isOpen={isModalOpen} onRequestClose={closeModal} />
+            <MultiStepForm
+              isOpen={isModalOpen}
+              onRequestClose={closeModal}
+              callbackUrl="/profile"
+            />
           </div>
         </>
       )}

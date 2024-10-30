@@ -30,8 +30,6 @@ export const ImageUploadSection: React.FC = () => {
         setValue('images', newImages);
         return newImages;
       });
-    } else {
-      console.log('Input not instance of File');
     }
   };
 

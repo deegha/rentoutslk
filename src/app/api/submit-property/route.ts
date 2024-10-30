@@ -3,11 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-
-    // Handle the combined form data here
-    console.log('Received data:', data);
-
-    // You can add your database or other logic here
+    console.log('Received form data:', data);
 
     return NextResponse.json({ message: 'Form submitted successfully' });
   } catch (error) {
@@ -18,5 +14,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-
-// export const runtime = 'nodejs'; // Add this line to specify the runtime if needed
