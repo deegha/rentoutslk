@@ -31,8 +31,8 @@ export const CreateListingBanner = () => {
             Would you like to rent out your property?
           </h2>
           <p className={styles.description}>
-            Create a tee listing in 3 simple steps and get contacted by
-            interested tenants.{' '}
+            Create a listing in 3 simple steps and get contacted by interested
+            tenants.
           </p>
         </div>
         <Button
@@ -44,7 +44,11 @@ export const CreateListingBanner = () => {
           fontWeight="700"
         />
       </div>
-      <MultiStepForm isOpen={isModalOpen} onRequestClose={closeModal} />
+      <MultiStepForm
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        callbackUrl="/add-your-apartment"
+      />
     </section>
   );
 };

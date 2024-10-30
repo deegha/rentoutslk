@@ -88,7 +88,11 @@ export const Footer = () => {
       <div className={styles.allRights}>
         <p>Powered by Codewave Labs. All rights reserved. © 2024</p> <Heart />
       </div>
-      <MultiStepForm isOpen={isModalOpen} onRequestClose={closeModal} />
+      <MultiStepForm
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        callbackUrl="/add-your-apartment"
+      />
     </footer>
   );
 };

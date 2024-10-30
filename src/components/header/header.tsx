@@ -20,7 +20,7 @@ export const Header = () => {
   const router = useRouter();
 
   const handleListPropertyClick = () => {
-    if (session) {
+    if (session?.user) {
       router.push('/add-your-apartment');
     } else {
       setIsModalOpen(true);
@@ -85,7 +85,6 @@ export const Header = () => {
           <hr />
           {session ? (
             <div className={styles.mobileMenuLinks}>
-              {' '}
               <Link className={styles.mobileMenuLink} href={'/profile'}>
                 My profile
               </Link>
@@ -115,13 +114,16 @@ export const Header = () => {
             </div>
           ) : (
             <div>
-              {' '}
               <SignModal />
             </div>
           )}
         </div>
       )}
-      <MultiStepForm isOpen={isModalOpen} onRequestClose={closeModal} />
+      <MultiStepForm
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        callbackUrl="/add-your-apartment"
+      />
     </header>
   );
 };

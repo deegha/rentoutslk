@@ -19,9 +19,6 @@ export async function POST(request: Request) {
 
     const { id, action } = await request.json();
 
-    console.log('Received id:', id);
-    console.log('Received action:', action);
-
     if (!id || !action) {
       return NextResponse.json(
         { message: 'Property ID and action are required' },

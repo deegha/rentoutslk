@@ -10,17 +10,30 @@ import Warning from '@/icons/Circle_Warning.svg';
 import { signIn } from 'next-auth/react';
 
 interface EmailStepProps {
-  // data: EmailFormValues
   onSubmit: () => void;
   onRequestClose: () => void;
+  onAuthSuccess?: () => void;
+  callbackUrl: string;
 }
 
-const EmailStep: React.FC<EmailStepProps> = ({ onSubmit, onRequestClose }) => {
+const EmailStep: React.FC<EmailStepProps> = ({
+  onSubmit,
+  onRequestClose,
+  onAuthSuccess,
+  callbackUrl,
+}) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useFormContext<EmailFormValues>();
+
+  const handleOAuthSignIn = async (provider: string) => {
+    const result = await signIn(provider, { callbackUrl });
+    if (!result?.error) {
+      onAuthSuccess && onAuthSuccess();
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.container}>
@@ -50,12 +63,11 @@ const EmailStep: React.FC<EmailStepProps> = ({ onSubmit, onRequestClose }) => {
           <span className={styles.optionsText}>
             or use one of these options
           </span>
-          <div></div>
         </div>
         <div className={styles.buttons__container}>
           <div
             className={styles.button__container__icon}
-            onClick={() => signIn(`google`)}
+            onClick={() => handleOAuthSignIn('google')}
           >
             <div className={styles.icon__container}>
               <Google />
@@ -66,7 +78,7 @@ const EmailStep: React.FC<EmailStepProps> = ({ onSubmit, onRequestClose }) => {
           </div>
           <div
             className={styles.button__container__icon}
-            onClick={() => signIn(`facebook`)}
+            onClick={() => handleOAuthSignIn('facebook')}
           >
             <div className={styles.icon__container}>
               <Facebook />

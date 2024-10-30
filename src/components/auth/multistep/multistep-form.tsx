@@ -21,9 +21,13 @@ Modal.setAppElement('#main');
 const MultiStepForm = ({
   isOpen,
   onRequestClose,
+  onAuthSuccess,
+  callbackUrl = '/profile',
 }: {
   isOpen: boolean;
   onRequestClose: () => void;
+  onAuthSuccess?: () => void;
+  callbackUrl?: string;
 }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [emailExists, setEmailExists] = useState(false);
@@ -88,15 +92,16 @@ const MultiStepForm = ({
           redirect: false,
           email,
           password: data.password,
+          callbackUrl,
         });
 
         if (result?.error) {
-          null;
-        } else {
-          null;
+          console.error(result.error);
+        } else if (result?.url) {
+          window.location.href = result.url;
         }
       } catch (error) {
-        null;
+        console.error('Error during sign-in:', error);
       }
     })();
   };
@@ -123,6 +128,8 @@ const MultiStepForm = ({
           <EmailStep
             onSubmit={handleEmailSubmit}
             onRequestClose={onRequestClose}
+            onAuthSuccess={onAuthSuccess}
+            callbackUrl={callbackUrl}
           />
         </FormProvider>
       ) : emailExists ? (

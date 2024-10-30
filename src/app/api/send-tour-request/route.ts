@@ -115,7 +115,7 @@ export async function POST(req: NextRequest) {
       <p><strong>Property:</strong> <a href="https://rentoutslk.vercel.app/${propertyId}">https://rentoutslk.vercel.app/${propertyId}</a> </p>
     `;
 
-    const msg = {
+    const ownerMsg = {
       to: ownerEmail,
       from: sendGridFromEmail,
       subject: 'New Tour Request Received',
@@ -123,12 +123,24 @@ export async function POST(req: NextRequest) {
       html: msgHtml,
     };
 
-    await sgMail.send(msg);
+    const userMsg = {
+      to: email,
+      from: sendGridFromEmail,
+      subject: 'Tour Request Sent Successfully',
+      text: `Thank you for requesting a tour! Here are the details of your request.`,
+      html: `
+        <h3>Your Tour Request for ${title} in ${city}</h3>
+        <p>Thank you for reaching out! The property owner will review your request and contact you soon.</p>
+        ${msgHtml}
+      `,
+    };
+
+    await Promise.all([sgMail.send(ownerMsg), sgMail.send(userMsg)]);
 
     return NextResponse.json(
       {
         message:
-          'Tour request sent successfully, and email notification sent to owner.',
+          'Tour request sent successfully, and email notifications sent to both owner and requester.',
       },
       { status: 200 },
     );

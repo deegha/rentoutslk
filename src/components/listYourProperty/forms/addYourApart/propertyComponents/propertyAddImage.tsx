@@ -31,6 +31,7 @@ export const PropertyAddImage: React.FC<PropertyAddImageProps> = ({
               alt={'Appartament'}
               width={500}
               height={500}
+              className={styles.containerImage}
             />
           </div>
         </div>
