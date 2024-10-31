@@ -207,7 +207,13 @@ const RecievedTourRequestCard: React.FC<ReceivedTourRequestCardProps> = ({
         <div className={styles.additionalInfo}>
           <div className={styles.emailAndTimeBlock}>
             <p className={styles.subtitle}>
-              E-mail: <span className={styles.value}>{email}</span>
+              E-mail:{' '}
+              <a
+                href={`mailto:${email}`}
+                className={`${styles.value} ${styles.email}`}
+              >
+                {email}
+              </a>
             </p>
             <p className={styles.time}>
               {formattedDate} ({timeAgo})

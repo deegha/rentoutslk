@@ -1,7 +1,5 @@
 import React from 'react';
-// import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
-// import { InAuthed } from '@/components';
 import { Header, RouterProfile, Footer, InAuthed } from '@/components';
 import { CustomSession } from '@/interface/session';
 import ReceivedTourRequestSection from '@/components/profile/receivedTourRequest/RecievedTourRequestSection';

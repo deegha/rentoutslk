@@ -90,13 +90,14 @@ interface OptionType {
 }
 
 interface CustomSelectProps {
-  control: Control<FieldValues>;
+  control?: Control<FieldValues>;
   option: { value: string; label: string }[];
   errors: FieldErrors;
-  label: string;
+  label?: string;
   name: string;
   required?: boolean;
   isDefaultOption?: boolean;
+  onChange?: (_value: OptionType | null) => void;
 }
 
 export const CustomSelect: React.FC<CustomSelectProps> = ({
@@ -107,28 +108,39 @@ export const CustomSelect: React.FC<CustomSelectProps> = ({
   name,
   required = false,
   isDefaultOption = false,
+  onChange,
 }) => {
   return (
     <div className={styles.selectContainer}>
       <label className={styles.label}>
         <span>{label}</span>
       </label>
-      <Controller
-        name={name}
-        control={control}
-        render={({ field: { onChange, value } }) => (
-          <Select
-            defaultValue={isDefaultOption && option[0]}
-            options={option}
-            value={option.find((c) => c.value === value)}
-            onChange={(newValue) =>
-              onChange((newValue as OptionType)?.value || '')
-            }
-            styles={customStyles}
-          />
-        )}
-        rules={{ required }}
-      />
+      {control ? (
+        <Controller
+          name={name}
+          control={control}
+          render={({ field: { onChange: fieldOnChange, value } }) => (
+            <Select
+              defaultValue={isDefaultOption && option[0]}
+              options={option}
+              value={option.find((c) => c.value === value)}
+              onChange={(newValue) => {
+                if (onChange) onChange(newValue as OptionType);
+                fieldOnChange((newValue as OptionType)?.value || '');
+              }}
+              styles={customStyles}
+            />
+          )}
+          rules={{ required }}
+        />
+      ) : (
+        <Select
+          defaultValue={isDefaultOption && option[0]}
+          options={option}
+          onChange={(newValue) => onChange && onChange(newValue as OptionType)}
+          styles={customStyles}
+        />
+      )}
       {errors[name]?.message && <span>{errors[name]?.message as string}</span>}
     </div>
   );

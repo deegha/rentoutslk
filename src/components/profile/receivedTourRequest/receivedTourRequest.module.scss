@@ -43,12 +43,20 @@
 }
 
 .typeOfListings {
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
+  display: none;
 
   @include tabletAndBeyondView() {
+    display: flex;
+    flex-direction: row;
     gap: 48px;
+  }
+}
+
+.typeOfListingsMobile {
+  display: block;
+  
+  @include tabletAndBeyondView() {
+    display: none;
   }
 }
 

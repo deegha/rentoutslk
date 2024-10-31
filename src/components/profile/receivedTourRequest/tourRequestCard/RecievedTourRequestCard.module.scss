@@ -9,10 +9,14 @@
 .mainContainer {
   display: flex;
   cursor: pointer;
-  padding: 16px 36px;
+  padding: 12px;
   align-items: center;
   border-bottom: #d3d3d3 1px solid;
   background-color: #fff;
+
+  @include tabletAndBeyondView() {
+    padding: 16px 36px;
+  }
 }
 
 .expanded {
@@ -21,15 +25,26 @@
 
 .contentContainer {
   display: flex;
-  align-items: center;
+  flex-direction: column-reverse;
   width: 100%;
   justify-content: space-between;
+  gap: 12px;
+  @include tabletAndBeyondView() {
+    flex-direction: row;
+    align-items: center;
+  }
 }
 
 .detailsBlock {
   display: flex;
-  align-items: center;
-  gap: 100px;
+  flex-direction: column;
+  gap: 12px;
+
+  @include tabletAndBeyondView() {
+    flex-direction: row;
+    align-items: center;
+    gap: 100px;
+  }
 }
 
 .from {
@@ -57,13 +72,22 @@
 
 .actionsBlock {
   display: flex;
-  gap: 12px;
+  flex-direction: row;
+  justify-content: space-between;
+
+  @include tabletAndBeyondView() {
+    gap: 12px;
+  }
 }
 
 .additionalInfo {
-  padding: 16px 36px;
+  padding: 12px;
   background-color: #fff;
   border-top: 1px solid #ddd;
+
+  @include tabletAndBeyondView() {
+    padding: 16px 36px;
+  }
 }
 
 .buttonContainer {
@@ -76,9 +100,14 @@
 
 .emailAndTimeBlock {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column-reverse;
+  gap: 12px;
   margin-bottom: 8px;
+
+  @include tabletAndBeyondView() {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
 
 .subtitle {
@@ -87,6 +116,11 @@
   font-weight: 400;
   line-height: 19.36px;
   text-align: left;
+}
+
+.email {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .value {
@@ -98,6 +132,7 @@
 }
 
 .time {
+  align-self: flex-end;
   color: #717171;
   font-size: 12px;
   font-weight: 400;
@@ -107,9 +142,13 @@
 
 .messages {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin-top: 8px;
-  gap: 20px;
+
+  @include tabletAndBeyondView() {
+    flex-direction: row;
+    gap: 20px;
+  }
 }
 
 .messageBox {
