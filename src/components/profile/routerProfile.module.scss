@@ -32,16 +32,32 @@
   padding: 16px 24px;
   background-color: #fff;
   height: 100px;
-  // transition: transform 0.8s ease;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc transparent;
+
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+  }
+
   @include tabletAndBeyondView() {
     gap: 64px;
     padding: 0 36px;
-
     height: auto;
     flex-direction: row;
-    // transform: translateY(0px);
   }
 }
+
 .linkContainer .active {
   transform: translateY(-110vh);
 }
