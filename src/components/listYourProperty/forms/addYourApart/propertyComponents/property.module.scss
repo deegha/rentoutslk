@@ -249,8 +249,9 @@
 }
 
 .containerImage {
-  max-width: 370px;
-  max-height: 370px;
+
+  max-width: 90vw;
+  max-height: 90vw;
 
   @include tabletAndBeyondView() {
     max-width: 400px;

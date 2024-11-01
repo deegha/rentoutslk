@@ -13,6 +13,8 @@ import sgMail from '@sendgrid/mail';
 
 const sendGridApiKey = process.env.SENDGRID_API_KEY;
 const sendGridFromEmail = process.env.SENDGRID_FROM_EMAIL;
+const sendGridUserTemplateId = 'd-93cb17b1b3124c708fb055b5d068e357';
+const sendGridOwnerTemplateId = 'd-e0c851e1801d4fa1a3e2a3a15c1b2681';
 
 if (!sendGridApiKey || !sendGridFromEmail) {
   throw new Error(
@@ -103,36 +105,46 @@ export async function POST(req: NextRequest) {
       throw new Error('SendGrid "from" email is missing');
     }
 
-    const msgHtml = `
-      <h3>New Tour Request</h3>
-      <p><strong>Name:</strong> ${name || 'N/A'}</p>
-      <p><strong>Email:</strong> ${email || 'N/A'}</p>
-      <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
-      <p><strong>Message:</strong> ${message || 'N/A'}</p>
-      ${firstQuestion ? `<p><strong>${firstQuestion}:</strong> ${firstAnswer || 'N/A'}</p>` : ''}
-      ${secondQuestion ? `<p><strong>${secondQuestion}:</strong> ${secondAnswer || 'N/A'}</p>` : ''}
-      ${customQuestion ? `<p><strong>${customQuestion}:</strong> ${customAnswer || 'N/A'}</p>` : ''}
-      <p><strong>Property:</strong> <a href="https://rentoutslk.vercel.app/${propertyId}">https://rentoutslk.vercel.app/${propertyId}</a> </p>
-    `;
-
     const ownerMsg = {
       to: ownerEmail,
       from: sendGridFromEmail,
-      subject: 'New Tour Request Received',
-      text: `You have received a new tour request for your property.`,
-      html: msgHtml,
+      templateId: sendGridOwnerTemplateId,
+      dynamic_template_data: {
+        name,
+        email,
+        phone,
+        message,
+        firstQuestion,
+        firstAnswer,
+        secondQuestion,
+        secondAnswer,
+        customQuestion,
+        customAnswer,
+        propertyId,
+        title,
+        city,
+      },
     };
 
     const userMsg = {
       to: email,
       from: sendGridFromEmail,
-      subject: 'Tour Request Sent Successfully',
-      text: `Thank you for requesting a tour! Here are the details of your request.`,
-      html: `
-        <h3>Your Tour Request for ${title} in ${city}</h3>
-        <p>Thank you for reaching out! The property owner will review your request and contact you soon.</p>
-        ${msgHtml}
-      `,
+      templateId: sendGridUserTemplateId,
+      dynamic_template_data: {
+        name,
+        email,
+        phone,
+        message,
+        firstQuestion,
+        firstAnswer,
+        secondQuestion,
+        secondAnswer,
+        customQuestion,
+        customAnswer,
+        propertyId,
+        title,
+        city,
+      },
     };
 
     await Promise.all([sgMail.send(ownerMsg), sgMail.send(userMsg)]);

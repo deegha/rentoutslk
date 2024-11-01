@@ -1,15 +1,14 @@
 'use client';
-
 import React, { useEffect, useState } from 'react';
-import styles from './receivedTourRequest.module.scss';
+import styles from './sentTourRequestSection.module.scss';
 import BeatLoader from 'react-spinners/BeatLoader';
 import { TourRequestProps } from '@/interface/tourRequest';
-import RecievedTourRequestCard from './tourRequestCard/RecievedTourRequestCard';
+import SentTourRequestCard from './tourRequestCard/SentTourRequestCard';
 import { CustomSelect } from '@/components';
 import { Button } from '@/components';
 import DeleteConfirmationModal from './modal/DeleteConfirmationModal';
 
-interface ReceivedTourRequestSectionProps {
+interface SentTourRequestSectionProps {
   _userData: any;
   idToken: string;
 }
@@ -27,7 +26,7 @@ const requestOptions = [
   { value: 'Declined', label: 'Declined' },
 ];
 
-const ReceivedTourRequestSection: React.FC<ReceivedTourRequestSectionProps> = ({
+const SentTourRequestSection: React.FC<SentTourRequestSectionProps> = ({
   _userData,
   idToken,
 }) => {
@@ -45,31 +44,28 @@ const ReceivedTourRequestSection: React.FC<ReceivedTourRequestSectionProps> = ({
   );
 
   useEffect(() => {
-    const fetchRecievedTourRequests = async () => {
+    const fetchSentTourRequests = async () => {
       try {
         const baseUrl = process.env.NEXT_PUBLIC_NEXTAUTH_URL;
-        const response = await fetch(
-          `${baseUrl}/api/check-recieved-tour-request`,
-          {
-            headers: {
-              Authorization: `Bearer ${idToken}`,
-            },
+        const response = await fetch(`${baseUrl}/api/check-sent-tour-request`, {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
           },
-        );
+        });
 
         if (!response.ok) {
           throw new Error('Failed to fetch tour requests');
         }
 
         const data = await response.json();
-        setRequests(data.receivedTourRequests || []);
-        setDisplayedRequests(data.receivedTourRequests.slice(0, 10) || []);
+        setRequests(data.sentTourRequests || []);
+        setDisplayedRequests(data.sentTourRequests.slice(0, 10) || []);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchRecievedTourRequests();
+    fetchSentTourRequests();
   }, [idToken]);
 
   const handleShowMore = () => {
@@ -105,7 +101,7 @@ const ReceivedTourRequestSection: React.FC<ReceivedTourRequestSectionProps> = ({
     <div className={styles.container}>
       <div className={styles.containerProfile}>
         <div className={styles.cardHeader}>
-          <h2 className={styles.titleHeader}>Received tour requests</h2>
+          <h2 className={styles.titleHeader}>Sent tour requests</h2>
           {requests.length > 0 && (
             <>
               <div className={styles.typeOfListings}>
@@ -146,16 +142,18 @@ const ReceivedTourRequestSection: React.FC<ReceivedTourRequestSectionProps> = ({
             <BeatLoader color="#DE225C" />
           </div>
         ) : filteredTourRequests && filteredTourRequests.length > 0 ? (
-          <div className={styles.tourRequestsList}>
-            {filteredTourRequests.map((tourRequest) => (
-              <RecievedTourRequestCard
-                key={tourRequest.id}
-                tourRequest={tourRequest}
-                idToken={idToken}
-                onDelete={handleDeleteRequest}
-              />
-            ))}
-          </div>
+          <>
+            <div className={styles.tourRequestsList}>
+              {filteredTourRequests.map((tourRequest) => (
+                <SentTourRequestCard
+                  key={tourRequest.id}
+                  tourRequest={tourRequest}
+                  idToken={idToken}
+                  onDelete={handleDeleteRequest}
+                />
+              ))}
+            </div>
+          </>
         ) : (
           <p>No tour requests found for {activeLink.toLowerCase()}.</p>
         )}
@@ -172,6 +170,7 @@ const ReceivedTourRequestSection: React.FC<ReceivedTourRequestSectionProps> = ({
           onClick={handleShowMore}
         />
       )}
+
       {showDeleteConfirmation && (
         <DeleteConfirmationModal
           onClose={() => setShowDeleteConfirmation(false)}
@@ -181,4 +180,4 @@ const ReceivedTourRequestSection: React.FC<ReceivedTourRequestSectionProps> = ({
   );
 };
 
-export default ReceivedTourRequestSection;
+export default SentTourRequestSection;
