@@ -13,6 +13,7 @@ const links: LinkProps[] = [
   { name: 'My listings', link: '/profile/my-listings' },
   { name: 'My favourites', link: '/profile/favourite' },
   { name: 'Received tour requests', link: '/profile/received-tour-request' },
+  { name: 'Sent tour requests', link: '/profile/sent-tour-request' },
 ];
 
 export const RouterProfile = ({ isAdmin }: { isAdmin: boolean }) => {
