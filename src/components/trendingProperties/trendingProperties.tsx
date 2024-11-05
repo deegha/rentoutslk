@@ -8,21 +8,13 @@ interface Apartment {
   id: string;
   address: string;
   title: string;
-  place: string;
+  city: string;
   availableFrom: string;
   deposit: number;
   floorArea: number;
   propertyType: string;
   monthlyRent: number;
-  image1: string;
-  image2: string;
-  image3: string;
-  image4: string;
-  image5: string;
-  image6: string;
-  image7: string;
-  image8: string;
-  image9: string;
+  images: string[];
   numberBedrooms: number;
   numberBathrooms: number;
   furnishing: string;
@@ -40,19 +32,19 @@ interface Apartment {
 
 interface TrendingPropertiesProps {
   address: string;
-  place: string;
+  city: string;
 }
 
 const getInitialCardCount = (width: number) => {
-  if (width >= 1920) return 4;
-  if (width >= 1440) return 3;
+  if (width >= 1600) return 4;
+  if (width >= 1280) return 3;
   if (width > 812) return 4;
   return 3;
 };
 
 export const TrendingProperties: React.FC<TrendingPropertiesProps> = ({
   address,
-  place,
+  city,
 }) => {
   const [apartments, setApartments] = useState<Apartment[]>([]);
   const [cardCount, setCardCount] = useState<number | null>(null);
@@ -63,7 +55,7 @@ export const TrendingProperties: React.FC<TrendingPropertiesProps> = ({
       try {
         setLoading(true);
         const response = await fetch(
-          `/api/trending-rentals-area?address=${encodeURIComponent(address)}&place=${encodeURIComponent(place)}`,
+          `/api/trending-rentals-area?address=${encodeURIComponent(address)}&city=${encodeURIComponent(city)}`,
         );
         if (!response.ok) {
           throw new Error(
@@ -78,7 +70,7 @@ export const TrendingProperties: React.FC<TrendingPropertiesProps> = ({
               item.status === 'verified' &&
               item.active === true &&
               (item.address.toLowerCase().includes(address.toLowerCase()) ||
-                item.place.toLowerCase().includes(place.toLowerCase())),
+                item.city.toLowerCase().includes(city.toLowerCase())),
           )
           .sort((a: Apartment, b: Apartment) => b.views - a.views);
 
@@ -91,7 +83,7 @@ export const TrendingProperties: React.FC<TrendingPropertiesProps> = ({
     }
 
     fetchTrendingListings();
-  }, [address, place]);
+  }, [address, city]);
 
   useEffect(() => {
     const handleResize = () => {

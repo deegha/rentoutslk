@@ -5,8 +5,8 @@ import { ApartmentsList } from '@/components';
 import BeatLoader from 'react-spinners/BeatLoader';
 
 const getInitialCardCount = (width: number) => {
-  if (width >= 1920) return 4;
-  if (width >= 1440) return 3;
+  if (width >= 1600) return 4;
+  if (width >= 1280) return 3;
   if (width > 812) return 4;
   return 3;
 };
@@ -15,21 +15,13 @@ interface Apartment {
   id: string;
   address: string;
   title: string;
-  place: string;
+  city: string;
   availableFrom: string;
   deposit: number;
   floorArea: number;
   propertyType: string;
   monthlyRent: number;
-  image1: string;
-  image2: string;
-  image3: string;
-  image4: string;
-  image5: string;
-  image6: string;
-  image7: string;
-  image8: string;
-  image9: string;
+  images: string[];
   numberBedrooms: number;
   numberBathrooms: number;
   furnishing: string;

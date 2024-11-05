@@ -9,44 +9,44 @@ import Featured from '@/icons/featured.svg';
 import Unfeatured from '@/icons/unfeatured.svg';
 
 interface ImageUploadLabelProps {
-  imageKey: string;
+  imageIndex: number;
   preview: string;
   register: UseFormRegister<Record<string, unknown>>;
   onChange: (
     _event: React.ChangeEvent<HTMLInputElement>,
-    _imageKey: string,
+    _imageIndex: number,
   ) => void;
-  setPreview: (_imageKey: string, _value: string) => void;
+  onDelete: (_imageIndex: number) => void;
   isFeatured: boolean;
-  onFeatureClick: (_imageKey: string) => void;
+  onFeatureClick: (_imageIndex: number) => void;
   error?: string;
 }
 
 export const ImageUploadLabel: React.FC<ImageUploadLabelProps> = ({
-  imageKey: _imageKey,
+  imageIndex,
   preview,
   register,
-  onChange: _onChange,
-  setPreview,
+  onChange,
+  onDelete,
   isFeatured,
-  onFeatureClick: _onFeatureClick,
+  onFeatureClick,
   error,
 }) => {
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
-  const handleRemoveImage = (_event: React.MouseEvent) => {
-    _event.stopPropagation();
-    setPreview(_imageKey, '');
+  const handleRemoveImage = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    onDelete(imageIndex); // Удаление изображения по индексу
   };
 
-  const handleFeatureClick = (_event: React.MouseEvent) => {
-    _event.stopPropagation();
-    _onFeatureClick(_imageKey);
+  const handleFeatureClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    onFeatureClick(imageIndex);
   };
 
-  const handleInputClick = (_event: React.MouseEvent<HTMLInputElement>) => {
+  const handleInputClick = (event: React.MouseEvent<HTMLInputElement>) => {
     if (preview) {
-      _event.preventDefault();
+      event.preventDefault();
     }
   };
 
@@ -60,7 +60,9 @@ export const ImageUploadLabel: React.FC<ImageUploadLabelProps> = ({
 
   return (
     <label
-      className={`${styles.imageUploadLabel} ${preview ? styles.uploaded : styles.empty}`}
+      className={`${styles.imageUploadLabel} ${
+        preview ? styles.uploaded : styles.empty
+      }`}
       style={{ backgroundImage: `url(${preview})` }}
     >
       {!preview && (
@@ -97,8 +99,8 @@ export const ImageUploadLabel: React.FC<ImageUploadLabelProps> = ({
       <input
         type="file"
         accept=".png,.jpg,.jpeg,.webp"
-        {...register(_imageKey)}
-        onChange={(e) => _onChange(e, _imageKey)}
+        {...register(`images.${imageIndex}`)}
+        onChange={(e) => onChange(e, imageIndex)}
         className={styles.hiddenInput}
         onClick={handleInputClick}
       />

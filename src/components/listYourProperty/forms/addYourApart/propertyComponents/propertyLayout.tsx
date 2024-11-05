@@ -33,6 +33,7 @@ export const PropertyLayout: React.FC<PropertyLayoutProps> = ({
               alt={'Appartament'}
               width={500}
               height={500}
+              className={styles.containerImage}
             />
           </div>
         </div>

@@ -11,11 +11,7 @@ export async function GET(request: Request) {
   try {
     const listingsRef = collection(db, 'listings');
 
-    let q = query(
-      listingsRef,
-      where('status', '==', 'verified'),
-      where('active', '==', true),
-    );
+    let q = query(listingsRef, where('active', '==', true));
 
     if (propertyType && propertyType !== 'all') {
       q = query(q, where('propertyType', '==', propertyType));

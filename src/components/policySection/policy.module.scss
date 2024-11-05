@@ -4,6 +4,7 @@
 .section {
   display: flex;
   width: 100vw;
+  min-height: 80vh;
 }
 
 .container {
@@ -11,8 +12,8 @@
   flex-direction: column;
   width: 100vw;
   gap: 24px;
-  align-items: start;
-  justify-content: start;
+  align-items: flex-start;
+  justify-content: flex-start;
   padding: 24px 13px;
 
   @include tabletAndBeyondView() {
@@ -59,5 +60,5 @@
 .descItem {
   line-height: 24px;
   font-weight: 300;
-font-size: 16px;
+  font-size: 16px;
 }

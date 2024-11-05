@@ -37,7 +37,6 @@
   max-width: 800px;
   //   height: 350px;
   //   max-height: 450px;
-  border-radius: 4px;
   overflow: hidden;
   position: relative;
   @include tabletAndBeyondView() {
@@ -80,6 +79,14 @@
       background: rgba(0, 0, 0, 0.8);
     }
   }
+}
+
+.swiperSlide {
+  border-radius: 12px;
+}
+
+.swiperImage {
+  border-radius: 12px;
 }
 
 .textBlock {
@@ -209,4 +216,20 @@
 .thumbImage {
   border-radius: 12px;
   cursor: pointer;
+}
+
+.editBlock {
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+  margin-top: 40px;
+  align-items: center;
+  cursor: pointer;
+  p {
+    color: #5e5e5e;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 16.94px;
+    text-align: left;
+  }
 }

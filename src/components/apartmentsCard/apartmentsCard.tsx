@@ -14,22 +14,14 @@ import Arrow from '@/icons/arrow_next.svg';
 interface ApartmentsCardProps {
   id: string;
   address: string;
-  place: string;
+  city: string;
   availableFrom?: string;
   deposit?: number;
   floorArea: number;
   propertyType: string;
   monthlyRent: number;
   title: string;
-  image1?: string;
-  image2?: string;
-  image3?: string;
-  image4?: string;
-  image5?: string;
-  image6?: string;
-  image7?: string;
-  image8?: string;
-  image9?: string;
+  images: string[]; // Массив изображений
   numberBedrooms: number;
   numberBathrooms: number;
   createdAt: string;
@@ -48,35 +40,13 @@ export const ApartmentsCard: React.FC<ApartmentsCardProp> = ({
     address,
     id,
     title,
-    place,
+    city,
     propertyType,
     monthlyRent,
     floorArea,
     numberBedrooms,
-    image1,
-    image2,
-    image3,
-    image4,
-    image5,
-    image6,
-    image7,
-    image8,
-    image9,
+    images,
   } = listing;
-
-  const images = [
-    image1,
-    image2,
-    image3,
-    image4,
-    image5,
-    image6,
-    image7,
-    image8,
-    image9,
-  ].filter(
-    (img): img is string => typeof img === 'string' && img.trim() !== '',
-  );
 
   const PrevArrow = (
     <div className="prevArrowBlock">
@@ -91,6 +61,7 @@ export const ApartmentsCard: React.FC<ApartmentsCardProp> = ({
   );
 
   const customIndicators = () => <span className="pagination"></span>;
+
   return (
     <div className={styles.cardBlock}>
       <div className={styles.cardImageBlock}>
@@ -110,23 +81,27 @@ export const ApartmentsCard: React.FC<ApartmentsCardProp> = ({
           prevArrow={PrevArrow}
           nextArrow={NextArrow}
         >
-          {images.map((image, index) => (
-            <div key={index}>
-              <Image
-                src={image}
-                width={412}
-                height={216}
-                alt={`Apartment image ${index + 1}`}
-              />
-            </div>
-          ))}
+          {images && images.length > 0 ? (
+            images.map((image, index) => (
+              <div key={index}>
+                <Image
+                  src={image}
+                  width={412}
+                  height={216}
+                  alt={`Apartment image ${index + 1}`}
+                />
+              </div>
+            ))
+          ) : (
+            <div>No images available</div>
+          )}
         </Slide>
       </div>
       <div className={styles.cardDetailsBlock}>
         <a href={`/property/${id}`} className={styles.cardDescBlock}>
-          <p className={styles.cardPrice}>{monthlyRent} Re</p>
+          <p className={styles.cardPrice}>{monthlyRent} LKR</p>
           <p className={styles.cardTitle}>
-            {title} in {place}
+            {title} in {city}
           </p>
           <p className={styles.cardLocation}>{address}</p>
         </a>

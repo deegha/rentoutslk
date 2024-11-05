@@ -87,7 +87,6 @@ export const ProfileCard = ({
       });
       const result = await response.json();
       if (response.ok) {
-        console.log(result.message);
         setIsEditingMobile(false);
       } else {
         console.error(result.message);
@@ -111,7 +110,6 @@ export const ProfileCard = ({
       });
       const result = await response.json();
       if (response.ok) {
-        console.log(result.message);
         setIsEditingPassword(false);
       } else {
         console.error(result.message);
@@ -133,7 +131,6 @@ export const ProfileCard = ({
       });
       const result = await response.json();
       if (response.ok) {
-        console.log(result.message);
         signOut();
       } else {
         console.error(result.message);

@@ -10,7 +10,6 @@ import {
 import BeatLoader from 'react-spinners/BeatLoader';
 import { auth } from '@/auth';
 import { CustomSession } from '@/interface/session';
-import PageTitle from '@/components/nav/pageTitle';
 import { SearchProvider } from '@/context/searchProvider/searchProvider';
 
 const fetchUserData = async (userId: string, idToken: string) => {
@@ -31,6 +30,35 @@ const fetchUserData = async (userId: string, idToken: string) => {
   return await response.json();
 };
 
+export async function generateMetadata() {
+  const session = (await auth()) as CustomSession;
+
+  if (!session || !session.user || Date.now() >= session.user.exp * 1000) {
+    return {
+      title: 'rentoutslk | Profile',
+      description: 'Your profile on rentoutslk.',
+    };
+  }
+
+  const userData = await fetchUserData(session.user.id, session.user.idToken);
+
+  return {
+    title: `rentoutslk | ${userData.name || 'User'}'s Profile`,
+    description: `${userData.name || 'User'}'s profile on rentoutslk. View listings, requests, and manage your account.`,
+    openGraph: {
+      title: `rentoutslk | ${userData.name || 'User'}'s Profile`,
+      description: `Explore ${userData.name || 'User'}'s profile on rentoutslk.`,
+      url: `https://rentoutslk.vercel.app/profile`,
+      siteName: 'RentoutSLK',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `rentoutslk | ${userData.name || 'User'}'s Profile`,
+      description: `Explore ${userData.name || 'User'}'s profile on rentoutslk.`,
+    },
+  };
+}
+
 const ProfilePage = async () => {
   const session = (await auth()) as CustomSession;
 
@@ -39,7 +67,7 @@ const ProfilePage = async () => {
       <>
         <SearchProvider>
           <Header />
-          <PageTitle title="rentoutslk | Profile" />
+
           <RouterProfile isAdmin={false} />
           <InAuthed />
           <LookingForProperty />
@@ -56,8 +84,8 @@ const ProfilePage = async () => {
       <>
         <SearchProvider>
           <Header />
-          <PageTitle title="rentoutslk | Profile" />
-          <RouterProfile isAdmin={session.user.admin} />
+
+          <RouterProfile isAdmin={userData.admin} />
           <section
             style={{
               backgroundColor: '#F7F7F7',
@@ -91,7 +119,6 @@ const ProfilePage = async () => {
       <>
         <SearchProvider>
           <Header />
-          <PageTitle title="rentoutslk | Profile" />
           <RouterProfile isAdmin={false} />
           <InAuthed />
           <LookingForProperty />

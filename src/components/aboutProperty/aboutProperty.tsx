@@ -6,13 +6,21 @@ import { PropertyProps } from '@/interface/property';
 
 export const AboutProperty = ({ property }: { property: PropertyProps }) => {
   const {
-    place,
+    city,
     floorArea,
     numberBedrooms,
     propertyType,
     monthlyRent,
     deposit,
     numberBathrooms,
+    furnishing,
+    gym,
+    pool,
+    elevator,
+    parking,
+    playground,
+    hotWater,
+    conditioner,
   } = property;
   return (
     <section className={styles.container}>
@@ -20,18 +28,29 @@ export const AboutProperty = ({ property }: { property: PropertyProps }) => {
         <h3 className={styles.title}>About this property</h3>
         <div className={styles.itemsBlock}>
           <AboutPropertyItem name="Property type:" value={propertyType} />
-          <AboutPropertyItem name="City:" value={place} />
+          <AboutPropertyItem name="City:" value={city} />
           <AboutPropertyItem name="Bedrooms:" value={numberBedrooms} />
           <AboutPropertyItem name="Bathrooms:" value={numberBathrooms} />
-          <AboutPropertyItem name="Furniture:" value="Yes" />
-          <AboutPropertyItem name="Price:" value={`${monthlyRent} Re`} />
-          <AboutPropertyItem name="Elevator:" value="Yes" />
-          <AboutPropertyItem name="Gym:" value="Yes" />
-          <AboutPropertyItem name="Floor area:" value={`${floorArea} m2`} />
-          <AboutPropertyItem name="Deposit:" value={`${deposit} Re`} />
-          <AboutPropertyItem name="Pool:" value="No" />
-          <AboutPropertyItem name="Parking:" value="Yes" />
-          <AboutPropertyItem name="Balcony:" value="Yes" />
+          <AboutPropertyItem name="Furniture:" value={furnishing} />
+          <AboutPropertyItem name="Price:" value={`${monthlyRent} LKR`} />
+          <AboutPropertyItem name="Elevator:" value={elevator ? 'Yes' : 'No'} />
+          <AboutPropertyItem name="Gym:" value={gym ? 'Yes' : 'No'} />
+          <AboutPropertyItem name="Floor area:" value={`${floorArea} m²`} />
+          <AboutPropertyItem name="Deposit:" value={`${deposit} LKR`} />
+          <AboutPropertyItem name="Pool:" value={pool ? 'Yes' : 'No'} />
+          <AboutPropertyItem name="Parking:" value={parking ? 'Yes' : 'No'} />
+          <AboutPropertyItem
+            name="Playground:"
+            value={playground ? 'Yes' : 'No'}
+          />
+          <AboutPropertyItem
+            name="Hot Water:"
+            value={hotWater ? 'Yes' : 'No'}
+          />
+          <AboutPropertyItem
+            name="Conditioner:"
+            value={conditioner ? 'Yes' : 'No'}
+          />
         </div>
       </div>
     </section>

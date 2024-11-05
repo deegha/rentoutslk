@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import 'react-slideshow-image/dist/styles.css';
 import { DescriptionItem } from './descriptionItem';
@@ -20,6 +20,9 @@ import { Swiper as SwiperType } from 'swiper';
 import Warning from '@/icons/warning.svg';
 import { formatDate } from '@/utils/formateData';
 import { PropertyProps } from '@/interface/property';
+import EditIcon from '@/icons/edit.svg';
+import Map from '@/components/map/map';
+import { useSession } from 'next-auth/react';
 
 interface PropertyDetailsProps {
   property: PropertyProps;
@@ -31,15 +34,31 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   propertyId,
 }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  const { data: session } = useSession();
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.toString());
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 400);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   const {
     title,
     address,
-    place,
+    city,
     floorArea,
     numberBedrooms,
     numberBathrooms,
@@ -47,34 +66,13 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
     createdAt,
     propertyType,
     monthlyRent,
-    image1,
-    image2,
-    image3,
-    image4,
-    image5,
-    image6,
-    image7,
-    image8,
-    image9,
+    images = [],
     status,
+    ownerId,
   } = property;
 
-  const images = [
-    image1,
-    image2,
-    image3,
-    image4,
-    image5,
-    image6,
-    image7,
-    image8,
-    image9,
-  ].filter(
-    (img): img is string => typeof img === 'string' && img.trim() !== '',
-  );
-
   const formattedDate = formatDate(createdAt);
-  const encodedAddress = encodeURIComponent(address);
+  const isOwner = session?.user?.id === ownerId;
 
   return (
     <section className={styles.container}>
@@ -95,12 +93,14 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
               className="mySwiper2"
             >
               {images.map((image, index) => (
-                <SwiperSlide key={index}>
+                <SwiperSlide className={styles.swiperSlide} key={index}>
                   <Image
                     src={image}
-                    width={800}
-                    height={500}
+                    width={isMobile ? 400 : 800}
+                    height={isMobile ? 300 : 500}
                     alt={`Property image ${index + 1}`}
+                    style={{ objectFit: 'cover' }}
+                    className={styles.swiperImage}
                   />
                 </SwiperSlide>
               ))}
@@ -109,7 +109,6 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
               onSwiper={setThumbsSwiper}
               loop={true}
               slidesPerView={2}
-              spaceBetween={10}
               freeMode={true}
               watchSlidesProgress={true}
               modules={[FreeMode, Navigation, Thumbs]}
@@ -117,19 +116,18 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
               breakpoints={{
                 400: {
                   slidesPerView: 2,
-                  spaceBetween: 20,
                 },
                 768: {
-                  slidesPerView: 3,
-                  spaceBetween: 10,
+                  slidesPerView: 2,
                 },
                 1024: {
                   slidesPerView: 3,
-                  spaceBetween: 30,
                 },
                 1440: {
                   slidesPerView: 4,
-                  spaceBetween: 20,
+                },
+                1920: {
+                  slidesPerView: 5,
                 },
               }}
             >
@@ -137,8 +135,8 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
                 <SwiperSlide key={index}>
                   <Image
                     src={image}
-                    width={150}
-                    height={100}
+                    width={isMobile ? 125 : 150}
+                    height={isMobile ? 75 : 100}
                     alt={`Property thumbnail ${index + 1}`}
                     className={styles.thumbImage}
                   />
@@ -149,7 +147,7 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
           <div className={styles.textBlock}>
             <div className={styles.titleBlock}>
               <h1 className={styles.title}>
-                {title} in {place}
+                {title} in {city}
               </h1>
               <p className={styles.subtitle}>{address}</p>
             </div>
@@ -206,7 +204,7 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
               </Tooltip>
             </div>
             <ul className={styles.descList}>
-              <DescriptionItem name="Price:" value={`${monthlyRent} Re/mo`} />
+              <DescriptionItem name="Price:" value={`${monthlyRent} LKR/mo`} />
               <DescriptionItem name="Floor area:" value={`${floorArea} m2`} />
               <DescriptionItem name="Available from:" value={formattedDate} />
               <DescriptionItem name="Property type:" value={propertyType} />
@@ -224,18 +222,16 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
                 value={status !== 'not verified' ? <Verified /> : <Warning />}
               />
             </ul>
+            {isOwner && (
+              <div className={styles.editBlock}>
+                <EditIcon />
+                <p>Edit</p>
+              </div>
+            )}
           </div>
         </div>
         <div className={styles.mapBlock}>
-          <iframe
-            src={`https://www.google.com/maps?q=${encodedAddress}&output=embed`}
-            width="100%"
-            height="280px"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
+          <Map address={address} city={city} />
         </div>
       </div>
     </section>

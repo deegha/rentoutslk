@@ -247,3 +247,19 @@
     gap: 40px;
   }
 }
+
+.containerImage {
+
+  max-width: 90vw;
+  max-height: 90vw;
+
+  @include tabletAndBeyondView() {
+    max-width: 400px;
+    max-height: 400px;
+  }
+
+  @include desktopAndBeyondView() {
+    max-width: 500px;
+    max-height: 500px;
+  }
+}

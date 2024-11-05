@@ -28,7 +28,6 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({
 
   const handlePasswordReset = async () => {
     try {
-      console.log('Sending password reset link to:', email);
       await requestPasswordReset(email);
       alert('Password reset link has been sent to your email');
       onRequestClose();

@@ -1,16 +1,37 @@
 import './globals.scss';
-import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
 import { FavouriteProvider } from '@/context/favouriteProvider/favouriteProvider';
-import { SessionTimeoutProvider } from '@/context/sessionTimeout/SessionTimeoutProvider'; // Импортируйте созданный контекст
+import { SessionTimeoutProvider } from '@/context/sessionTimeout/SessionTimeoutProvider';
+import type { Metadata } from 'next';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'rentoutslk | Innovative Property Management Solutions in Sri Lanka',
+  metadataBase: new URL('https://rentoutslk.vercel.app'),
+  title: 'rentoutslk | Innovative Property Management Solutions In Sri Lanka',
   description:
-    'Discover innovative property management solutions in Sri Lanka with our technology-driven approach. We are dedicated to helping our customers find effective solutions for their property needs.',
+    'Discover innovative property management solutions in Sri Lanka with our technology-driven approach.',
+  openGraph: {
+    title: 'RentoutSLK | Innovative Property Management Solutions',
+    description:
+      'Discover innovative property management solutions in Sri Lanka with our technology-driven approach.',
+    url: 'https://rentoutslk.vercel.app',
+    siteName: 'rentoutslk',
+    images: [
+      {
+        url: '/og.png',
+        alt: 'rentoutslk',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'rentoutslk | Innovative Property Management Solutions',
+    description:
+      'Discover innovative property management solutions in Sri Lanka with our technology-driven approach.',
+    images: ['/og.png'],
+  },
 };
 
 export default function RootLayout({

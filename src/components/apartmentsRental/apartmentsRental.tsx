@@ -4,10 +4,17 @@ import styles from './apartmentsRental.module.scss';
 import { ApartmentsList, TagsList } from '@/components';
 import BeatLoader from 'react-spinners/BeatLoader';
 
+const getInitialCardCount = (width: number) => {
+  if (width >= 1600) return 8;
+  if (width >= 1280) return 6;
+  if (width > 812) return 4;
+  return 3;
+};
+
 interface ApartmentsRentalProps {
   filters: {
     address: string;
-    place: string;
+    city: string;
     monthlyRent: number;
     propertyType: string;
     maxRent: string;
@@ -32,15 +39,14 @@ interface ApartmentsRentalProps {
 interface Apartment {
   id: string;
   address: string;
-  place: string;
+  city: string;
   availableFrom: string;
   deposit: number;
   floorArea: number;
   propertyType: string;
   monthlyRent: number;
   title: string;
-  image1: string;
-  image2: string;
+  images: string[];
   numberBedrooms: number;
   numberBathrooms: number;
   furnishing: string;
@@ -60,14 +66,14 @@ export const ApartmentsRental: React.FC<ApartmentsRentalProps> = ({
 }) => {
   const [apartments, setApartments] = useState<Apartment[]>([]);
   const [filteredApartments, setFilteredApartments] = useState<Apartment[]>([]);
-  const [cardCount, setCardCount] = useState(8);
+  const [cardCount, setCardCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
   const applyFilters = useCallback(
     (data: Apartment[]) => {
       let filteredData = data;
 
-      if (filters.address || filters.place) {
+      if (filters.address || filters.city) {
         filteredData = filteredData.filter(
           (apartment) =>
             (filters.address &&
@@ -75,11 +81,11 @@ export const ApartmentsRental: React.FC<ApartmentsRentalProps> = ({
               apartment.address
                 .toLowerCase()
                 .includes(filters.address.toLowerCase())) ||
-            (filters.place &&
-              apartment.place &&
-              apartment.place
+            (filters.city &&
+              apartment.city &&
+              apartment.city
                 .toLowerCase()
-                .includes(filters.place.toLowerCase())),
+                .includes(filters.city.toLowerCase())),
         );
       }
 
@@ -163,7 +169,7 @@ export const ApartmentsRental: React.FC<ApartmentsRentalProps> = ({
             (apartment: Apartment) => ({
               ...apartment,
               address: apartment.address || '',
-              place: apartment.place || '',
+              city: apartment.city || '',
             }),
           );
           setApartments(apartmentsWithDefaultValues);
@@ -185,8 +191,31 @@ export const ApartmentsRental: React.FC<ApartmentsRentalProps> = ({
     applyFilters(apartments);
   }, [filters, apartments, applyFilters]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setCardCount(getInitialCardCount(window.innerWidth));
+    };
+
+    if (typeof window !== 'undefined') {
+      setCardCount(getInitialCardCount(window.innerWidth));
+      window.addEventListener('resize', handleResize);
+    }
+
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', handleResize);
+      }
+    };
+  }, []);
+
   const handleShowMore = () => {
-    setCardCount((prevCount) => prevCount + 8);
+    if (typeof window !== 'undefined') {
+      setCardCount((prevCount) =>
+        prevCount !== null
+          ? prevCount + getInitialCardCount(window.innerWidth)
+          : getInitialCardCount(window.innerWidth),
+      );
+    }
   };
 
   const removeFilter = (filterName: string) => {
@@ -238,12 +267,12 @@ export const ApartmentsRental: React.FC<ApartmentsRentalProps> = ({
     <section className={styles.container}>
       <div className={styles.wrapper}>
         <div className={styles.availableRents}>
-          {filters.address || filters.place ? (
+          {filters.address || filters.city ? (
             <p>
               <span className={styles.availableCount}>
                 {filteredApartments.length}
               </span>{' '}
-              available rentals in {filters.address || filters.place}
+              available rentals in {filters.address || filters.city}
             </p>
           ) : (
             <p>
@@ -262,7 +291,7 @@ export const ApartmentsRental: React.FC<ApartmentsRentalProps> = ({
         ) : (
           <ApartmentsList
             apartments={filteredApartments}
-            cardCount={cardCount}
+            cardCount={cardCount || 0}
             showBestOffer={false}
             buttonText="Show more"
             buttonTextColor="#222222"

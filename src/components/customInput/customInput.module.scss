@@ -7,6 +7,17 @@
   width: 100%;
   gap: 12px;
   min-width: 200px;
+
+  @include tabletAndBeyondView() {
+    max-width: 400px;
+  }
+
+  @include desktopAndBeyondView() {
+    max-width: 400px;
+  }
+  @include largeDesktopAndBeyondView() {
+    max-width: 500px;
+  }
 }
 
 .label {

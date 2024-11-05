@@ -17,10 +17,6 @@ const FavouriteListings: React.FC<FavouriteListingsProps> = ({ idToken }) => {
     const fetchSavedListings = async () => {
       try {
         const baseUrl = process.env.NEXT_PUBLIC_NEXTAUTH_URL;
-        console.log(
-          'NEXT_PUBLIC_NEXTAUTH_URL:',
-          process.env.NEXT_PUBLIC_NEXTAUTH_URL,
-        );
 
         const response = await fetch(
           `${baseUrl}/api/favourite-properties/profile`,

@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Header,
   Footer,
@@ -10,7 +9,6 @@ import {
   PropertyComponent,
 } from '@/components';
 import { PropertyProps } from '@/interface/property';
-import PageTitle from '@/components/nav/pageTitle';
 import { SearchProvider } from '@/context/searchProvider/searchProvider';
 import ViewTracker from '@/components/viewTracker/viewTracker';
 
@@ -32,16 +30,47 @@ async function fetchProperty(id: string): Promise<PropertyProps> {
   return property;
 }
 
-const PropertyPage = async ({ params }: { params: { id: string } }) => {
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const property = await fetchProperty(params.id);
+  const mainImage = property.images[0] || '/og.png';
+
+  return {
+    title: `rentoutslk | ${property.title} in ${property.city}`,
+    description: `${property.title} in ${property.city}`,
+    openGraph: {
+      title: `rentoutslk | ${property.title} in ${property.city}`,
+      description: `${property.title} in ${property.city}`,
+      url: `https://rentoutslk.vercel.app/property/${params.id}`,
+      images: [
+        {
+          url: mainImage,
+          alt: `${property.title} in ${property.city}`,
+        },
+      ],
+      siteName: 'RentoutSLK',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `rentoutslk | ${property.title} in ${property.city}`,
+      description: `${property.title} in ${property.city}`,
+      images: [mainImage],
+    },
+  };
+}
+
+export default async function PropertyPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const property = await fetchProperty(params.id);
 
   const categories = [
     { name: 'Rentouts', href: '/' },
     { name: 'Rentals', href: '/rentals' },
-    { name: `${property.address}`, href: '' },
-    { name: `${property.propertyType}`, href: '' },
+    { name: `${property.propertyType}`, href: '/rentals' },
     {
-      name: `${property.title} in ${property.place}`,
+      name: `${property.title} in ${property.city}`,
       href: `/property/${params.id}`,
     },
   ];
@@ -50,21 +79,20 @@ const PropertyPage = async ({ params }: { params: { id: string } }) => {
     <SearchProvider>
       <Header />
       <main>
-        <PageTitle
-          title={`rentoutslk | ${property.title} in ${property.place}`}
-          description={`${property.title} in ${property.place}`}
-        />
         <Breadcrumbs categories={categories} />
         <PropertyDetails property={property} propertyId={params.id} />
         <AboutProperty property={property} />
-        <TrendingProperties address={property.address} place={property.place} />
-        <LookingForProperty place={property.place} />
-        <PropertyComponent />
+        <TrendingProperties address={property.address} city={property.city} />
+        <PropertyComponent
+          ownerId={property.ownerId}
+          property={property}
+          propertyId={params.id}
+        />
+        <LookingForProperty city={property.city} />
+
         <ViewTracker propertyId={params.id} />
       </main>
       <Footer />
     </SearchProvider>
   );
-};
-
-export default PropertyPage;
+}

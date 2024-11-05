@@ -38,12 +38,16 @@ export async function GET(req: Request) {
       const listingDoc = await getDoc(listingDocRef);
 
       if (listingDoc.exists()) {
-        listings.push({ id: listingDoc.id, ...listingDoc.data() });
+        const listingData = listingDoc.data();
+        if (listingData.status === 'verified') {
+          listings.push({ id: listingDoc.id, ...listingData });
+        }
       }
     }
 
     return NextResponse.json({ listings }, { status: 200 });
-  } catch {
+  } catch (error) {
+    console.error('Error fetching listings:', error);
     return NextResponse.json(
       { message: 'Internal server error' },
       { status: 500 },

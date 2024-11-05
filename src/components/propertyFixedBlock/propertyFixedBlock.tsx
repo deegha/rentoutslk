@@ -1,22 +1,53 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components';
-
+import { PropertyProps } from '@/interface/property';
 import styles from './propertyFixedBlock.module.scss';
 
 interface PropertyFixedProps {
+  property: PropertyProps;
   setIsModalOpen: (_value: boolean) => void;
+  targetRef: React.RefObject<HTMLElement | null>;
 }
 
 export const PropertyFixedBlock: React.FC<PropertyFixedProps> = ({
   setIsModalOpen,
+  property,
+  targetRef,
 }) => {
+  const { monthlyRent } = property;
+  const [isFixed, setIsFixed] = useState(true);
+
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!targetRef?.current) return;
+
+      const targetTop = targetRef.current.getBoundingClientRect().bottom;
+      const viewportHeight = window.innerHeight;
+
+      if (targetTop <= viewportHeight) {
+        setIsFixed(false);
+      } else {
+        setIsFixed(true);
+      }
+    };
+
+    const handleScrollOptimized = () => {
+      window.requestAnimationFrame(handleScroll);
+    };
+
+    window.addEventListener('scroll', handleScrollOptimized);
+    return () => {
+      window.removeEventListener('scroll', handleScrollOptimized);
+    };
+  }, [targetRef]);
+
   return (
-    <div className={styles.fixedBlock}>
+    <div className={isFixed ? styles.fixedBlock : styles.relativeBlock}>
       <div className={styles.fixedContainer}>
         <div className={styles.fixedTitleBlock}>
           <p className={styles.fixedTitle}>
@@ -25,7 +56,7 @@ export const PropertyFixedBlock: React.FC<PropertyFixedProps> = ({
           </p>
         </div>
         <div className={styles.priceBlock}>
-          <p className={styles.price}>54 244 Re</p>
+          <p className={styles.price}>{monthlyRent} LKR</p>
           <Button
             text="Request a tour"
             textColor="#FFFFFF"

@@ -1,21 +1,13 @@
 export interface PropertyProps {
   address: string;
-  place: string;
+  city: string;
   availableFrom?: string;
   deposit?: number;
   floorArea: number;
   propertyType: string;
   monthlyRent: number;
   title: string;
-  image1?: string;
-  image2?: string;
-  image3?: string;
-  image4?: string;
-  image5?: string;
-  image6?: string;
-  image7?: string;
-  image8?: string;
-  image9?: string;
+  images: string[];
   numberBedrooms: number;
   numberBathrooms: number;
   createdAt: { seconds: number; nanoseconds: number };
@@ -25,6 +17,21 @@ export interface PropertyProps {
   id: string;
   userId: string;
   furnishing: string;
+  firstQuestion?: string;
+  secondQuestion: string;
   customQuestion?: string;
   status: string;
+  ownerId: string;
+  gym: boolean;
+  pool: boolean;
+  parking: boolean;
+  playground: boolean;
+  elevator: boolean;
+  charger: boolean;
+  hotWater: boolean;
+  microwave: boolean;
+  washingMachine: boolean;
+  tv: boolean;
+  conditioner: boolean;
+  culteries: boolean;
 }

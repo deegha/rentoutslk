@@ -1,74 +1,44 @@
-'use client';
-
-import {
-  Header,
-  YouCanRent,
-  Footer,
-  RentalFilters,
-  Breadcrumbs,
-  ApartmentsRental,
-} from '@/components';
-import React, { useState, useEffect, Suspense } from 'react';
-import PageTitle from '@/components/nav/pageTitle';
+import { Header, Footer } from '@/components';
 import { SearchProvider } from '@/context/searchProvider/searchProvider';
+import RentalsClient from './rentalsClient';
+import { Suspense } from 'react';
 
-export default function Rentals() {
-  const [filters, setFilters] = useState({
-    address: '',
-    propertyType: '',
-    place: '',
-    maxRent: '',
-    monthlyRent: 0,
-    minBedrooms: 1,
-    maxBedrooms: 8,
-    minBathrooms: 1,
-    maxBathrooms: 8,
-    furnishing: '',
-    availableFrom: '',
-    amenities: {
-      parking: false,
-      pool: false,
-      hotWater: false,
-      tv: false,
-      gym: false,
-      electricCharger: false,
+export async function generateMetadata() {
+  return {
+    title: 'rentoutslk | All rentals in Sri Lanka',
+    description:
+      'Find the best rental properties in Sri Lanka. Search through various apartments, houses, and studios with customizable filters.',
+    openGraph: {
+      title: 'rentoutslk | All rentals in Sri Lanka',
+      description:
+        'Find the best rental properties in Sri Lanka. Search through various apartments, houses, and studios with customizable filters.',
+      url: 'https://rentoutslk.vercel.app/rentals',
+      images: [
+        {
+          url: '/og.png',
+          alt: 'All rentals in Sri Lanka',
+        },
+      ],
+      siteName: 'RentoutSLK',
     },
-  });
-
-  const [categories, setCategories] = useState([
-    { name: 'Rentouts', href: '/' },
-    { name: 'Rentals', href: '/rentals' },
-  ]);
-
-  useEffect(() => {
-    setCategories([
-      { name: 'Rentouts', href: '/' },
-      { name: 'Rentals', href: '/rentals' },
-      { name: filters.address ? filters.address : 'All rentals', href: '/' },
-    ]);
-  }, [filters.address]);
-
-  const handleFilterChange = (newFilters: typeof filters) => {
-    setFilters(newFilters);
+    twitter: {
+      card: 'summary_large_image',
+      title: 'rentoutslk | All rentals in Sri Lanka',
+      description:
+        'Find the best rental properties in Sri Lanka. Search through various apartments, houses, and studios with customizable filters.',
+      images: ['/og.png'],
+    },
   };
+}
 
+export default function RentalsPage() {
   return (
     <SearchProvider>
       <Header />
       <main>
-        <PageTitle title="rentoutslk | All rentals" />
-        <Suspense fallback={<div>Loading filters...</div>}>
-          <RentalFilters
-            filters={filters}
-            onFilterChange={handleFilterChange}
-          />
+        <Suspense fallback={<div></div>}>
+          <RentalsClient />
         </Suspense>
-        <Breadcrumbs categories={categories} />
-        <ApartmentsRental
-          filters={filters}
-          onFilterChange={handleFilterChange}
-        />
-        <YouCanRent />
       </main>
       <Footer />
     </SearchProvider>

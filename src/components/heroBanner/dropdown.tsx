@@ -6,7 +6,7 @@ import Place from '@/icons/place.svg';
 
 interface SearchResult {
   address: string;
-  place: string;
+  city: string;
 }
 
 interface DropdownProps {
@@ -38,9 +38,9 @@ export const Dropdown: React.FC<DropdownProps> = ({
   isVisible,
 }) => {
   const filteredResults = searchResults.filter(
-    (result) => result.place || result.address,
+    (result) => result.city || result.address,
   );
-  const hasPlaces = filteredResults.some((result) => result.place);
+  const hasPlaces = filteredResults.some((result) => result.city);
   const hasNeighbourhoods = filteredResults.some((result) => result.address);
 
   return (
@@ -53,15 +53,15 @@ export const Dropdown: React.FC<DropdownProps> = ({
         <>
           <p className={styles.dropdownTitle}>Places</p>
           {filteredResults
-            .filter((result) => result.place)
+            .filter((result) => result.city)
             .map((result, index) => (
               <div
-                key={`place-${index}`}
+                key={`city-${index}`}
                 className={styles.dropdownItem}
-                onClick={() => onItemClick(result.place)}
+                onClick={() => onItemClick(result.city)}
               >
                 <Place />
-                <p>{highlightMatch(result.place, searchQuery)}</p>
+                <p>{highlightMatch(result.city, searchQuery)}</p>
               </div>
             ))}
         </>

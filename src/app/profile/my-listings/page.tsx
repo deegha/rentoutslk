@@ -2,8 +2,25 @@ import React from 'react';
 import { auth } from '@/auth';
 import { CustomSession } from '@/interface/session';
 import { Header, RouterProfile, Footer, InAuthed } from '@/components';
-import PageTitle from '@/components/nav/pageTitle';
 import CheckListings from '@/components/profile/checkListings';
+
+export async function generateMetadata() {
+  return {
+    title: 'rentoutslk | My listings',
+    description: 'View and manage all your property listings on rentoutslk.',
+    openGraph: {
+      title: 'rentoutslk | My listings',
+      description: 'View and manage all your property listings on rentoutslk.',
+      url: 'https://rentoutslk.vercel.app/profile/my-listings',
+      siteName: 'RentoutSLK',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'rentoutslk | My listings',
+      description: 'View and manage all your property listings on rentoutslk.',
+    },
+  };
+}
 
 const fetchUserData = async (userId: string, idToken: string) => {
   try {
@@ -34,7 +51,6 @@ const CheckListingsPage = async () => {
     return (
       <>
         <Header />
-        <PageTitle title="rentoutslk | My listings" />
         <RouterProfile isAdmin={false} />
         <InAuthed />
         <Footer />
@@ -52,8 +68,7 @@ const CheckListingsPage = async () => {
     return (
       <>
         <Header />
-        <PageTitle title="rentoutslk | My listings" />
-        <RouterProfile isAdmin={session.user.admin} />
+        <RouterProfile isAdmin={userData.admin} />
         <div
           style={{
             backgroundColor: '#F7F7F7',
@@ -71,7 +86,6 @@ const CheckListingsPage = async () => {
     return (
       <>
         <Header />
-        <PageTitle title="rentoutslk | My listings" />
         <RouterProfile isAdmin={false} />
         <InAuthed />
         <Footer />

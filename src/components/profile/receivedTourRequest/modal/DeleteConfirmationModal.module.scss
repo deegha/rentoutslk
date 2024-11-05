@@ -1,0 +1,36 @@
+@import '@/styles/_mixins.scss';
+@import '@/styles/_colors.scss';
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: row;
+  background: #5e5e5e;
+  padding: 24px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 350px;
+  text-align: start;
+  justify-content: space-between;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 15.73px;
+  text-align: left;
+}
+
+.undo {
+  cursor: pointer;
+}

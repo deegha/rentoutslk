@@ -31,6 +31,7 @@ export const PropertyAddQuestions: React.FC<PropertyAddQuestionsProps> = ({
               alt={'Appartament'}
               width={500}
               height={500}
+              className={styles.containerImage}
             />
           </div>
         </div>

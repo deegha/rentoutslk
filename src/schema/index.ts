@@ -13,7 +13,7 @@ export const RegisterSchema = z.object({
 export const propertyDetailsSchema = z.object({
   address: z.string().min(1, 'Address is required'),
   title: z.string().min(1, 'Title is required'),
-  place: z.string().min(1, 'Place is required'),
+  city: z.string().min(1, 'City is required'),
   propertyType: z.string().min(1, 'Property type is required'),
   rentalPeriod: z.string().min(1, 'Rental period is required'),
   monthlyRent: z.number().min(1, 'Monthly rent is required'),
@@ -38,23 +38,21 @@ export const propertyDetailsSchema = z.object({
 });
 
 export const imageUploadSchema = z.object({
-  image1: z
-    .string()
-    .min(1, 'Image is required')
-    .refine((val) => val.startsWith('data:image'), {
-      message: 'Invalid image format',
-    }),
-  image2: z
-    .string()
-    .min(1, 'Image is required')
-    .refine((val: string) => val.startsWith('data:image'), {
-      message: 'Invalid image format',
-    }),
+  images: z
+    .array(
+      z
+        .string()
+        .min(2, 'Image is required')
+        .refine((val) => val.startsWith('data:image'), {
+          message: 'Invalid image format',
+        }),
+    )
+    .min(2, 'At least two images are required'),
 });
 
 export const questionsFormSchema = z.object({
-  question1: z.string().optional(),
-  question2: z.string().optional(),
+  firstQuestion: z.string().optional(),
+  secondQuestion: z.string().optional(),
   customQuestion: z.string().optional(),
 });
 
@@ -68,9 +66,9 @@ export const tourRequestSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   email: z.string().email('Invalid email address').min(1, 'Email is required'),
   phone: z.string().min(1, 'Phone number is required'),
-  monthlyHousehold: z.string().optional(),
-  howLongStay: z.string().optional(),
-  bidHigher: z.string().optional(),
+  firstAnswer: z.string().optional(),
+  secondAnswer: z.string().optional(),
+  customAnswer: z.string().optional(),
   message: z.string().optional(),
 });
 export type TourRequestFormData = z.infer<typeof tourRequestSchema>;

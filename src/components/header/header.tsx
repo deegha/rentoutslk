@@ -2,10 +2,10 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { SignModal } from '@/components/auth';
-
+import MultiStepForm from '@/components/auth/multistep/multistep-form';
 import styles from './header.module.scss';
-
 import BurgerMenu from '@/icons/burger_menu.svg';
 import Close from '@/icons/header_close.svg';
 import VerticalVector from '@/icons/vertical_vector.svg';
@@ -16,6 +16,20 @@ import { HeaderFavourite } from '@/components';
 export const Header = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const { data: session } = useSession();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
+
+  const handleListPropertyClick = () => {
+    if (session?.user) {
+      router.push('/add-your-apartment');
+    } else {
+      setIsModalOpen(true);
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <header className={styles.header}>
@@ -29,9 +43,9 @@ export const Header = () => {
             alt="Logo"
           />
         </Link>
-        <Link href={'/add-your-apartment'} className={styles.list}>
+        <span className={styles.list} onClick={handleListPropertyClick}>
           List your property
-        </Link>
+        </span>
         <div className={styles.signBlock}>
           <HeaderFavourite />
           <SignModal />
@@ -48,6 +62,7 @@ export const Header = () => {
           )}
         </div>
       </nav>
+
       {mobileMenu && (
         <div className={styles.mobileHeaderMenu}>
           <div className={styles.mobileMenuLinks}>
@@ -57,9 +72,12 @@ export const Header = () => {
             <Link className={styles.mobileMenuLink} href={'/rentals'}>
               Search
             </Link>
-            <Link className={styles.mobileMenuLink} href={'/add-your-apart'}>
+            <span
+              className={styles.mobileMenuLink}
+              onClick={handleListPropertyClick}
+            >
               List property
-            </Link>
+            </span>
             <Link className={styles.mobileMenuLink} href={'/'}>
               Blog
             </Link>
@@ -67,7 +85,6 @@ export const Header = () => {
           <hr />
           {session ? (
             <div className={styles.mobileMenuLinks}>
-              {' '}
               <Link className={styles.mobileMenuLink} href={'/profile'}>
                 My profile
               </Link>
@@ -79,7 +96,7 @@ export const Header = () => {
               </Link>
               <Link
                 className={styles.mobileMenuLink}
-                href={'/profile/tour-request'}
+                href={'/profile/received-tour-request'}
               >
                 My requests
               </Link>
@@ -97,12 +114,16 @@ export const Header = () => {
             </div>
           ) : (
             <div>
-              {' '}
               <SignModal />
             </div>
           )}
         </div>
       )}
+      <MultiStepForm
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        callbackUrl="/add-your-apartment"
+      />
     </header>
   );
 };

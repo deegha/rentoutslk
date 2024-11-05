@@ -9,7 +9,7 @@ import ArrowRight from '@/icons/arrow_right_outline.svg';
 
 type SearchResult = {
   address: string;
-  place: string;
+  city: string;
 };
 
 export const HeroBanner = () => {

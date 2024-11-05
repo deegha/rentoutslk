@@ -25,8 +25,7 @@ export const MyListCard: React.FC<MyListCardProp> = ({
   onStatusChange,
   isInactive,
 }) => {
-  const { title, place, image1, createdAt, views, active, id, userId } =
-    listing;
+  const { title, city, images, createdAt, views, active, id, userId } = listing;
   const [isActive, setIsActive] = useState(active);
   const [savedUsersCount, setSavedUsersCount] = useState(0);
 
@@ -96,25 +95,31 @@ export const MyListCard: React.FC<MyListCardProp> = ({
       className={`${styles.mainContainer} ${isInactive ? styles.inActiveContainer : ''}`}
     >
       <div className={styles.imageContainer}>
-        <Image
-          className={styles.image}
-          src={`${image1}`}
-          alt={title}
-          width={1920}
-          height={1080}
-        />
+        {images.length > 0 ? (
+          <Image
+            className={styles.image}
+            src={images[0]}
+            alt={title}
+            width={1920}
+            height={1080}
+          />
+        ) : (
+          <p>No image available</p>
+        )}
       </div>
       <div className={styles.contentContainer}>
         <div className={styles.infoContainer}>
           <div className={styles.titleContainer}>
-            <div className={styles.titleLeftContainer}>
+            <Link
+              href={`/property/${id}`}
+              target="_blank"
+              className={styles.titleLeftContainer}
+            >
               <h1 className={styles.title}>
-                {title} in {place}
+                {title} in {city}
               </h1>
-              <Link href={`/property/${id}`}>
-                <ArrowLink />
-              </Link>
-            </div>
+              <ArrowLink />
+            </Link>
           </div>
           <div className={styles.info}>
             <div className={styles.infoBlock}>
