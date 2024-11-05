@@ -1,4 +1,3 @@
-// rentals/page.tsx
 import { Header, Footer } from '@/components';
 import { SearchProvider } from '@/context/searchProvider/searchProvider';
 import RentalsClient from './rentalsClient';

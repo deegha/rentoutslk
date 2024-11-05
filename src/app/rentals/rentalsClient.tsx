@@ -56,7 +56,6 @@ export default function RentalsClient() {
     },
   };
 
-  // Функция для получения фильтров из параметров
   function getFiltersFromParams(): Filters {
     const params = Object.fromEntries(searchParams.entries());
 
@@ -83,10 +82,8 @@ export default function RentalsClient() {
     };
   }
 
-  // Вычисляем фильтры напрямую без использования состояния
   const filters = getFiltersFromParams();
 
-  // Вычисляем категории
   const categories = useMemo(() => {
     return [
       { name: 'Rentouts', href: '/' },
