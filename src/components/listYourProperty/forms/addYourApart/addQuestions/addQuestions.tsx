@@ -53,7 +53,7 @@ export const AddQuestions = () => {
   return (
     <div className={styles.questionsList}>
       <div className={styles.questionBlock}>
-        <h4 className={styles.questionTitle}>1 Question</h4>
+        <h4 className={styles.questionTitle}>1 Question (optional)</h4>
         <SelectInput
           control={control}
           option={firstQuestion}
@@ -63,7 +63,7 @@ export const AddQuestions = () => {
         />
       </div>
       <div className={styles.questionBlock}>
-        <h4 className={styles.questionTitle}>1 Question</h4>
+        <h4 className={styles.questionTitle}>2 Question (optional)</h4>
         <SelectInput
           control={control}
           option={secondQuestion}
@@ -74,7 +74,7 @@ export const AddQuestions = () => {
       </div>
       <Textarea
         name="customQuestion"
-        label="Type your own question"
+        label="Type your own question (optional)"
         maxLength={200}
         placeholder="e.g. Can you provide references from previous landlords?"
         register={register}

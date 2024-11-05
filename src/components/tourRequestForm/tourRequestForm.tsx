@@ -155,6 +155,13 @@ const FormContent: React.FC<FormContentProps> = ({
     nextStep();
   };
 
+  const showOptionalQuestions =
+    (firstQuestion &&
+      firstQuestion !== 'I do not want to ask or do it later') ||
+    (secondQuestion &&
+      secondQuestion !== 'I do not want to ask or do it later') ||
+    customQuestion;
+
   return (
     <>
       {step === 0 && (
@@ -194,10 +201,12 @@ const FormContent: React.FC<FormContentProps> = ({
                 placeholder="Enter your phone number"
               />
             </div>
-            <p className={styles.formDesc}>
-              Answer these optional questions to get owner to know you better
-              and increase your chances to be selected.
-            </p>
+            {showOptionalQuestions && (
+              <p className={styles.formDesc}>
+                Answer these optional questions to get the owner to know you
+                better and increase your chances to be selected.
+              </p>
+            )}
             {firstQuestion &&
               firstQuestion !== 'I do not want to ask or do it later' && (
                 <TourTextarea
@@ -231,7 +240,7 @@ const FormContent: React.FC<FormContentProps> = ({
               name="message"
               label="Your message (optional)"
               maxLength={200}
-              placeholder="|Type here"
+              placeholder="|Eg: We are a working couple"
               register={register}
             />
             <div className={styles.btnBlock}>
