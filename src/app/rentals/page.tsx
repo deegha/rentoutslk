@@ -1,6 +1,7 @@
 import { Header, Footer } from '@/components';
 import { SearchProvider } from '@/context/searchProvider/searchProvider';
 import RentalsClient from './rentalsClient';
+import { Suspense } from 'react';
 
 export async function generateMetadata() {
   return {
@@ -35,7 +36,9 @@ export default function RentalsPage() {
     <SearchProvider>
       <Header />
       <main>
-        <RentalsClient />
+        <Suspense fallback={<div></div>}>
+          <RentalsClient />
+        </Suspense>
       </main>
       <Footer />
     </SearchProvider>
