@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import styles from '../propertyComponents/property.module.scss';
 
@@ -156,11 +156,19 @@ export const AddMoreDetails = () => {
             className={styles.apartTitle}
             required
           />
-          <DateSelect
-            label={'Available from*'}
-            name={'availableFrom'}
-            fontWeight="400"
-            required
+          <Controller
+            control={control}
+            name="availableFrom"
+            rules={{ required: 'This field is required' }}
+            render={({ field, fieldState }) => (
+              <DateSelect
+                {...field}
+                label="Available from*"
+                fontWeight="400"
+                required
+                error={fieldState.error?.message}
+              />
+            )}
           />
           <SelectInput
             control={control}

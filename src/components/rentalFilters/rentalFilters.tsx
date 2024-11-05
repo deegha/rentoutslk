@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, Controller } from 'react-hook-form';
 import styles from './rentalFilters.module.scss';
 import { Button, CustomInput, CustomSelect, RangeSlider } from '@/components';
 import { AmenitiesItem } from '../listYourProperty/forms/addYourApart/amenitiesItem';
@@ -50,16 +50,27 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
     max: filters.maxBathrooms || 8,
   });
 
-  const [tempAvailableFrom, setTempAvailableFrom] = useState<
-    string | undefined
-  >(filters.availableFrom || '');
-
   const methods = useForm({
     defaultValues: {
       ...filters,
       combined: searchQuery || combinedQuery,
     },
   });
+
+  const handleSubmit = (data: any) => {
+    const adjustedFilters = {
+      ...data,
+      furnishing: data.furnishing ? 'Yes' : '',
+      minBedrooms: tempBedrooms.min,
+      maxBedrooms: tempBedrooms.max,
+      minBathrooms: tempBathrooms.min,
+      maxBathrooms: tempBathrooms.max,
+      address: data.combined,
+      city: data.combined,
+    };
+    onFilterChange(adjustedFilters);
+    setMobileFilters(false);
+  };
 
   useEffect(() => {
     if (mobileFilters) {
@@ -77,23 +88,14 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
     if (combinedQuery) {
       methods.handleSubmit(handleSubmit)();
     }
-  }, [combinedQuery]);
+  }, [combinedQuery, methods, handleSubmit]);
 
-  const handleSubmit = (data: any) => {
-    const adjustedFilters = {
-      ...data,
-      furnishing: data.furnishing ? 'Yes' : '',
-      minBedrooms: tempBedrooms.min,
-      maxBedrooms: tempBedrooms.max,
-      minBathrooms: tempBathrooms.min,
-      maxBathrooms: tempBathrooms.max,
-      availableFrom: tempAvailableFrom,
-      address: data.combined,
-      city: data.combined,
-    };
-    onFilterChange(adjustedFilters);
-    setMobileFilters(false);
-  };
+  useEffect(() => {
+    methods.reset({
+      ...filters,
+      combined: searchQuery || combinedQuery,
+    });
+  }, [filters, searchQuery, combinedQuery, methods]);
 
   const handleBedroomsChange = (min: number, max: number) => {
     setTempBedrooms({ min, max });
@@ -101,10 +103,6 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
 
   const handleBathroomsChange = (min: number, max: number) => {
     setTempBathrooms({ min, max });
-  };
-
-  const handleDateChange = (date: string) => {
-    setTempAvailableFrom(date);
   };
 
   return (
@@ -224,11 +222,18 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
                 </div>
               </div>
               <div className={styles.dateSelectBlock}>
-                <DateSelect
+                <Controller
+                  control={methods.control}
                   name="availableFrom"
-                  onDateChange={handleDateChange}
-                  label="Moving in from"
-                  fontWeight="600"
+                  render={({ field, fieldState }) => (
+                    <DateSelect
+                      {...field}
+                      label="Moving in from"
+                      fontWeight="600"
+                      required={false}
+                      error={fieldState.error?.message}
+                    />
+                  )}
                 />
               </div>
             </div>
@@ -310,11 +315,18 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
                         onChange={handleBathroomsChange}
                       />
                       <div className={styles.dateSelectBlock}>
-                        <DateSelect
+                        <Controller
+                          control={methods.control}
                           name="availableFrom"
-                          onDateChange={handleDateChange}
-                          label="Moving in from"
-                          fontWeight="600"
+                          render={({ field, fieldState }) => (
+                            <DateSelect
+                              {...field}
+                              label="Moving in from"
+                              fontWeight="600"
+                              required={false}
+                              error={fieldState.error?.message}
+                            />
+                          )}
                         />
                       </div>
                       <div className={styles.amenitiesList}>
