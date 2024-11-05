@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, useMemo, Suspense } from 'react';
+import React, { Suspense, useMemo } from 'react';
 import {
   RentalFilters,
   Breadcrumbs,
@@ -56,7 +56,8 @@ export default function RentalsClient() {
     },
   };
 
-  const initialFilters: Filters = useMemo(() => {
+  // Функция для получения фильтров из параметров
+  function getFiltersFromParams(): Filters {
     const params = Object.fromEntries(searchParams.entries());
 
     return {
@@ -80,26 +81,24 @@ export default function RentalsClient() {
         electricCharger: params['amenities.electricCharger'] === 'true',
       },
     };
-  }, [searchParams]);
+  }
 
-  const [filters, setFilters] = useState<Filters>(initialFilters);
+  // Вычисляем фильтры напрямую без использования состояния
+  const filters = getFiltersFromParams();
 
-  const [categories, setCategories] = useState([
-    { name: 'Rentouts', href: '/' },
-    { name: 'Rentals', href: '/rentals' },
-  ]);
-
-  useEffect(() => {
-    setCategories([
+  // Вычисляем категории
+  const categories = useMemo(() => {
+    return [
       { name: 'Rentouts', href: '/' },
       { name: 'Rentals', href: '/rentals' },
-      { name: filters.address ? filters.address : 'All rentals', href: '/' },
-    ]);
+      {
+        name: filters.address ? filters.address : 'All rentals',
+        href: '/rentals',
+      },
+    ];
   }, [filters.address]);
 
   const handleFilterChange = (newFilters: Filters) => {
-    setFilters(newFilters);
-
     const query = new URLSearchParams();
 
     (Object.keys(newFilters) as (keyof Filters)[]).forEach((key) => {
