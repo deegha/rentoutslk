@@ -135,6 +135,7 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
                 label="Max. rent"
                 name="maxRent"
                 placeholder="Max rent"
+                isCurrency
               />
               <RangeSlider
                 label="Number of bedrooms"

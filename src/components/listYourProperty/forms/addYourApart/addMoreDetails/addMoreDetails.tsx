@@ -115,9 +115,9 @@ export const AddMoreDetails = () => {
             placeholder={'54244'}
             label={'Monthly rent'}
             name={'monthlyRent'}
-            type="number"
             classNameContainer={styles.apartTitleContainer}
             className={styles.apartTitle}
+            isCurrency
             required
           />
         </div>
@@ -129,6 +129,7 @@ export const AddMoreDetails = () => {
             name={'deposit'}
             classNameContainer={styles.apartTitleContainer}
             className={styles.apartTitle}
+            isCurrency
             required
           />
           <SelectInput

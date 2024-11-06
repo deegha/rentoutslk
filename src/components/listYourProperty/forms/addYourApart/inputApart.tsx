@@ -11,6 +11,7 @@ interface InputApartProps {
   required?: boolean;
   classNameContainer?: string;
   error?: FieldError;
+  isCurrency?: boolean;
 }
 
 export const InputApart = React.forwardRef<HTMLInputElement, InputApartProps>(
@@ -23,6 +24,7 @@ export const InputApart = React.forwardRef<HTMLInputElement, InputApartProps>(
       type = 'text',
       required = false,
       classNameContainer,
+      isCurrency = false,
     },
     ref,
   ) => {
@@ -31,6 +33,10 @@ export const InputApart = React.forwardRef<HTMLInputElement, InputApartProps>(
       formState: { errors },
     } = useFormContext();
     const fieldError = errors[name] as FieldError;
+
+    const formatCurrency = (value: string) => {
+      return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    };
 
     return (
       <div className={`${classNameContainer}`}>
@@ -46,10 +52,20 @@ export const InputApart = React.forwardRef<HTMLInputElement, InputApartProps>(
           {...register(name, {
             required,
             setValueAs: (value) => {
+              if (isCurrency) {
+                return parseFloat(value.replace(/,/g, ''));
+              }
               return type === 'number' ? parseFloat(value) : value;
             },
           })}
           ref={ref}
+          onChange={(e) => {
+            let inputValue = e.target.value.replace(/,/g, '');
+            if (isCurrency) {
+              inputValue = formatCurrency(inputValue);
+            }
+            e.target.value = inputValue;
+          }}
         />
         {fieldError && (
           <span style={{ color: 'red' }}>{fieldError.message}</span>
