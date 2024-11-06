@@ -28,6 +28,10 @@ export const CustomInput: React.FC<CustomInputProps> = ({
     return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
+  const parseCurrency = (value: string) => {
+    return value.replace(/,/g, '');
+  };
+
   return (
     <div className={styles.inputContainer}>
       <label className={styles.label}>
@@ -43,13 +47,17 @@ export const CustomInput: React.FC<CustomInputProps> = ({
             placeholder={placeholder}
             className={styles.input}
             onChange={(e) => {
-              let inputValue = e.target.value.replace(/,/g, '');
+              let inputValue = e.target.value;
               if (isCurrency) {
-                inputValue = formatCurrency(inputValue);
+                inputValue = parseCurrency(inputValue);
               }
               field.onChange(inputValue);
             }}
-            value={isCurrency ? formatCurrency(field.value || '') : field.value}
+            value={
+              isCurrency && field.value
+                ? formatCurrency(field.value)
+                : field.value
+            }
           />
         )}
         rules={{ required }}
