@@ -17,7 +17,7 @@ export const propertyDetailsSchema = z.object({
   propertyType: z.string().min(1, 'Property type is required'),
   rentalPeriod: z.string().min(1, 'Rental period is required'),
   monthlyRent: z.number().min(1, 'Monthly rent is required'),
-  deposit: z.string().min(1, 'Deposit is required'),
+  deposit: z.number().min(1, 'Deposit is required'),
   numberBedrooms: z.string().min(1, 'Number of bedrooms is required'),
   numberBathrooms: z.string().min(1, 'Number of bathrooms is required'),
   floorArea: z.string().min(1, 'Floor area is required'),

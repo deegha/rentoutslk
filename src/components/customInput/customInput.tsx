@@ -11,6 +11,7 @@ interface CustomInputProps {
   placeholder?: string;
   type?: string;
   required?: boolean;
+  isCurrency?: boolean;
 }
 
 export const CustomInput: React.FC<CustomInputProps> = ({
@@ -21,7 +22,12 @@ export const CustomInput: React.FC<CustomInputProps> = ({
   placeholder = '',
   type = 'text',
   required = false,
+  isCurrency = false,
 }) => {
+  const formatCurrency = (value: string) => {
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
   return (
     <div className={styles.inputContainer}>
       <label className={styles.label}>
@@ -36,6 +42,14 @@ export const CustomInput: React.FC<CustomInputProps> = ({
             type={type}
             placeholder={placeholder}
             className={styles.input}
+            onChange={(e) => {
+              let inputValue = e.target.value.replace(/,/g, '');
+              if (isCurrency) {
+                inputValue = formatCurrency(inputValue);
+              }
+              field.onChange(inputValue);
+            }}
+            value={isCurrency ? formatCurrency(field.value || '') : field.value}
           />
         )}
         rules={{ required }}
