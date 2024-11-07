@@ -7,6 +7,7 @@ import { Button } from '@/components/button/button';
 import { format, formatDistanceToNow, isToday, isYesterday } from 'date-fns';
 import { Tooltip } from 'react-tooltip';
 import ActionModal from '../modal/ActionModal';
+import BeatLoader from 'react-spinners/BeatLoader';
 
 interface ReceivedTourRequestCardProps {
   tourRequest: TourRequestProps;
@@ -25,6 +26,8 @@ const RecievedTourRequestCard: React.FC<ReceivedTourRequestCardProps> = ({
     title: string;
     message: string;
   } | null>(null);
+  const [isLoadingAccept, setIsLoadingAccept] = useState(false);
+  const [isLoadingDecline, setIsLoadingDecline] = useState(false);
 
   const {
     name,
@@ -69,6 +72,7 @@ const RecievedTourRequestCard: React.FC<ReceivedTourRequestCardProps> = ({
     : 'N/A';
 
   const handleAccept = async () => {
+    setIsLoadingAccept(true);
     try {
       const response = await fetch(`/api/check-recieved-tour-request/accept`, {
         method: 'POST',
@@ -90,10 +94,13 @@ const RecievedTourRequestCard: React.FC<ReceivedTourRequestCardProps> = ({
       }
     } catch (error) {
       console.error('Error accepting request:', error);
+    } finally {
+      setIsLoadingAccept(false);
     }
   };
 
   const handleDecline = async () => {
+    setIsLoadingDecline(true);
     try {
       const response = await fetch(`/api/check-recieved-tour-request/decline`, {
         method: 'POST',
@@ -115,6 +122,8 @@ const RecievedTourRequestCard: React.FC<ReceivedTourRequestCardProps> = ({
       }
     } catch (error) {
       console.error('Error declining request:', error);
+    } finally {
+      setIsLoadingDecline(false);
     }
   };
 
@@ -247,25 +256,33 @@ const RecievedTourRequestCard: React.FC<ReceivedTourRequestCardProps> = ({
           </div>
           {status === 'pending' && (
             <div className={styles.buttonContainer}>
-              <Button
-                text="Accept"
-                bgColor="#222222"
-                textColor="#fff"
-                padding="10.5px 39px"
-                borderRadius="4px"
-                fontWeight="600"
-                onClick={handleAccept}
-              />
-              <Button
-                text="Decline"
-                bgColor="#fff"
-                textColor="#000"
-                borderColor="#222222"
-                padding="10.5px 39px"
-                borderRadius="4px"
-                fontWeight="600"
-                onClick={handleDecline}
-              />
+              {isLoadingAccept ? (
+                <BeatLoader color="#DE225C" />
+              ) : (
+                <Button
+                  text="Accept"
+                  bgColor="#222222"
+                  textColor="#fff"
+                  padding="10.5px 39px"
+                  borderRadius="4px"
+                  fontWeight="600"
+                  onClick={handleAccept}
+                />
+              )}
+              {isLoadingDecline ? (
+                <BeatLoader color="#DE225C" />
+              ) : (
+                <Button
+                  text="Decline"
+                  bgColor="#fff"
+                  textColor="#000"
+                  borderColor="#222222"
+                  padding="10.5px 39px"
+                  borderRadius="4px"
+                  fontWeight="600"
+                  onClick={handleDecline}
+                />
+              )}
             </div>
           )}
         </div>

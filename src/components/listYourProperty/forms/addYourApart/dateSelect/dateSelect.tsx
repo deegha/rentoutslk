@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+'use client';
+import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
@@ -6,153 +7,147 @@ import styles from './dateSelect.module.scss';
 
 interface DateSelectProps {
   label: string;
-  fontWeight: string;
-  name: string;
+  fontWeight?: string;
   value: string;
   onChange: (_date: string) => void;
   required?: boolean;
   error?: string;
 }
 
-export const DateSelect: React.FC<DateSelectProps> = ({
-  label,
-  fontWeight,
-  // name,
-  value,
-  onChange,
-  required = false,
-  error,
-}) => {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const [inputValue, setInputValue] = useState<string>('');
-  const [showCalendar, setShowCalendar] = useState<boolean>(false);
-  const calendarRef = useRef<HTMLDivElement>(null);
+export const DateSelect = forwardRef<HTMLInputElement, DateSelectProps>(
+  ({ label, fontWeight, value, onChange, required = false, error }, ref) => {
+    const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+      value ? new Date(value) : undefined,
+    );
+    const [inputValue, setInputValue] = useState<string>(
+      value ? new Date(value).toLocaleDateString('en-US') : '',
+    );
+    const [showCalendar, setShowCalendar] = useState(false);
+    const calendarRef = useRef<HTMLDivElement>(null);
 
-  const labelStyle: React.CSSProperties = {
-    fontWeight,
-  };
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  useEffect(() => {
-    if (value) {
-      const parsedDate = new Date(value);
-      if (!isNaN(parsedDate.getTime())) {
+    useEffect(() => {
+      if (value) {
+        const parsedDate = new Date(value);
         setSelectedDate(parsedDate);
         setInputValue(parsedDate.toLocaleDateString('en-US'));
-      } else {
-        setSelectedDate(undefined);
-        setInputValue('');
       }
-    } else {
-      setSelectedDate(undefined);
-      setInputValue('');
-    }
-  }, [value]);
+    }, [value]);
 
-  const handleManualInputChange = (value: string) => {
-    const formattedValue = formatDateInput(value);
-    setInputValue(formattedValue);
+    const handleManualInputChange = (
+      e: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+      const cleanedValue = e.target.value.replace(/\D/g, '');
 
-    const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
-    if (formattedValue.match(datePattern)) {
+      let formattedValue = '';
+      if (cleanedValue.length > 0) {
+        if (cleanedValue.length <= 2) {
+          formattedValue = cleanedValue;
+        } else if (cleanedValue.length <= 4) {
+          formattedValue = `${cleanedValue.slice(0, 2)}/${cleanedValue.slice(2)}`;
+        } else {
+          formattedValue = `${cleanedValue.slice(0, 2)}/${cleanedValue.slice(
+            2,
+            4,
+          )}/${cleanedValue.slice(4, 8)}`;
+        }
+      }
+
+      setInputValue(formattedValue);
+
       const [month, day, year] = formattedValue.split('/');
-      const parsedDate = new Date(Number(year), Number(month) - 1, Number(day));
-      parsedDate.setHours(0, 0, 0, 0);
-
-      if (!isNaN(parsedDate.getTime()) && parsedDate >= today) {
-        setSelectedDate(parsedDate);
-        onChange(parsedDate.toISOString());
+      if (month && day && year) {
+        const parsedDate = new Date(
+          Number(year),
+          Number(month) - 1,
+          Number(day),
+        );
+        if (!isNaN(parsedDate.getTime()) && parsedDate >= today) {
+          setSelectedDate(parsedDate);
+          onChange(parsedDate.toISOString());
+        } else {
+          setSelectedDate(undefined);
+          onChange('');
+        }
       } else {
         setSelectedDate(undefined);
         onChange('');
       }
-    } else if (!formattedValue) {
-      setSelectedDate(undefined);
-      onChange('');
-    }
-  };
 
-  const formatDateInput = (value: string) => {
-    const cleanedValue = value.replace(/\D/g, '');
-    const monthDayPattern =
-      cleanedValue.slice(0, 2) +
-      (cleanedValue.length > 2 ? '/' : '') +
-      cleanedValue.slice(2, 4) +
-      (cleanedValue.length > 4 ? '/' : '') +
-      cleanedValue.slice(4, 8);
-
-    return monthDayPattern;
-  };
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      calendarRef.current &&
-      !calendarRef.current.contains(event.target as Node)
-    ) {
-      setShowCalendar(false);
-    }
-  };
-
-  useEffect(() => {
-    if (showCalendar) {
-      document.addEventListener('click', handleClickOutside);
-    } else {
-      document.removeEventListener('click', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
+      setTimeout(() => {
+        const inputElement = e.target;
+        inputElement.setSelectionRange(
+          formattedValue.length,
+          formattedValue.length,
+        );
+      }, 0);
     };
-  }, [showCalendar]);
 
-  const handleDateSelect = (_date: Date | undefined) => {
-    if (_date) {
-      const selectedDay = new Date(_date);
-      selectedDay.setHours(0, 0, 0, 0);
-
-      if (selectedDay >= today) {
-        const formattedDate = _date.toISOString();
-        setSelectedDate(_date);
-        setInputValue(_date.toLocaleDateString('en-US'));
-        onChange(formattedDate);
-        setShowCalendar(false);
-      } else {
-        // Если нужно, можно добавить обработку выбора даты в прошлом
+    const handleDateSelect = (date: Date | undefined) => {
+      if (date && date >= today) {
+        setSelectedDate(date);
+        setInputValue(date.toLocaleDateString('en-US'));
+        onChange(date.toISOString());
+        // Убираем строку setShowCalendar(false);
       }
-    }
-  };
+    };
 
-  return (
-    <div className={styles.datePickerContainer}>
-      <label className={styles.label} style={labelStyle}>
-        {label}
-      </label>
-      <input
-        className={styles.datePicker}
-        value={inputValue}
-        onClick={() => setShowCalendar(true)}
-        onChange={(e) => handleManualInputChange(e.target.value)}
-        placeholder="mm/dd/yyyy"
-        required={required}
-        maxLength={10}
-      />
-      {showCalendar && (
-        <div className={styles.calendarOverlay} ref={calendarRef}>
-          <DayPicker
-            mode="single"
-            selected={selectedDate}
-            onSelect={handleDateSelect}
-            disabled={{ before: today }}
-          />
-        </div>
-      )}
-      {error && (
-        <p className={styles.errorField}>
-          {label} <span className={styles.errorText}>{error}</span>
-        </p>
-      )}
-    </div>
-  );
-};
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        calendarRef.current &&
+        !calendarRef.current.contains(event.target as Node)
+      ) {
+        setShowCalendar(false);
+      }
+    };
+
+    useEffect(() => {
+      if (showCalendar) {
+        document.addEventListener('click', handleClickOutside);
+      } else {
+        document.removeEventListener('click', handleClickOutside);
+      }
+      return () => {
+        document.removeEventListener('click', handleClickOutside);
+      };
+    }, [showCalendar]);
+
+    return (
+      <div className={styles.datePickerContainer}>
+        <label className={styles.label} style={{ fontWeight }}>
+          {label}
+        </label>
+        <input
+          ref={ref}
+          className={styles.datePicker}
+          value={inputValue}
+          onClick={() => setShowCalendar(true)}
+          onChange={handleManualInputChange}
+          placeholder="mm/dd/yyyy"
+          required={required}
+          maxLength={10}
+        />
+        {showCalendar && (
+          <div className={styles.calendarOverlay} ref={calendarRef}>
+            <DayPicker
+              mode="single"
+              selected={selectedDate}
+              onSelect={handleDateSelect}
+              disabled={{ before: today }}
+              className={styles.rd_day_picker}
+            />
+          </div>
+        )}
+        {error && (
+          <p className={styles.error}>
+            {label} <span className={styles.errorText}>{error}</span>
+          </p>
+        )}
+      </div>
+    );
+  },
+);
+
+DateSelect.displayName = 'DateSelect';

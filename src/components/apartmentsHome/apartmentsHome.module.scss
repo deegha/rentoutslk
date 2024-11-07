@@ -8,6 +8,7 @@
   max-width: 1920px;
   padding: 36px 24px 56px 24px;
   gap: 24px;
+  min-height: 800px;
   @include desktopAndBeyondView() {
     gap: 60px;
     padding: 80px 80px 60px 80px;
@@ -42,4 +43,5 @@
   align-items: center;
   height: 100%;
   padding: 20px;
+  margin-top: 200px;
 }

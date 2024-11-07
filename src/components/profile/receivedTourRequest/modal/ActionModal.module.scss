@@ -15,6 +15,7 @@
 }
 
 .modalContent {
+  position: relative;
   display: flex;
   flex-direction: column;
   background: #fff;
@@ -40,4 +41,19 @@
   font-weight: 400;
   line-height: 19.6px;
   text-align: left;
+}
+
+.closeButton {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
+
+.closeButton:hover {
+  color: #000;
 }
