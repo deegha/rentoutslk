@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
 import styles from './rentalFilters.module.scss';
@@ -57,20 +57,23 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
     },
   });
 
-  const handleSubmit = (data: any) => {
-    const adjustedFilters = {
-      ...data,
-      furnishing: data.furnishing ? 'Yes' : '',
-      minBedrooms: tempBedrooms.min,
-      maxBedrooms: tempBedrooms.max,
-      minBathrooms: tempBathrooms.min,
-      maxBathrooms: tempBathrooms.max,
-      address: data.combined,
-      city: data.combined,
-    };
-    onFilterChange(adjustedFilters);
-    setMobileFilters(false);
-  };
+  const handleSubmit = useCallback(
+    (data: any) => {
+      const adjustedFilters = {
+        ...data,
+        furnishing: data.furnishing ? 'Yes' : '',
+        minBedrooms: tempBedrooms.min,
+        maxBedrooms: tempBedrooms.max,
+        minBathrooms: tempBathrooms.min,
+        maxBathrooms: tempBathrooms.max,
+        address: data.combined,
+        city: data.combined,
+      };
+      onFilterChange(adjustedFilters);
+      setMobileFilters(false);
+    },
+    [tempBedrooms, tempBathrooms, onFilterChange],
+  );
 
   useEffect(() => {
     if (mobileFilters) {
@@ -85,10 +88,10 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
   }, [mobileFilters]);
 
   useEffect(() => {
-    if (combinedQuery) {
+    if (combinedQuery && combinedQuery !== filters.combined) {
       methods.handleSubmit(handleSubmit)();
     }
-  }, [combinedQuery, methods, handleSubmit]);
+  }, [combinedQuery, filters.combined, methods, handleSubmit]);
 
   useEffect(() => {
     methods.reset({
@@ -229,6 +232,7 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
                   render={({ field, fieldState }) => (
                     <DateSelect
                       {...field}
+                      ref={field.ref}
                       label="Moving in from"
                       fontWeight="600"
                       required={false}
@@ -322,6 +326,7 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
                           render={({ field, fieldState }) => (
                             <DateSelect
                               {...field}
+                              ref={field.ref} // Передача ref
                               label="Moving in from"
                               fontWeight="600"
                               required={false}

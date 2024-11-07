@@ -23,10 +23,9 @@ export const LookingFor = () => {
               Only verified apartment owners{' '}
             </h3>
             <p className={styles.cardDesc}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut
-              velit eu purus tincidunt gravida nec non ipsum. Curabitur accumsan
-              nisi nec velit commodo, sed interdum lacus tristique. Duis sodales
-              magna et justo fringilla, quis varius justo tempor.
+              Browse through listings from verified apartment owners. Every
+              property is checked to ensure you have a safe and reliable rental
+              experience.
             </p>
           </div>
         </div>
@@ -37,10 +36,9 @@ export const LookingFor = () => {
               Make your own list of favourites
             </h3>
             <p className={styles.cardDesc}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut
-              velit eu purus tincidunt gravida nec non ipsum. Curabitur accumsan
-              nisi nec velit commodo, sed interdum lacus tristique. Duis sodales
-              magna et justo fringilla, quis varius justo tempor.
+              Save your top picks to a personalized favorites list. This way,
+              you can easily revisit and compare options to find the perfect
+              place.
             </p>
           </div>
         </div>
@@ -52,14 +50,11 @@ export const LookingFor = () => {
             height={70}
           />
           <div className={styles.cardText}>
-            <h3 className={styles.cardTitle}>
-              Only verified apartment owners{' '}
-            </h3>
+            <h3 className={styles.cardTitle}>Quick contact</h3>
             <p className={styles.cardDesc}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut
-              velit eu purus tincidunt gravida nec non ipsum. Curabitur accumsan
-              nisi nec velit commodo, sed interdum lacus tristique. Duis sodales
-              magna et justo fringilla, quis varius justo tempor.
+              Connect directly with property owners to ask any questions. Get
+              quick and reliable responses to help you make informed decisions
+              effortlessly.
             </p>
           </div>
         </div>

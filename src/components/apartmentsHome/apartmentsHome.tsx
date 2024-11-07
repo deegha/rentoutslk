@@ -40,7 +40,7 @@ interface Apartment {
 export const ApartmentsHome = () => {
   const [apartments, setApartments] = useState<Apartment[]>([]);
   const [cardCount, setCardCount] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {

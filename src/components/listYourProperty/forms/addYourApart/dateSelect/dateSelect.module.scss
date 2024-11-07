@@ -58,3 +58,20 @@
     text-transform: lowercase;
   }
 }
+
+
+.rd_day_picker {
+  --rdp-accent-color: black;
+  --rdp-background-color: white;
+  --rdp-primary-color: black;
+  --rdp-selected-color: white;
+}
+
+.rdp-day_today {
+  border: 1px solid black;
+}
+
+.rdp-day_selected {
+  background-color: black;
+  color: white;
+}

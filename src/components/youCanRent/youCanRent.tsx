@@ -69,8 +69,8 @@ export const YouCanRent = () => {
           <div className={styles.cardText}>
             <h3 className={styles.cardTitle}>Step 3: Ask your questions </h3>
             <p className={styles.cardDesc}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut
-              velit eu purus tincidunt gravida nec non ipsum.
+              Ask key questions to find the right tenant and ensure a smooth
+              rental process.
             </p>
           </div>
         </div>
