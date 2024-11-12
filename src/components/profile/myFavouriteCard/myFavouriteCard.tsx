@@ -11,7 +11,6 @@ import Type from '@/icons/type.svg';
 import Arrow from '@/icons/arrow_next.svg';
 
 interface FavouriteCardProps {
-  active: boolean;
   status: string;
   id: string;
   address: string;
@@ -47,7 +46,6 @@ export const MyFavouriteCard: React.FC<FavouriteCardProp> = ({
     floorArea,
     numberBedrooms,
     images,
-    active,
     status,
   } = listing;
 
@@ -65,7 +63,7 @@ export const MyFavouriteCard: React.FC<FavouriteCardProp> = ({
 
   const customIndicators = () => <span className="pagination"></span>;
 
-  const isUnavailable = !active || status === 'not verified';
+  const isUnavailable = status === 'deleted' || status === 'inactive';
 
   const handleDelete = async () => {
     try {

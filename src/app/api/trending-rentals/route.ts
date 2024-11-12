@@ -30,7 +30,7 @@ export async function GET() {
       gym: doc.data().gym,
       electricCharger: doc.data().electricCharger,
       status: doc.data().status,
-      active: doc.data().active,
+      verified: doc.data().verified,
     }));
 
     return NextResponse.json(listings, { status: 200 });

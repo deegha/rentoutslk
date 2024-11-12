@@ -34,7 +34,7 @@ interface Apartment {
   gym?: boolean;
   electricCharger?: boolean;
   status?: string;
-  active?: boolean;
+  verified?: boolean;
 }
 
 export const ApartmentsHome = () => {
@@ -71,8 +71,7 @@ export const ApartmentsHome = () => {
 
         const filteredData = data
           .filter(
-            (item: Apartment) =>
-              item.status === 'verified' && item.active === true,
+            (item: Apartment) => item.status === 'approved' && item.verified,
           )
           .sort((a: Apartment, b: Apartment) => b.views - a.views);
 

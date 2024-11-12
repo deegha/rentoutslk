@@ -11,7 +11,7 @@ export async function GET(request: Request) {
   try {
     const listingsRef = collection(db, 'listings');
 
-    let q = query(listingsRef, where('active', '==', true));
+    let q = query(listingsRef, where('status', '==', 'approved'));
 
     if (propertyType && propertyType !== 'all') {
       q = query(q, where('propertyType', '==', propertyType));
@@ -29,9 +29,9 @@ export async function GET(request: Request) {
 
     return NextResponse.json(listings, { status: 200 });
   } catch (error) {
-    console.error('Error fetching verified listings:', error);
+    console.error('Error fetching approved listings:', error);
     return NextResponse.json(
-      { message: 'Failed to fetch verified listings' },
+      { message: 'Failed to fetch approved listings' },
       { status: 500 },
     );
   }

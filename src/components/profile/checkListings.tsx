@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useEffect, useState } from 'react';
 import { MyListCard } from './myListCard';
 import styles from './checkListings.module.scss';
@@ -49,6 +48,8 @@ const CheckListings: React.FC<CheckListingsProps> = ({
 
         const data = await response.json();
         setListingsState(data.listings || []);
+      } catch (error) {
+        console.error(error);
       } finally {
         setLoading(false);
       }
@@ -63,10 +64,10 @@ const CheckListings: React.FC<CheckListingsProps> = ({
     );
   };
 
-  const handleStatusChange = (id: string, newActiveStatus: boolean) => {
+  const handleStatusChange = (id: string, newStatus: string) => {
     setListingsState((prevListings) =>
       prevListings.map((listing) =>
-        listing.id === id ? { ...listing, active: newActiveStatus } : listing,
+        listing.id === id ? { ...listing, status: newStatus } : listing,
       ),
     );
   };
@@ -76,8 +77,8 @@ const CheckListings: React.FC<CheckListingsProps> = ({
   };
 
   const filteredListings = listingsState.filter((listing) => {
-    if (activeLink === 'Active') return listing.active === true;
-    if (activeLink === 'Inactive') return listing.active === false;
+    if (activeLink === 'Active') return listing.status !== 'inactive';
+    if (activeLink === 'Inactive') return listing.status === 'inactive';
     return true;
   });
 
@@ -89,24 +90,19 @@ const CheckListings: React.FC<CheckListingsProps> = ({
           {listingsState.length > 0 && (
             <>
               <div className={styles.typeOfListings}>
-                <p
-                  className={`${activeLink === 'All listings' ? styles.activeLink : styles.link}`}
-                  onClick={() => setActiveLink('All listings')}
-                >
-                  All listings
-                </p>
-                <p
-                  className={`${activeLink === 'Active' ? styles.activeLink : styles.link}`}
-                  onClick={() => setActiveLink('Active')}
-                >
-                  Active
-                </p>
-                <p
-                  className={`${activeLink === 'Inactive' ? styles.activeLink : styles.link}`}
-                  onClick={() => setActiveLink('Inactive')}
-                >
-                  Inactive
-                </p>
+                {listingOptions.map((option) => (
+                  <p
+                    key={option.value}
+                    className={`${
+                      activeLink === option.value
+                        ? styles.activeLink
+                        : styles.link
+                    }`}
+                    onClick={() => setActiveLink(option.value as ActiveLink)}
+                  >
+                    {option.label}
+                  </p>
+                ))}
               </div>
               <div className={styles.typeOfListingsMobile}>
                 <CustomSelect
@@ -127,14 +123,13 @@ const CheckListings: React.FC<CheckListingsProps> = ({
               <BeatLoader color="#DE225C" />
             </div>
           ) : filteredListings && filteredListings.length > 0 ? (
-            filteredListings.map((listing, index) => (
+            filteredListings.map((listing) => (
               <MyListCard
-                key={index}
+                key={listing.id}
                 listing={listing}
                 idToken={idToken}
                 onDelete={handleDelete}
                 onStatusChange={handleStatusChange}
-                isInactive={!listing.active}
               />
             ))
           ) : (

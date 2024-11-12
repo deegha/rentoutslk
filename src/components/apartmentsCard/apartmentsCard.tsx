@@ -21,7 +21,7 @@ interface ApartmentsCardProps {
   propertyType: string;
   monthlyRent: number;
   title: string;
-  images: string[]; // Массив изображений
+  images: string[];
   numberBedrooms: number;
   numberBathrooms: number;
   createdAt: string;

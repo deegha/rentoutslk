@@ -67,8 +67,7 @@ export const TrendingProperties: React.FC<TrendingPropertiesProps> = ({
         const filteredData = data
           .filter(
             (item: Apartment) =>
-              item.status === 'verified' &&
-              item.active === true &&
+              item.status === 'approved' &&
               (item.address.toLowerCase().includes(address.toLowerCase()) ||
                 item.city.toLowerCase().includes(city.toLowerCase())),
           )

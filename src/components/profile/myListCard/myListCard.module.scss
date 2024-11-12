@@ -127,10 +127,14 @@
 
 .titleContainer {
   display: flex;
-  gap: 16px;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column-reverse;
+  gap: 4px;
+  align-items: flex-start;
   padding-bottom: 16px;
+  @include tabletAndBeyondView() {
+    flex-direction: row;
+    gap: 16px;
+  }
 }
 
 .titleLeftContainer {

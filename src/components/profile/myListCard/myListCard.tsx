@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styles from './myListCard.module.scss';
 import Image from 'next/image';
 import Edit from '@/icons/profile/edit.svg';
@@ -9,13 +9,13 @@ import { PropertyProps } from '@/interface/property';
 import ArrowLink from '@/icons/arrowLink.svg';
 import Link from 'next/link';
 import { formatDate } from '@/utils/formateData';
+import { MyListCardStatusChip } from '@/components/profile/myListCard/myListCardStatusChip';
 
 interface MyListCardProp {
   listing: PropertyProps;
   idToken: string;
   onDelete: (_id: string) => void;
-  onStatusChange: (_id: string, _newActiveStatus: boolean) => void;
-  isInactive: boolean;
+  onStatusChange: (_id: string, _newStatus: string) => void;
 }
 
 export const MyListCard: React.FC<MyListCardProp> = ({
@@ -23,13 +23,11 @@ export const MyListCard: React.FC<MyListCardProp> = ({
   idToken,
   onDelete,
   onStatusChange,
-  isInactive,
 }) => {
-  const { title, city, images, createdAt, views, active, id, userId } = listing;
-  const [isActive, setIsActive] = useState(active);
-  const [savedUsersCount, setSavedUsersCount] = useState(0);
+  const { title, city, images, createdAt, views, id, userId, status } = listing;
+  const [savedUsersCount, setSavedUsersCount] = React.useState(0);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchSavedUsersCount = async () => {
       try {
         const response = await fetch(
@@ -41,7 +39,6 @@ export const MyListCard: React.FC<MyListCardProp> = ({
         console.error('Error fetching saved users count:', error);
       }
     };
-
     fetchSavedUsersCount();
   }, [id]);
 
@@ -49,16 +46,13 @@ export const MyListCard: React.FC<MyListCardProp> = ({
     try {
       const response = await fetch('/api/check-listings/toggle-listing', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ listingId: id }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        setIsActive(data.newActiveStatus);
-        onStatusChange(id, data.newActiveStatus);
+        onStatusChange(id, data.newStatus);
       } else {
         console.error('Failed to update listing status');
       }
@@ -92,7 +86,7 @@ export const MyListCard: React.FC<MyListCardProp> = ({
 
   return (
     <div
-      className={`${styles.mainContainer} ${isInactive ? styles.inActiveContainer : ''}`}
+      className={`${styles.mainContainer} ${status === 'inactive' ? styles.inActiveContainer : ''}`}
     >
       <div className={styles.imageContainer}>
         {images.length > 0 ? (
@@ -120,6 +114,7 @@ export const MyListCard: React.FC<MyListCardProp> = ({
               </h1>
               <ArrowLink />
             </Link>
+            <MyListCardStatusChip status={status} />
           </div>
           <div className={styles.info}>
             <div className={styles.infoBlock}>
@@ -147,7 +142,9 @@ export const MyListCard: React.FC<MyListCardProp> = ({
           </div>
           <div className={styles.editItem} onClick={toggleActiveStatus}>
             <Left />
-            <p>{isActive ? 'Disable listing' : 'Enable listing'}</p>
+            <p>
+              {status === 'inactive' ? 'Enable listing' : 'Disable listing'}
+            </p>
           </div>
         </div>
       </div>

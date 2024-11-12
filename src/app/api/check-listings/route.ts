@@ -39,7 +39,8 @@ export async function GET(req: Request) {
 
       if (listingDoc.exists()) {
         const listingData = listingDoc.data();
-        if (listingData.status === 'verified') {
+
+        if (listingData.status !== 'deleted') {
           listings.push({ id: listingDoc.id, ...listingData });
         }
       }

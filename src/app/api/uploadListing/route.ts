@@ -31,7 +31,6 @@ async function createUniqueSlug(title: string, city: string) {
   while (!isUnique) {
     const listingRef = doc(db, 'listings', uniqueSlug);
     const listingSnapshot = await getDoc(listingRef);
-
     if (listingSnapshot.exists()) {
       uniqueSlug = `${baseSlug}-${generateRandomDigits(5)}`;
     } else {
@@ -69,8 +68,10 @@ export async function POST(req: NextRequest) {
     const listingData = {
       ...data,
       images: filteredImageUrls,
-      status: 'not verified',
-      active: true,
+      status: 'created',
+      verified: false,
+      // status: 'not verified',
+      // active: true,
       createdAt: serverTimestamp(),
       views: 0,
       ownerId: userId,

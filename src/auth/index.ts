@@ -87,6 +87,7 @@ export const authOptions: NextAuthConfig = {
               createdAt: new Date(),
               lastLogin: new Date(),
               savedProperties: [],
+              status: 'approved',
             });
 
             const customToken = await getCustomToken(newUser.uid);
@@ -137,6 +138,7 @@ export const authOptions: NextAuthConfig = {
               createdAt: new Date(),
               lastLogin: new Date(),
               savedProperties: [],
+              status: 'approved',
             });
 
             (user as UserRent).id = newUserRef.id;
@@ -185,6 +187,7 @@ export const authOptions: NextAuthConfig = {
               createdAt: new Date(),
               lastLogin: new Date(),
               savedProperties: [],
+              status: 'approved',
             });
 
             (user as UserRent).id = newUserRef.id;
