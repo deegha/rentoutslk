@@ -67,7 +67,7 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
     propertyType,
     monthlyRent,
     images = [],
-    status,
+    verified,
     ownerId,
   } = property;
 
@@ -219,7 +219,7 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
               <DescriptionItem name="Furnished:" value={furnishing} />
               <DescriptionItem
                 name="Verified by Rentouts:"
-                value={status !== 'not verified' ? <Verified /> : <Warning />}
+                value={verified ? <Verified /> : <Warning />}
               />
             </ul>
             {isOwner && (

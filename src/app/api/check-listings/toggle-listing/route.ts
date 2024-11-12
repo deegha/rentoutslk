@@ -16,15 +16,22 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const currentActiveStatus = listingDoc.data().active;
+    const currentStatus = listingDoc.data().status;
+
+    let newStatus;
+    if (currentStatus === 'inactive') {
+      newStatus = 'created';
+    } else {
+      newStatus = 'inactive';
+    }
 
     await updateDoc(listingRef, {
-      active: !currentActiveStatus,
+      status: newStatus,
     });
 
     return NextResponse.json({
       message: 'Listing status updated successfully',
-      newActiveStatus: !currentActiveStatus,
+      newStatus,
     });
   } catch (error) {
     console.error('Error updating listing status:', error);

@@ -35,7 +35,6 @@ export async function GET(req: Request) {
         gym: doc.data().gym,
         electricCharger: doc.data().electricCharger,
         status: doc.data().status,
-        active: doc.data().active,
       }))
       .filter((listing) => {
         const matchesAddress = listing.address
@@ -44,7 +43,7 @@ export async function GET(req: Request) {
         const matchesCity = listing.city
           .toLowerCase()
           .includes(city.toLowerCase());
-        return (matchesAddress || matchesCity) && listing.active === true;
+        return (matchesAddress || matchesCity) && listing.status === 'approved';
       })
       .sort((a, b) => b.views - a.views);
 

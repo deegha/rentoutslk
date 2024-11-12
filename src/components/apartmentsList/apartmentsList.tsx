@@ -27,7 +27,7 @@ interface Apartment {
   gym?: boolean;
   electricCharger?: boolean;
   status?: string;
-  active?: boolean;
+  verified?: boolean;
 }
 
 interface ApartmentsListProps {

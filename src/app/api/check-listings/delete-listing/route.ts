@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/firebase/config';
-import { doc, deleteDoc, updateDoc, arrayRemove } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 import { verifyIdToken } from '@/firebase/firebaseAdmin';
 
 export async function POST(req: NextRequest) {
   try {
-    const { listingId, userId } = await req.json();
+    const { listingId } = await req.json();
 
     const token = req.headers.get('Authorization')?.split(' ')[1];
     if (!token) {
@@ -15,19 +15,17 @@ export async function POST(req: NextRequest) {
     await verifyIdToken(token);
 
     const listingRef = doc(db, 'listings', listingId);
-    await deleteDoc(listingRef);
-
-    const userRef = doc(db, 'users', userId);
-    await updateDoc(userRef, {
-      listings: arrayRemove(listingId),
+    await updateDoc(listingRef, {
+      status: 'deleted',
     });
 
     return NextResponse.json({
-      message: 'Listing deleted successfully',
+      message: 'Listing status updated to deleted',
     });
-  } catch {
+  } catch (error) {
+    console.error('Error updating listing:', error);
     return NextResponse.json(
-      { message: 'Failed to delete listing' },
+      { message: 'Failed to update listing status' },
       { status: 500 },
     );
   }

@@ -10,6 +10,7 @@ export interface UserRent extends AuthUser {
   idToken: string;
   admin: boolean;
   exp: number;
+  status: string;
 }
 
 export interface CustomSession extends AuthSession {
