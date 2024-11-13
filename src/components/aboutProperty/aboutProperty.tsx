@@ -32,7 +32,10 @@ export const AboutProperty = ({ property }: { property: PropertyProps }) => {
           <AboutPropertyItem name="Bedrooms:" value={numberBedrooms} />
           <AboutPropertyItem name="Bathrooms:" value={numberBathrooms} />
           <AboutPropertyItem name="Furniture:" value={furnishing} />
-          <AboutPropertyItem name="Price:" value={`${monthlyRent} LKR`} />
+          <AboutPropertyItem
+            name="Price:"
+            value={`${monthlyRent.toLocaleString('en-US')} LKR`}
+          />
           <AboutPropertyItem name="Elevator:" value={elevator ? 'Yes' : 'No'} />
           <AboutPropertyItem name="Gym:" value={gym ? 'Yes' : 'No'} />
           <AboutPropertyItem name="Floor area:" value={`${floorArea} m²`} />

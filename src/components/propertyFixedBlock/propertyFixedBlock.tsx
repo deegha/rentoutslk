@@ -56,7 +56,9 @@ export const PropertyFixedBlock: React.FC<PropertyFixedProps> = ({
           </p>
         </div>
         <div className={styles.priceBlock}>
-          <p className={styles.price}>{monthlyRent} LKR</p>
+          <p className={styles.price}>
+            {monthlyRent.toLocaleString('en-US')} LKR
+          </p>
           <Button
             text="Request a tour"
             textColor="#FFFFFF"
