@@ -204,7 +204,10 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
               </Tooltip>
             </div>
             <ul className={styles.descList}>
-              <DescriptionItem name="Price:" value={`${monthlyRent} LKR/mo`} />
+              <DescriptionItem
+                name="Price:"
+                value={`${monthlyRent.toLocaleString('en-US')} LKR/mo`}
+              />
               <DescriptionItem name="Floor area:" value={`${floorArea} m2`} />
               <DescriptionItem name="Available from:" value={formattedDate} />
               <DescriptionItem name="Property type:" value={propertyType} />

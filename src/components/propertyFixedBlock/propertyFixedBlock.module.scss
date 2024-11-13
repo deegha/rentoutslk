@@ -17,10 +17,10 @@
   width: 100%;
   max-width: 1920px;
   height: 64px;
-  padding: 0 24px;
+  padding: 0 10px;
   background-color: $primary-bg-color;
   z-index: 10;
-  box-shadow: 0px 4px 18px 0px rgba(0, 0, 0, 0.17);
+  box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.17);
 
   @include tabletAndBeyondView() {
     padding: 0 110px;

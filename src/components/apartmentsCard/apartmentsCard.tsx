@@ -99,7 +99,7 @@ export const ApartmentsCard: React.FC<ApartmentsCardProp> = ({
       </div>
       <div className={styles.cardDetailsBlock}>
         <a href={`/property/${id}`} className={styles.cardDescBlock}>
-          <p className={styles.cardPrice}>{monthlyRent} LKR</p>
+          <p className={styles.cardPrice}>{monthlyRent.toLocaleString()} LKR</p>
           <p className={styles.cardTitle}>
             {title} in {city}
           </p>
