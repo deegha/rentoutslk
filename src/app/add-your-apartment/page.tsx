@@ -1,4 +1,6 @@
 import { Header, MultiStepFormApparts, Footer } from '@/components';
+import { Suspense } from 'react';
+import BeatLoader from 'react-spinners/BeatLoader';
 
 export async function generateMetadata() {
   return {
@@ -33,7 +35,15 @@ const AddYourApart = () => {
     <>
       <Header />
       <main>
-        <MultiStepFormApparts />
+        <Suspense
+          fallback={
+            <div style={{ textAlign: 'center', marginTop: '20vh' }}>
+              <BeatLoader color="#DE225C" />
+            </div>
+          }
+        >
+          <MultiStepFormApparts />
+        </Suspense>
       </main>
       <Footer />
     </>

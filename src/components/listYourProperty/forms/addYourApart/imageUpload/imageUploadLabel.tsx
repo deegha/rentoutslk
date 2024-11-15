@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { UseFormRegister } from 'react-hook-form';
 import styles from './imageUpload.module.scss';
 
 import UploadImg from '@/icons/uploadImg.svg';
@@ -11,7 +10,6 @@ import Unfeatured from '@/icons/unfeatured.svg';
 interface ImageUploadLabelProps {
   imageIndex: number;
   preview: string;
-  register: UseFormRegister<Record<string, unknown>>;
   onChange: (
     _event: React.ChangeEvent<HTMLInputElement>,
     _imageIndex: number,
@@ -19,24 +17,27 @@ interface ImageUploadLabelProps {
   onDelete: (_imageIndex: number) => void;
   isFeatured: boolean;
   onFeatureClick: (_imageIndex: number) => void;
-  error?: string;
 }
 
 export const ImageUploadLabel: React.FC<ImageUploadLabelProps> = ({
   imageIndex,
   preview,
-  register,
   onChange,
   onDelete,
   isFeatured,
   onFeatureClick,
-  error,
 }) => {
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
+  const [disableInput, setDisableInput] = useState(false);
 
   const handleRemoveImage = (event: React.MouseEvent) => {
     event.stopPropagation();
-    onDelete(imageIndex); // Удаление изображения по индексу
+    setDisableInput(true);
+    onDelete(imageIndex);
+
+    setTimeout(() => {
+      setDisableInput(false);
+    }, 100);
   };
 
   const handleFeatureClick = (event: React.MouseEvent) => {
@@ -45,7 +46,7 @@ export const ImageUploadLabel: React.FC<ImageUploadLabelProps> = ({
   };
 
   const handleInputClick = (event: React.MouseEvent<HTMLInputElement>) => {
-    if (preview) {
+    if (preview || disableInput) {
       event.preventDefault();
     }
   };
@@ -93,13 +94,11 @@ export const ImageUploadLabel: React.FC<ImageUploadLabelProps> = ({
               <p className={styles.deleteImgText}>Delete image</p>
             </div>
           </div>
-          {error && <span className={styles.error}>{error}</span>}
         </>
       )}
       <input
         type="file"
         accept=".png,.jpg,.jpeg,.webp"
-        {...register(`images.${imageIndex}`)}
         onChange={(e) => onChange(e, imageIndex)}
         className={styles.hiddenInput}
         onClick={handleInputClick}
