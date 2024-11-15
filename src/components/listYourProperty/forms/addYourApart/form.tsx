@@ -17,6 +17,7 @@ import { useSession } from 'next-auth/react';
 import { CustomSession } from '@/interface/session';
 import BeatLoader from 'react-spinners/BeatLoader';
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 type PropertyDetailsValues = z.infer<typeof propertyDetailsSchema>;
 type ImageUploadValues = z.infer<typeof imageUploadSchema>;
@@ -26,6 +27,8 @@ export const MultiStepFormApparts = () => {
   const { data: sessionData, status } = useSession();
   const router = useRouter();
   const session = sessionData as CustomSession | null;
+  const searchParams = useSearchParams();
+  const propertyId = searchParams.get('propertyId');
 
   const [step, setStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,6 +52,49 @@ export const MultiStepFormApparts = () => {
     window.scrollTo(0, 0);
   }, [step]);
 
+  useEffect(() => {
+    if (propertyId) {
+      const fetchPropertyData = async () => {
+        setIsLoading(true);
+        try {
+          const response = await fetch(`/api/check-property/${propertyId}`);
+          const propertyData = await response.json();
+
+          methods.reset({
+            title: propertyData.title,
+            address: propertyData.address,
+            city: propertyData.city,
+            monthlyRent: propertyData.monthlyRent,
+            deposit: propertyData.deposit,
+            propertyType: propertyData.propertyType,
+            floorArea: propertyData.floorArea,
+            numberBedrooms: propertyData.numberBedrooms,
+            numberBathrooms: propertyData.numberBathrooms,
+            furnishing: propertyData.furnishing,
+            availableFrom: propertyData.availableFrom,
+            rentalPeriod: propertyData.rentalPeriod,
+          });
+
+          imageMethods.reset({
+            images: propertyData.images || [],
+          });
+
+          questionsMethods.reset({
+            firstQuestion: propertyData.firstQuestion,
+            secondQuestion: propertyData.secondQuestion,
+            customQuestion: propertyData.customQuestion,
+          });
+        } catch (error) {
+          console.error('Failed to load property data', error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      fetchPropertyData();
+    }
+  }, [propertyId]);
+
   const onSubmitDetails: SubmitHandler<PropertyDetailsValues> = async (
     _data,
   ) => {
@@ -68,27 +114,34 @@ export const MultiStepFormApparts = () => {
       ...imageMethods.getValues(),
       ...data,
       userId: session?.user?.id,
+      propertyId,
     };
 
-    const response = await fetch('/api/uploadListing', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session?.user?.customToken}`,
-      },
-      body: JSON.stringify(combinedData),
-    });
+    try {
+      const url = propertyId ? `/api/uploadListing` : `/api/uploadListing`;
+      const method = propertyId ? 'PUT' : 'POST';
 
-    if (response.ok) {
-      const responseData = await response.json();
-      const listingSlug = responseData?.listingSlug;
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session?.user?.customToken}`,
+        },
+        body: JSON.stringify({ ...combinedData }),
+      });
 
-      if (listingSlug) {
-        setIsLoading(false);
-        router.push(`/property/${listingSlug}`);
+      if (response.ok) {
+        const responseData = await response.json();
+        const listingSlug = responseData?.listingSlug;
+        if (listingSlug) {
+          router.push(`/property/${listingSlug}`);
+        }
+      } else {
+        console.error('Failed to save listing');
       }
-    } else {
-      console.error('Failed to create listing');
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    } finally {
       setIsLoading(false);
     }
   };

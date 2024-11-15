@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import styles from './imageUpload.module.scss';
 import { ImageUploadLabel } from './imageUploadLabel';
@@ -13,8 +13,9 @@ const toBase64 = (file: File) =>
   });
 
 export const ImageUploadSection: React.FC = () => {
-  const { register, setValue } = useFormContext();
-  const [images, setImages] = useState<string[]>([]);
+  const { watch, setValue } = useFormContext();
+
+  const images = watch('images') || [];
 
   const handleImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -23,37 +24,26 @@ export const ImageUploadSection: React.FC = () => {
     const file = event.target.files?.[0];
     if (file) {
       const base64String = await toBase64(file);
-
-      setImages((prevImages) => {
-        const newImages = [...prevImages];
-        newImages[imageIndex] = base64String;
-        setValue('images', newImages);
-        return newImages;
-      });
+      const updatedImages = [...images];
+      updatedImages[imageIndex] = base64String;
+      setValue('images', updatedImages);
     }
   };
 
   const handleDeleteImage = (imageIndex: number) => {
-    setImages((prevImages) => {
-      const newImages = [...prevImages];
-      newImages.splice(imageIndex, 1);
-      setValue('images', newImages);
-      return newImages;
-    });
+    const updatedImages = [...images];
+    updatedImages.splice(imageIndex, 1);
+    setValue('images', updatedImages);
   };
 
   const handleFeatureClick = (imageIndex: number) => {
     if (imageIndex === 0) return;
-
-    setImages((prevImages) => {
-      const newImages = [...prevImages];
-      [newImages[0], newImages[imageIndex]] = [
-        newImages[imageIndex],
-        newImages[0],
-      ];
-      setValue('images', newImages);
-      return newImages;
-    });
+    const updatedImages = [...images];
+    [updatedImages[0], updatedImages[imageIndex]] = [
+      updatedImages[imageIndex],
+      updatedImages[0],
+    ];
+    setValue('images', updatedImages);
   };
 
   return (
@@ -134,20 +124,17 @@ export const ImageUploadSection: React.FC = () => {
         />
       </div>
       <div className={styles.imgList}>
-        {Array.from({ length: 9 }, (_, index) => {
-          return (
-            <ImageUploadLabel
-              key={index}
-              imageIndex={index}
-              preview={images[index] || ''}
-              register={register}
-              onChange={handleImageChange}
-              onDelete={handleDeleteImage}
-              isFeatured={index === 0}
-              onFeatureClick={handleFeatureClick}
-            />
-          );
-        })}
+        {Array.from({ length: 9 }, (_, index) => (
+          <ImageUploadLabel
+            key={index}
+            imageIndex={index}
+            preview={images[index] || ''}
+            onChange={handleImageChange}
+            onDelete={handleDeleteImage}
+            isFeatured={index === 0}
+            onFeatureClick={handleFeatureClick}
+          />
+        ))}
       </div>
     </div>
   );

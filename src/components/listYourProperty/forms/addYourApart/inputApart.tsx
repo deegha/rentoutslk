@@ -53,7 +53,7 @@ export const InputApart = React.forwardRef<HTMLInputElement, InputApartProps>(
             required,
             setValueAs: (value) => {
               if (isCurrency) {
-                return parseFloat(value.replace(/,/g, ''));
+                return parseFloat(String(value).replace(/,/g, ''));
               }
               return type === 'number' ? parseFloat(value) : value;
             },

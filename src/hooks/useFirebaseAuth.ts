@@ -8,7 +8,7 @@ const useFirebaseAuth = () => {
   const { data: session, status } = useSession() as {
     data: CustomSession | null;
     status: 'authenticated' | 'loading' | 'unauthenticated';
-  }; // Сохраняем стандартные свойства useSession
+  };
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {

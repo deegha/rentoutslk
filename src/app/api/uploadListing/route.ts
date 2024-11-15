@@ -5,7 +5,6 @@ import {
   setDoc,
   getDoc,
   updateDoc,
-  arrayUnion,
   doc,
   serverTimestamp,
 } from 'firebase/firestore';
@@ -17,12 +16,6 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-function generateRandomDigits(length: number): string {
-  return Math.random()
-    .toString()
-    .slice(2, 2 + length);
-}
-
 async function createUniqueSlug(title: string, city: string) {
   const baseSlug = slugify(`${title}-${city}`, { lower: true, strict: true });
   let uniqueSlug = baseSlug;
@@ -32,7 +25,7 @@ async function createUniqueSlug(title: string, city: string) {
     const listingRef = doc(db, 'listings', uniqueSlug);
     const listingSnapshot = await getDoc(listingRef);
     if (listingSnapshot.exists()) {
-      uniqueSlug = `${baseSlug}-${generateRandomDigits(5)}`;
+      uniqueSlug = `${baseSlug}-${Math.random().toString(36).substr(2, 5)}`;
     } else {
       isUnique = true;
     }
@@ -59,7 +52,7 @@ export async function POST(req: NextRequest) {
         );
         return uploadResponse.secure_url;
       }
-      return null;
+      return imageBase64;
     });
 
     const uploadedImages = await Promise.all(uploadPromises);
@@ -70,8 +63,6 @@ export async function POST(req: NextRequest) {
       images: filteredImageUrls,
       status: 'created',
       verified: false,
-      // status: 'not verified',
-      // active: true,
       createdAt: serverTimestamp(),
       views: 0,
       ownerId: userId,
@@ -80,19 +71,45 @@ export async function POST(req: NextRequest) {
     const listingRef = doc(db, 'listings', slug);
     await setDoc(listingRef, listingData);
 
-    const userRef = doc(db, 'users', userId);
-    await updateDoc(userRef, {
-      listings: arrayUnion(slug),
-    });
-
     return NextResponse.json({
-      message: 'Listing published successfully',
+      message: 'Listing created successfully',
       listingSlug: slug,
     });
   } catch (error) {
-    console.error('Error publishing listing:', error);
+    console.error('Error creating listing:', error);
     return NextResponse.json(
-      { message: 'Failed to publish listing' },
+      { message: 'Failed to create listing' },
+      { status: 500 },
+    );
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    const data = await req.json();
+    const { propertyId, ...updateData } = data;
+
+    if (!propertyId) {
+      return NextResponse.json(
+        { message: 'Listing ID is required' },
+        { status: 400 },
+      );
+    }
+
+    const listingRef = doc(db, 'listings', propertyId);
+
+    await updateDoc(listingRef, {
+      ...updateData,
+    });
+
+    return NextResponse.json({
+      message: 'Listing updated successfully',
+      listingSlug: propertyId,
+    });
+  } catch (error) {
+    console.error('Error updating listing:', error);
+    return NextResponse.json(
+      { message: 'Failed to update listing' },
       { status: 500 },
     );
   }

@@ -23,6 +23,7 @@ import { PropertyProps } from '@/interface/property';
 import EditIcon from '@/icons/edit.svg';
 import Map from '@/components/map/map';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 interface PropertyDetailsProps {
   property: PropertyProps;
@@ -37,6 +38,7 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
   const { data: session } = useSession();
+  const router = useRouter();
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.toString());
@@ -226,7 +228,12 @@ export const PropertyDetails: React.FC<PropertyDetailsProps> = ({
               />
             </ul>
             {isOwner && (
-              <div className={styles.editBlock}>
+              <div
+                className={styles.editBlock}
+                onClick={() =>
+                  router.push(`/add-your-apartment?propertyId=${propertyId}`)
+                }
+              >
                 <EditIcon />
                 <p>Edit</p>
               </div>
