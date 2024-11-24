@@ -13,11 +13,7 @@ export async function GET(request: Request) {
   try {
     const listingsRef = collection(db, 'listings');
     const allListingsSnapshot = await getDocs(
-      query(
-        listingsRef,
-        where('status', '==', 'verified'),
-        where('active', '==', true),
-      ),
+      query(listingsRef, where('status', '==', 'approved')),
     );
 
     const results = allListingsSnapshot.docs
