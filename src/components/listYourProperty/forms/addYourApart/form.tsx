@@ -23,7 +23,7 @@ type PropertyDetailsValues = z.infer<typeof propertyDetailsSchema>;
 type ImageUploadValues = z.infer<typeof imageUploadSchema>;
 type QuestionsFormValues = z.infer<typeof questionsFormSchema>;
 
-export const MultiStepFormApparts = () => {
+export const MultiStepFormAparts = () => {
   const { data: sessionData, status } = useSession();
   const router = useRouter();
   const session = sessionData as CustomSession | null;
@@ -73,6 +73,18 @@ export const MultiStepFormApparts = () => {
             furnishing: propertyData.furnishing,
             availableFrom: propertyData.availableFrom,
             rentalPeriod: propertyData.rentalPeriod,
+            charger: propertyData.charger,
+            conditioner: propertyData.conditioner,
+            culteries: propertyData.culteries,
+            elevator: propertyData.elevator,
+            gym: propertyData.gym,
+            hotWater: propertyData.hotWater,
+            microwave: propertyData.microwave,
+            parking: propertyData.parking,
+            pool: propertyData.pool,
+            tv: propertyData.tv,
+            washingMachine: propertyData.washingMachine,
+            playground: propertyData.playground,
           });
 
           imageMethods.reset({

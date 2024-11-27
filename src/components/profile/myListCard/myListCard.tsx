@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './myListCard.module.scss';
 import Image from 'next/image';
 import Edit from '@/icons/profile/edit.svg';
@@ -10,6 +10,8 @@ import ArrowLink from '@/icons/arrowLink.svg';
 import Link from 'next/link';
 import { formatDate } from '@/utils/formateData';
 import { MyListCardStatusChip } from '@/components/profile/myListCard/myListCardStatusChip';
+import { useRouter } from 'next/navigation';
+import { DeleteModal } from '@/components/modals';
 
 interface MyListCardProp {
   listing: PropertyProps;
@@ -24,8 +26,12 @@ export const MyListCard: React.FC<MyListCardProp> = ({
   onDelete,
   onStatusChange,
 }) => {
+  const router = useRouter();
+
   const { title, city, images, createdAt, views, id, userId, status } = listing;
   const [savedUsersCount, setSavedUsersCount] = React.useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   React.useEffect(() => {
     const fetchSavedUsersCount = async () => {
@@ -62,6 +68,7 @@ export const MyListCard: React.FC<MyListCardProp> = ({
   };
 
   const deleteListing = async () => {
+    setLoading(true);
     try {
       const response = await fetch('/api/check-listings/delete-listing', {
         method: 'POST',
@@ -74,11 +81,14 @@ export const MyListCard: React.FC<MyListCardProp> = ({
 
       if (response.ok) {
         onDelete(id);
+        setIsModalOpen(false);
       } else {
         console.error('Failed to delete listing');
       }
     } catch (error) {
       console.error('Error deleting listing:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -132,11 +142,14 @@ export const MyListCard: React.FC<MyListCardProp> = ({
           </div>
         </div>
         <div className={styles.actionContainer}>
-          <div className={styles.editItem}>
+          <div
+            className={styles.editItem}
+            onClick={() => router.push(`/add-your-apartment?propertyId=${id}`)}
+          >
             <Edit />
             <p>Edit</p>
           </div>
-          <div className={styles.editItem} onClick={deleteListing}>
+          <div className={styles.editItem} onClick={() => setIsModalOpen(true)}>
             <Delete />
             <p>Delete</p>
           </div>
@@ -148,6 +161,13 @@ export const MyListCard: React.FC<MyListCardProp> = ({
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <DeleteModal
+          handleDelete={deleteListing}
+          onClose={() => setIsModalOpen(false)}
+          loading={loading}
+        />
+      )}
     </div>
   );
 };

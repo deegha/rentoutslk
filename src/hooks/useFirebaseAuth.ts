@@ -21,7 +21,7 @@ const useFirebaseAuth = () => {
             setIsAuthenticated(true);
           } catch (error) {
             console.error('Error signing in with Firebase:', error);
-            signOut();
+            await signOut();
           }
         } else {
           setIsAuthenticated(true);
