@@ -42,10 +42,15 @@ export const imageUploadSchema = z.object({
     .array(
       z
         .string()
-        .min(2, 'Image is required')
-        .refine((val) => val.startsWith('data:image'), {
-          message: 'Invalid image format',
-        }),
+        .refine(
+          (val) =>
+            val.startsWith('data:image') ||
+            val.startsWith('http://') ||
+            val.startsWith('https://'),
+          {
+            message: 'Invalid image format',
+          },
+        ),
     )
     .min(2, 'At least two images are required'),
 });

@@ -7,6 +7,7 @@ import {
   updateDoc,
   doc,
   serverTimestamp,
+  arrayUnion,
 } from 'firebase/firestore';
 import slugify from 'slugify';
 
@@ -71,12 +72,17 @@ export async function POST(req: NextRequest) {
     const listingRef = doc(db, 'listings', slug);
     await setDoc(listingRef, listingData);
 
+    const userRef = doc(db, 'users', userId);
+    await updateDoc(userRef, {
+      listings: arrayUnion(slug),
+    });
+
     return NextResponse.json({
       message: 'Listing created successfully',
       listingSlug: slug,
     });
   } catch (error) {
-    console.error('Error creating listing:', error);
+    // console.error('Error creating listing:', error);
     return NextResponse.json(
       { message: 'Failed to create listing' },
       { status: 500 },
@@ -87,27 +93,40 @@ export async function POST(req: NextRequest) {
 export async function PUT(req: NextRequest) {
   try {
     const data = await req.json();
-    const { propertyId, ...updateData } = data;
+    // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
+    const { propertyId, ownerId, ...updateData } = data;
+
+    // console.log('Received payload:', data);
 
     if (!propertyId) {
+      // console.error('Property ID is missing in request body');
       return NextResponse.json(
-        { message: 'Listing ID is required' },
+        { message: 'Property ID is required' },
         { status: 400 },
       );
     }
 
     const listingRef = doc(db, 'listings', propertyId);
+    const listingSnapshot = await getDoc(listingRef);
 
-    await updateDoc(listingRef, {
-      ...updateData,
-    });
+    if (!listingSnapshot.exists()) {
+      // console.error('Document with the specified propertyId does not exist');
+      return NextResponse.json(
+        { message: 'Listing does not exist' },
+        { status: 404 },
+      );
+    }
+
+    // console.log('Updating Firestore document...');
+    await updateDoc(listingRef, { ...updateData });
+    // console.log('Firestore document updated successfully');
 
     return NextResponse.json({
       message: 'Listing updated successfully',
       listingSlug: propertyId,
     });
   } catch (error) {
-    console.error('Error updating listing:', error);
+    // console.error('Error updating listing:', error);
     return NextResponse.json(
       { message: 'Failed to update listing' },
       { status: 500 },

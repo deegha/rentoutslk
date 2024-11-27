@@ -1,4 +1,4 @@
-import { Header, MultiStepFormApparts, Footer } from '@/components';
+import { Header, MultiStepFormAparts, Footer } from '@/components';
 import { Suspense } from 'react';
 import BeatLoader from 'react-spinners/BeatLoader';
 
@@ -42,7 +42,7 @@ const AddYourApart = () => {
             </div>
           }
         >
-          <MultiStepFormApparts />
+          <MultiStepFormAparts />
         </Suspense>
       </main>
       <Footer />
