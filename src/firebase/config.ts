@@ -18,4 +18,8 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0];
 const authFirebase = getAuth(app);
 const db = getFirestore(app);
 
+if (typeof window !== 'undefined') {
+  window.authFirebase = authFirebase;
+}
+
 export { authFirebase, db };

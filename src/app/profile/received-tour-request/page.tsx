@@ -47,7 +47,12 @@ const fetchUserData = async (userId: string, idToken: string) => {
 const TourRequest: React.FC = async () => {
   const session = (await auth()) as CustomSession | null;
 
-  if (!session || !session.user || Date.now() >= session.user.exp * 1000) {
+  if (
+    !session ||
+    !session.user ||
+    !session.user.exp ||
+    Date.now() >= session.user.exp * 1000
+  ) {
     return (
       <>
         <Header />
@@ -58,12 +63,20 @@ const TourRequest: React.FC = async () => {
     );
   }
 
-  if (!session.user.idToken) {
-    return;
+  if (!session.user.id || !session.user.idToken) {
+    console.error('User ID or ID Token is undefined.');
+    return (
+      <div>
+        <p>Error: Unable to authenticate user.</p>
+      </div>
+    );
   }
 
   try {
-    const userData = await fetchUserData(session.user.id, session.user.idToken);
+    const userData = await fetchUserData(
+      session.user.id,
+      session.user.idToken ?? '',
+    );
 
     return (
       <>

@@ -38,8 +38,12 @@ export const CardFavourite: React.FC<FavouriteProps> = ({
       }
     };
 
-    checkIfFavourite();
-  }, [id]);
+    if (session) {
+      checkIfFavourite();
+    } else {
+      setLoading(false);
+    }
+  }, [id, session]);
 
   const handleFavouriteClick = async () => {
     if (!session) {

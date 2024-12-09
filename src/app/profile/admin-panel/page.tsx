@@ -47,7 +47,7 @@ const AdminPanelPage = async () => {
           zIndex: 20,
         }}
       >
-        <AdminPanel listings={listings} idToken={session.user.idToken} />
+        <AdminPanel listings={listings} idToken={session.user.idToken || ''} />
       </div>
       <Footer />
     </>
