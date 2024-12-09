@@ -33,36 +33,82 @@ const fetchUserData = async (userId: string, idToken: string) => {
 export async function generateMetadata() {
   const session = (await auth()) as CustomSession;
 
-  if (!session || !session.user || Date.now() >= session.user.exp * 1000) {
+  if (
+    !session ||
+    !session.user ||
+    !session.user.exp ||
+    Date.now() >= session.user.exp * 1000 ||
+    !session.user.id ||
+    !session.user.idToken
+  ) {
     return {
       title: 'rentoutslk | Profile',
       description: 'Your profile on rentoutslk.',
+      openGraph: {
+        title: 'rentoutslk | Profile',
+        description: 'Your profile on rentoutslk.',
+        url: 'https://rentoutslk.vercel.app/profile',
+        siteName: 'RentoutSLK',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: 'rentoutslk | Profile',
+        description: 'Your profile on rentoutslk.',
+      },
     };
   }
 
-  const userData = await fetchUserData(session.user.id, session.user.idToken);
+  try {
+    const userData = await fetchUserData(
+      session.user.id,
+      session.user.idToken ?? '',
+    );
 
-  return {
-    title: `rentoutslk | ${userData.name || 'User'}'s Profile`,
-    description: `${userData.name || 'User'}'s profile on rentoutslk. View listings, requests, and manage your account.`,
-    openGraph: {
+    return {
       title: `rentoutslk | ${userData.name || 'User'}'s Profile`,
-      description: `Explore ${userData.name || 'User'}'s profile on rentoutslk.`,
-      url: `https://rentoutslk.vercel.app/profile`,
-      siteName: 'RentoutSLK',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `rentoutslk | ${userData.name || 'User'}'s Profile`,
-      description: `Explore ${userData.name || 'User'}'s profile on rentoutslk.`,
-    },
-  };
+      description: `${userData.name || 'User'}'s profile on rentoutslk. View listings, requests, and manage your account.`,
+      openGraph: {
+        title: `rentoutslk | ${userData.name || 'User'}'s Profile`,
+        description: `Explore ${userData.name || 'User'}'s profile on rentoutslk.`,
+        url: 'https://rentoutslk.vercel.app/profile',
+        siteName: 'RentoutSLK',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `rentoutslk | ${userData.name || 'User'}'s Profile`,
+        description: `Explore ${userData.name || 'User'}'s profile on rentoutslk.`,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching user data for metadata:', error);
+
+    return {
+      title: 'rentoutslk | Profile',
+      description: 'Your profile on rentoutslk.',
+      openGraph: {
+        title: 'rentoutslk | Profile',
+        description: 'Your profile on rentoutslk.',
+        url: 'https://rentoutslk.vercel.app/profile',
+        siteName: 'RentoutSLK',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: 'rentoutslk | Profile',
+        description: 'Your profile on rentoutslk.',
+      },
+    };
+  }
 }
 
 const ProfilePage = async () => {
   const session = (await auth()) as CustomSession;
 
-  if (!session || !session.user || Date.now() >= session.user.exp * 1000) {
+  if (
+    !session ||
+    !session.user ||
+    !session.user.exp ||
+    Date.now() >= session.user.exp * 1000
+  ) {
     return (
       <>
         <SearchProvider>
@@ -74,6 +120,15 @@ const ProfilePage = async () => {
           <Footer />
         </SearchProvider>
       </>
+    );
+  }
+
+  if (!session.user.id || !session.user.idToken) {
+    console.error('User ID or ID Token is undefined.');
+    return (
+      <div>
+        <p>Error: Unable to authenticate user.</p>
+      </div>
     );
   }
 
@@ -95,7 +150,7 @@ const ProfilePage = async () => {
             }}
           >
             {userData ? (
-              <ProfileCard user={userData} userId={session.user.id} />
+              <ProfileCard user={userData} userId={session.user.id || ''} />
             ) : (
               <div
                 style={{

@@ -54,7 +54,12 @@ const fetchUserData = async (userId: string, idToken: string) => {
 const FavouritePage = async () => {
   const session = (await auth()) as CustomSession;
 
-  if (!session || !session.user || Date.now() >= session.user.exp * 1000) {
+  if (
+    !session ||
+    !session.user ||
+    !session.user.exp ||
+    Date.now() >= session.user.exp * 1000
+  ) {
     return (
       <SearchProvider>
         <Header />
@@ -66,12 +71,20 @@ const FavouritePage = async () => {
     );
   }
 
-  if (!session.user.idToken) {
-    return;
+  if (!session.user.id || !session.user.idToken) {
+    console.error('User ID or ID Token is undefined.');
+    return (
+      <div>
+        <p>Error: Unable to authenticate user.</p>
+      </div>
+    );
   }
 
   try {
-    const userData = await fetchUserData(session.user.id, session.user.idToken);
+    const userData = await fetchUserData(
+      session.user.id,
+      session.user.idToken ?? '',
+    );
 
     return (
       <SearchProvider>

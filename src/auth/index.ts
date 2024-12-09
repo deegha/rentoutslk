@@ -1,18 +1,8 @@
-import NextAuth from 'next-auth';
-import type { NextAuthConfig } from 'next-auth';
+import { authFirebase, db } from '@/firebase/config';
+import NextAuth, { type NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import FacebookProvider from 'next-auth/providers/facebook';
-import { authFirebase, db } from '@/firebase/config';
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut as firebaseSignOut,
-  getIdToken,
-  GoogleAuthProvider,
-  signInWithCredential,
-  FacebookAuthProvider,
-} from 'firebase/auth';
 import {
   collection,
   query,
@@ -22,10 +12,29 @@ import {
   doc,
   updateDoc,
 } from 'firebase/firestore';
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  getIdToken,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  signInWithCredential,
+  signOut as firebaseSignOut,
+} from 'firebase/auth';
 import { getCustomToken } from '@/firebase/firebaseAdmin';
-import { UserRent } from '@/interface/session';
+import { refreshGoogleToken } from '@/utils/googleAuthUtils';
+import type { Session } from 'next-auth';
+import type { JWT } from 'next-auth/jwt';
+import { Account, User as NextAuthUser } from 'next-auth';
 
-export const authOptions: NextAuthConfig = {
+interface FirestoreUserData {
+  email: string;
+  password: string;
+  uid: string;
+  admin?: boolean;
+}
+
+export const authConfig: NextAuthConfig = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -34,87 +43,99 @@ export const authOptions: NextAuthConfig = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        const email = credentials?.email as string | undefined;
-        const password = credentials?.password as string | undefined;
+        const email = credentials?.email;
+        const password = credentials?.password;
 
-        if (!email || !password) {
-          return null;
-        }
+        if (!email || !password) return null;
 
-        try {
-          const userQuery = query(
-            collection(db, 'users'),
-            where('email', '==', email),
+        const userQuery = query(
+          collection(db, 'users'),
+          where('email', '==', email),
+        );
+        const userDocs = await getDocs(userQuery);
+
+        if (!userDocs.empty) {
+          // User exists
+          const userDoc = userDocs.docs[0];
+          const userData = userDoc.data() as FirestoreUserData;
+          const userCredential = await signInWithEmailAndPassword(
+            authFirebase,
+            userData.email,
+            userData.password,
           );
-          const userDocs = await getDocs(userQuery);
+          const user = userCredential.user;
+          const idToken = await getIdToken(user, true);
 
-          if (!userDocs.empty) {
-            const userDoc = userDocs.docs[0];
-            const userData = userDoc.data();
-            const userCredential = await signInWithEmailAndPassword(
-              authFirebase,
-              email,
-              password,
-            );
-            const user = userCredential.user;
-            const idToken = await getIdToken(user, true);
+          await updateDoc(doc(db, 'users', userDoc.id), {
+            lastLogin: new Date(),
+          });
 
-            await updateDoc(doc(db, 'users', userDoc.id), {
-              lastLogin: new Date(),
-            });
+          const customToken = await getCustomToken(user.uid);
 
-            const customToken = await getCustomToken(user.uid);
+          return {
+            id: userDoc.id,
+            email: userData.email,
+            uid: userData.uid,
+            customToken,
+            idToken,
+            admin: userData.admin,
+          };
+        } else {
+          // New user
+          const userCredential = await createUserWithEmailAndPassword(
+            authFirebase,
+            email as string,
+            password as string,
+          );
+          const newUser = userCredential.user;
+          const idToken = await getIdToken(newUser, true);
 
-            return {
-              id: userDoc.id,
-              ...userData,
-              customToken,
-              idToken,
-              admin: userData.admin,
-            };
-          } else {
-            const userCredential = await createUserWithEmailAndPassword(
-              authFirebase,
-              email,
-              password,
-            );
-            const newUser = userCredential.user;
-            const idToken = await getIdToken(newUser, true);
+          const newUserRef = await addDoc(collection(db, 'users'), {
+            email: newUser.email,
+            uid: newUser.uid,
+            createdAt: new Date(),
+            lastLogin: new Date(),
+            savedProperties: [],
+            status: 'approved',
+          });
 
-            const newUserRef = await addDoc(collection(db, 'users'), {
-              email: newUser.email,
-              uid: newUser.uid,
-              createdAt: new Date(),
-              lastLogin: new Date(),
-              savedProperties: [],
-              status: 'approved',
-            });
+          const customToken = await getCustomToken(newUser.uid);
 
-            const customToken = await getCustomToken(newUser.uid);
-            return {
-              id: newUserRef.id,
-              email: newUser.email,
-              uid: newUser.uid,
-              customToken,
-              idToken,
-            };
-          }
-        } catch {
-          return null;
+          return {
+            id: newUserRef.id,
+            email: newUser.email,
+            uid: newUser.uid,
+            customToken,
+            idToken,
+          };
         }
       },
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          scope: 'openid email profile',
+          access_type: 'offline',
+          prompt: 'consent',
+        },
+      },
     }),
     FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID!,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
     }),
   ],
+
   callbacks: {
-    async signIn({ user, account }) {
+    async signIn({
+      user,
+      account,
+    }: {
+      user?: NextAuthUser;
+      account?: Account | null;
+    }) {
       if (account?.provider === 'google' && account.id_token) {
         try {
           const credential = GoogleAuthProvider.credential(account.id_token);
@@ -131,6 +152,7 @@ export const authOptions: NextAuthConfig = {
           );
           const userDocs = await getDocs(userQuery);
 
+          let userId = '';
           if (userDocs.empty) {
             const newUserRef = await addDoc(collection(db, 'users'), {
               email: googleUser.email,
@@ -140,28 +162,31 @@ export const authOptions: NextAuthConfig = {
               savedProperties: [],
               status: 'approved',
             });
-
-            (user as UserRent).id = newUserRef.id;
+            userId = newUserRef.id;
           } else {
             const userDoc = userDocs.docs[0];
             await updateDoc(doc(db, 'users', userDoc.id), {
               lastLogin: new Date(),
             });
-
-            (user as UserRent).id = userDoc.id;
+            userId = userDoc.id;
           }
 
-          (user as UserRent).uid = googleUser.uid;
-          (user as UserRent).email = googleUser.email!;
-          (user as UserRent).idToken = idToken;
-          (user as UserRent).exp =
-            Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 2;
+          // exp ставим на короткий срок для теста, например 30 секунд
+          const exp = Math.floor(Date.now() / 1000) + 30;
+
+          (user as any).id = userId;
+          (user as any).uid = googleUser.uid;
+          (user as any).email = googleUser.email;
+          (user as any).idToken = idToken;
+          (user as any).exp = exp;
 
           return true;
-        } catch {
+        } catch (error) {
+          console.error('Google sign-in error', error);
           return false;
         }
       }
+
       if (account?.provider === 'facebook' && account.access_token) {
         try {
           const credential = FacebookAuthProvider.credential(
@@ -180,6 +205,7 @@ export const authOptions: NextAuthConfig = {
           );
           const userDocs = await getDocs(userQuery);
 
+          let userId = '';
           if (userDocs.empty) {
             const newUserRef = await addDoc(collection(db, 'users'), {
               email: facebookUser.email,
@@ -189,22 +215,22 @@ export const authOptions: NextAuthConfig = {
               savedProperties: [],
               status: 'approved',
             });
-
-            (user as UserRent).id = newUserRef.id;
+            userId = newUserRef.id;
           } else {
             const userDoc = userDocs.docs[0];
             await updateDoc(doc(db, 'users', userDoc.id), {
               lastLogin: new Date(),
             });
-
-            (user as UserRent).id = userDoc.id;
+            userId = userDoc.id;
           }
 
-          (user as UserRent).uid = facebookUser.uid;
-          (user as UserRent).email = facebookUser.email!;
-          (user as UserRent).idToken = idToken;
-          (user as UserRent).exp =
-            Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 2;
+          const exp = Math.floor(Date.now() / 1000) + 30;
+
+          (user as any).id = userId;
+          (user as any).uid = facebookUser.uid;
+          (user as any).email = facebookUser.email;
+          (user as any).idToken = idToken;
+          (user as any).exp = exp;
 
           return true;
         } catch (error) {
@@ -212,41 +238,70 @@ export const authOptions: NextAuthConfig = {
           return false;
         }
       }
+
       return true;
     },
 
-    async jwt({ token, user, account }) {
-      if (account?.provider === 'facebook' && user) {
-        const customUser = user as UserRent;
-        token.idToken = customUser.idToken;
-        token.uid = customUser.uid;
-        token.exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 2;
+    async jwt({
+      token,
+      user,
+      account,
+    }: {
+      token: JWT;
+      user?: NextAuthUser;
+      account?: Account | null;
+    }) {
+      if (account?.provider === 'google') {
+        token.refreshToken = account.refresh_token || null;
+        token.accessToken = account.access_token || null;
+        token.idToken = account.id_token || null;
+        token.exp = token.exp || Math.floor(Date.now() / 1000) + 30;
       }
 
       if (user) {
-        const customUser = user as UserRent;
-        token.id = customUser.id;
-        token.email = customUser.email || token.email || '';
-        token.uid = customUser.uid;
-        token.exp = customUser.exp;
-        token.idToken = customUser.idToken || token.idToken;
+        // Копируем поля из user в token
+        if ((user as any).id) token.id = (user as any).id;
+        if ((user as any).uid) token.uid = (user as any).uid;
+        if ((user as any).idToken) token.idToken = (user as any).idToken;
+        if ((user as any).email) token.email = (user as any).email;
+        if ((user as any).exp) token.exp = (user as any).exp;
+      }
+
+      // Проверяем истечение и пытаемся рефрешить
+      if (token.exp && Date.now() / 1000 > token.exp) {
+        console.log('Access token expired, attempting refresh...');
+        if (token.refreshToken) {
+          const refreshed = await refreshGoogleToken(
+            token.refreshToken as string,
+          );
+          if (refreshed) {
+            token.accessToken = refreshed.access_token || null;
+            token.idToken = refreshed.id_token || null;
+            token.exp =
+              Math.floor(Date.now() / 1000) + (refreshed.expires_in || 3600);
+            console.log('Token successfully refreshed', refreshed);
+          } else {
+            console.error('Failed to refresh token.');
+          }
+        }
       }
 
       return token;
     },
 
-    async session({ session, token }) {
-      if (token.exp && Math.floor(Date.now() / 1000) > token.exp) {
+    async session({ session, token }: { session: Session; token: JWT }) {
+      if (token.exp && Date.now() >= token.exp * 1000) {
         return { ...session, user: undefined };
       }
 
-      session.user = {
-        id: token.id as string,
-        email: token.email || '',
-        uid: token.uid as string,
-        exp: token.exp as number,
-        idToken: (token.idToken as string) || null,
-      } as UserRent;
+      session.user.id = token.id as string;
+      session.user.email = token.email || '';
+      session.user.uid = token.uid as string;
+      session.user.exp = token.exp || null;
+      session.user.idToken =
+        typeof token.idToken === 'string' ? token.idToken : null;
+      session.user.refreshToken =
+        typeof token.refreshToken === 'string' ? token.refreshToken : null;
 
       return session;
     },
@@ -260,7 +315,7 @@ export const authOptions: NextAuthConfig = {
   trustHost: true,
 };
 
-const nextAuthInstance = NextAuth(authOptions);
+const nextAuthInstance = NextAuth(authConfig);
 
 const { handlers, auth, signIn, signOut } = nextAuthInstance;
 

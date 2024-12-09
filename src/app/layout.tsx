@@ -1,38 +1,13 @@
+'use client';
+import React, { useEffect } from 'react';
 import './globals.scss';
 import { Inter } from 'next/font/google';
-import { SessionProvider } from 'next-auth/react';
+import { SessionProvider, useSession } from 'next-auth/react';
 import { FavouriteProvider } from '@/context/favouriteProvider/favouriteProvider';
-import { SessionTimeoutProvider } from '@/context/sessionTimeout/SessionTimeoutProvider';
-import type { Metadata } from 'next';
+import { reAuthenticateWithFirebase } from '../utils/reauthFirebase';
+import { refreshGoogleToken } from '@/utils/googleAuthUtils'; // Ваша функция рефреша
 
 const inter = Inter({ subsets: ['latin'] });
-
-export const metadata: Metadata = {
-  metadataBase: new URL('https://rentoutslk.vercel.app'),
-  title: 'rentoutslk | Innovative Property Management Solutions In Sri Lanka',
-  description:
-    'Discover innovative property management solutions in Sri Lanka with our technology-driven approach.',
-  openGraph: {
-    title: 'RentoutSLK | Innovative Property Management Solutions',
-    description:
-      'Discover innovative property management solutions in Sri Lanka with our technology-driven approach.',
-    url: 'https://rentoutslk.vercel.app',
-    siteName: 'rentoutslk',
-    images: [
-      {
-        url: '/og.png',
-        alt: 'rentoutslk',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'rentoutslk | Innovative Property Management Solutions',
-    description:
-      'Discover innovative property management solutions in Sri Lanka with our technology-driven approach.',
-    images: ['/og.png'],
-  },
-};
 
 export default function RootLayout({
   children,
@@ -42,14 +17,42 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className} style={{ margin: 0 }}>
-        <div id="main">
-          <SessionProvider>
-            <SessionTimeoutProvider>
-              <FavouriteProvider>{children}</FavouriteProvider>
-            </SessionTimeoutProvider>
-          </SessionProvider>
-        </div>
+        <SessionProvider>
+          <AppProviders>{children}</AppProviders>
+        </SessionProvider>
       </body>
     </html>
   );
+}
+
+function AppProviders({ children }: { children: React.ReactNode }) {
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    (async () => {
+      if (session?.user?.exp && Date.now() / 1000 > session.user.exp) {
+        const refreshToken = session.user.refreshToken;
+        if (!refreshToken) {
+          console.error('No refresh token available, cannot refresh.');
+          return;
+        }
+
+        try {
+          const refreshed = await refreshGoogleToken(refreshToken);
+          if (refreshed && refreshed.id_token) {
+            await reAuthenticateWithFirebase(refreshed.id_token);
+            console.log('Successfully re-authenticated with Firebase.');
+          } else {
+            console.error(
+              'Failed to refresh token or no id_token in response.',
+            );
+          }
+        } catch (error) {
+          console.error('Failed to re-authenticate with Firebase:', error);
+        }
+      }
+    })();
+  }, [session?.user?.exp, session?.user?.refreshToken]);
+
+  return <FavouriteProvider>{children}</FavouriteProvider>;
 }

@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Modal from 'react-modal';
@@ -16,8 +16,6 @@ import EmailStep from './EmailStep';
 import PasswordStep from './PasswordStep';
 import { ForgotPassword } from './ForgotPassword';
 
-Modal.setAppElement('#main');
-
 const MultiStepForm = ({
   isOpen,
   onRequestClose,
@@ -32,6 +30,7 @@ const MultiStepForm = ({
   const [currentStep, setCurrentStep] = useState(1);
   const [emailExists, setEmailExists] = useState(false);
   const [forgotPassword, setForgotPassword] = useState(false);
+  const [isAppElementSet, setIsAppElementSet] = useState(false); // Новый стейт
 
   const emailMethods = useForm<EmailFormValues>({
     resolver: zodResolver(emailSchema),
@@ -39,6 +38,13 @@ const MultiStepForm = ({
   const passwordMethods = useForm<PasswordExistFormValues | NewUserFormValues>({
     resolver: zodResolver(forgotPassword ? newUserSchema : passwordExistSchema),
   });
+
+  useEffect(() => {
+    if (!isAppElementSet && document.getElementById('main')) {
+      Modal.setAppElement('#main');
+      setIsAppElementSet(true);
+    }
+  }, [isAppElementSet]);
 
   const handleNextStep = () => {
     setCurrentStep((prev) => prev + 1);
@@ -69,7 +75,7 @@ const MultiStepForm = ({
 
         handleNextStep();
       } catch (error) {
-        null;
+        console.error('Error checking email:', error);
       }
     })();
   };
