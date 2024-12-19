@@ -113,26 +113,28 @@ export const TrendingProperties: React.FC<TrendingPropertiesProps> = ({
 
   return (
     <section className={styles.container}>
-      <h3 className={styles.title}>Trending properties in this area</h3>
-      {loading ? (
-        <div className={styles.loader}>
-          <BeatLoader color="#DE225C" />
-        </div>
-      ) : (
-        <ApartmentsList
-          cardCount={cardCount || 0}
-          apartments={apartments}
-          showBestOffer={false}
-          buttonText="Show more"
-          buttonTextColor="#222222"
-          buttonFontWeight="600"
-          buttonPadding="14.5px 20px"
-          buttonBorderRadius="4px"
-          buttonBgColor="#f7f7f7"
-          buttonBorderColor="#222222"
-          onShowMore={handleShowMore}
-        />
-      )}
+      <div className={styles.block}>
+        <h3 className={styles.title}>Trending properties in this area</h3>
+        {loading ? (
+          <div className={styles.loader}>
+            <BeatLoader color="#DE225C" />
+          </div>
+        ) : (
+          <ApartmentsList
+            cardCount={cardCount || 0}
+            apartments={apartments}
+            showBestOffer={false}
+            buttonText="Show more"
+            buttonTextColor="#222222"
+            buttonFontWeight="600"
+            buttonPadding="14.5px 20px"
+            buttonBorderRadius="4px"
+            buttonBgColor="#f7f7f7"
+            buttonBorderColor="#222222"
+            onShowMore={handleShowMore}
+          />
+        )}
+      </div>
     </section>
   );
 };

@@ -10,6 +10,7 @@
   background-color: $secondary-bg-color;
   @include tabletAndBeyondView() {
     padding: 0 80px;
+
   }
 }
 
@@ -21,6 +22,7 @@
   padding: 10px;
   background-color: $primary-bg-color;
   border-radius: 10px;
+  max-width: 1920px;
 }
 
 .detailsBlock {

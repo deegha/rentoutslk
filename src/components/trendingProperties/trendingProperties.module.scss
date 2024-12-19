@@ -5,11 +5,22 @@
   display: flex;
   flex-direction: column;
   gap: 48px;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
   padding: 46px 25px 55px 25px;
   background-color: $secondary-bg-color;
   @include tabletAndBeyondView() {
     padding: 55px 80px 64px 80px;
   }
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  width: 100%;
+  max-width: 1920px;
 }
 
 .title {
