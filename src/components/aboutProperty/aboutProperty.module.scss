@@ -11,6 +11,7 @@
 
   @include desktopAndBeyondView() {
     padding: 48px 80px 0px 80px;
+
   }
 }
 
@@ -22,6 +23,7 @@
   border-radius: 10px;
   gap: 28px;
   background-color: $primary-bg-color;
+  max-width: 1920px;
 }
 
 .title {
