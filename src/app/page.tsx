@@ -18,7 +18,7 @@ export async function generateMetadata() {
         'rentoutslk | Innovative Property Management Solutions in Sri Lanka',
       description:
         'Discover innovative property management solutions in Sri Lanka with our technology-driven approach. We are dedicated to helping our customers find effective solutions for their property needs.',
-      url: 'https://rentoutslk.vercel.app',
+      url: 'https://rentouts.lk',
       images: [
         {
           url: '/og.png',

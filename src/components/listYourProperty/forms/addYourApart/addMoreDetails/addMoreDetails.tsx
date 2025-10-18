@@ -85,7 +85,7 @@ export const AddMoreDetails = () => {
           />
           <InputApart
             {...register('city')}
-            placeholder={'e. g. Havelock city'}
+            placeholder={'e. g. Colombo, Negambo, Kaduwela'}
             label={'City'}
             name={'city'}
             classNameContainer={styles.apartTitleContainer}

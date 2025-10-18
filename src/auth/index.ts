@@ -186,7 +186,6 @@ export const authConfig: NextAuthConfig = {
           return false;
         }
       }
-
       if (account?.provider === 'facebook' && account.access_token) {
         try {
           const credential = FacebookAuthProvider.credential(
@@ -257,7 +256,6 @@ export const authConfig: NextAuthConfig = {
         token.idToken = account.id_token || null;
         token.exp = token.exp || Math.floor(Date.now() / 1000) + 30;
       }
-
       if (user) {
         // Копируем поля из user в token
         if ((user as any).id) token.id = (user as any).id;
@@ -293,7 +291,6 @@ export const authConfig: NextAuthConfig = {
       if (token.exp && Date.now() >= token.exp * 1000) {
         return { ...session, user: undefined };
       }
-
       session.user.id = token.id as string;
       session.user.email = token.email || '';
       session.user.uid = token.uid as string;

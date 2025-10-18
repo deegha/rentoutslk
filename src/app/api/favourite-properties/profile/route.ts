@@ -32,6 +32,8 @@ export async function GET(req: Request) {
 
     const savedPropertyIds = userData?.savedProperties || [];
 
+    console.log(savedPropertyIds);
+
     const savedProperties = [];
     for (const propertyId of savedPropertyIds) {
       const propertyDocRef = doc(db, 'listings', propertyId);
@@ -42,7 +44,8 @@ export async function GET(req: Request) {
     }
 
     return NextResponse.json({ savedProperties }, { status: 200 });
-  } catch {
+  } catch (e) {
+    console.log(e);
     return NextResponse.json(
       { message: 'Failed to fetch saved properties' },
       { status: 500 },

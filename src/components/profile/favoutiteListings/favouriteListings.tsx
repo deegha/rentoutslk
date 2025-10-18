@@ -33,6 +33,8 @@ const FavouriteListings: React.FC<FavouriteListingsProps> = ({ idToken }) => {
 
         const data = await response.json();
         setSavedListings(data.savedProperties || []);
+      } catch (e) {
+        console.log(e);
       } finally {
         setLoading(false);
       }
