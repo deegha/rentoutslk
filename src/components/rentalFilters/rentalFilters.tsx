@@ -117,13 +117,13 @@ export const RentalFilters: React.FC<RentalFiltersProps> = ({
         <div className={styles.desktopContainer}>
           <div className={styles.filtersBlock}>
             <div className={styles.inputsBlock}>
-              <CustomInput
+              {/* <CustomInput
                 control={methods.control}
                 errors={methods.formState.errors}
                 label="Location"
                 name="combined"
                 placeholder="City, neighbourhood, or place"
-              />
+              /> */}
               <CustomSelect
                 control={methods.control}
                 option={propertyType}

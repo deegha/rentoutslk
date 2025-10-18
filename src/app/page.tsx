@@ -1,10 +1,10 @@
 import {
   Header,
-  HeroBanner,
-  CreateListingBanner,
-  LookingFor,
+  // HeroBanner,
+  // CreateListingBanner,
+  // LookingFor,
   Footer,
-  ApartmentsHome,
+  // ApartmentsHome,
 } from '@/components';
 import { SearchProvider } from '@/context/searchProvider/searchProvider';
 
@@ -38,15 +38,32 @@ export async function generateMetadata() {
   };
 }
 
+// export default function Home() {
+//   return (
+//     <SearchProvider>
+//       <Header />
+//       <main>
+//         <HeroBanner />
+//         <ApartmentsHome />
+//         <CreateListingBanner />
+//         <LookingFor />
+//       </main>
+//       <Footer />
+//     </SearchProvider>
+//   );
+// }
+
+import RentalsClient from './rentals/rentalsClient';
+import { Suspense } from 'react';
+
 export default function Home() {
   return (
     <SearchProvider>
       <Header />
       <main>
-        <HeroBanner />
-        <ApartmentsHome />
-        <CreateListingBanner />
-        <LookingFor />
+        <Suspense fallback={<div></div>}>
+          <RentalsClient />
+        </Suspense>
       </main>
       <Footer />
     </SearchProvider>

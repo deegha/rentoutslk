@@ -5,6 +5,7 @@ import { AboutPropertyItem } from './aboutPropertyItem';
 import { PropertyProps } from '@/interface/property';
 
 export const AboutProperty = ({ property }: { property: PropertyProps }) => {
+  console.log(property, '====');
   const {
     city,
     floorArea,

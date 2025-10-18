@@ -5,8 +5,8 @@ import { EmailFormValues } from './types';
 import styles from './multistep-form.module.scss';
 import Close from 'icons/Close_MD.svg';
 import Google from 'icons/auth/google.svg';
-import Facebook from 'icons/auth/facebook.svg';
-import Warning from '@/icons/Circle_Warning.svg';
+// import Facebook from 'icons/auth/facebook.svg';
+// import Warning from '@/icons/Circle_Warning.svg';
 import { signIn } from 'next-auth/react';
 
 interface EmailStepProps {
@@ -23,9 +23,9 @@ const EmailStep: React.FC<EmailStepProps> = ({
   callbackUrl,
 }) => {
   const {
-    register,
+    // register,
     handleSubmit,
-    formState: { errors },
+    // formState: { errors },
   } = useFormContext<EmailFormValues>();
 
   const handleOAuthSignIn = async (provider: string) => {
@@ -44,7 +44,7 @@ const EmailStep: React.FC<EmailStepProps> = ({
         <h1 className={styles.title}>Log in or Create your account</h1>
       </div>
       <div className={styles.login__container}>
-        <label className={styles.label}>Email address</label>
+        {/* <label className={styles.label}>Email address</label>
         <input className={styles.input} {...register('email')} type="email" />
         {errors.email && (
           <div className={styles.errorContainer}>
@@ -63,7 +63,7 @@ const EmailStep: React.FC<EmailStepProps> = ({
           <span className={styles.optionsText}>
             or use one of these options
           </span>
-        </div>
+        </div> */}
         <div className={styles.buttons__container}>
           <div
             className={styles.button__container__icon}
@@ -76,7 +76,7 @@ const EmailStep: React.FC<EmailStepProps> = ({
               Sign up with Google
             </button>
           </div>
-          <div
+          {/* <div
             className={styles.button__container__icon}
             onClick={() => handleOAuthSignIn('facebook')}
           >
@@ -86,7 +86,7 @@ const EmailStep: React.FC<EmailStepProps> = ({
             <button className={`${styles.button__OAuth}`} type="button">
               <span>Sign up with Facebook</span>
             </button>
-          </div>
+          </div> */}
         </div>
         <div className={styles.formTextContainer}>
           <p className={styles.formText}>
